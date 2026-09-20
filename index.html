@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TURJO X BUY PANEL</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at center, #2e081d 0%, #0b0e14 100%);
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .app-card {
+            width: 100%;
+            max-width: 420px;
+            background: rgba(22, 27, 34, 0.95);
+            border: 1px solid #ff007f;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 0 25px rgba(255, 0, 127, 0.3);
+        }
+
+        /* Top Header Design */
+        .app-header {
+            background: linear-gradient(135deg, #2b091e, #111827);
+            border: 1px solid #ff007f;
+            border-radius: 12px;
+            padding: 15px 10px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
+            margin-bottom: 20px;
+        }
+
+        .header-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #ffffff;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+        }
+
+        .highlight-yellow {
+            color: #ffcc00;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.8);
+        }
+
+        .highlight-pink {
+            color: #ff007f;
+            text-shadow: 0 0 10px rgba(255, 0, 127, 0.8);
+        }
+
+        /* Navigation Buttons (Tabs) */
+        .nav-menu {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .nav-btn {
+            flex: 1;
+            padding: 10px;
+            background: #10141d;
+            border: 1px solid #ff007f55;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .nav-btn.active, .nav-btn:hover {
+            background: #ff007f;
+            border-color: #ff007f;
+            box-shadow: 0 0 10px rgba(255, 0, 127, 0.5);
+        }
+
+        /* Section Styling */
+        .tab-content {
+            display: none;
+            background: #10141d;
+            border: 1px solid #ff007f33;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 13px;
+            color: #ff007f;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        /* Paid Panel Item Styling */
+        .panel-item {
+            background: #181d28;
+            border: 1px solid #ff007f;
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price-tag {
+            color: #25D366;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .whatsapp-link {
+            display: inline-block;
+            background: #25D366;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(37, 211, 102, 0.4);
+        }
+
+        /* Admin Box Styling */
+        .admin-card {
+            background: #181d28;
+            border: 1px solid #ff007f;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .admin-title {
+            font-size: 14px;
+            color: #ffcc00;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .admin-number {
+            font-size: 13px;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 8px;
+        }
+
+        .contact-btn {
+            flex: 1;
+            padding: 8px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .btn-call {
+            background: #0088cc;
+            box-shadow: 0 0 10px rgba(0, 136, 204, 0.4);
+        }
+
+        .btn-wa {
+            background: #25D366;
+            box-shadow: 0 0 10px rgba(37, 211, 102, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-card">
+        
+        <!-- App Top Header -->
+        <div class="app-header">
+            <span class="header-title">
+                ⚡ <span class="highlight-yellow">[ TURJO X ]</span> ─► <span class="highlight-pink">BUY PANEL</span> ⚡
+            </span>
+        </div>
+
+        <!-- Section Navigation Menu -->
+        <div class="nav-menu">
+            <button class="nav-btn active" onclick="openTab('buy-panel')">1. BUY PANEL</button>
+            <button class="nav-btn" onclick="openTab('admin')">2. ADMIN</button>
+        </div>
+
+        <!-- Section 1: Buy Panel Tab -->
+        <div id="buy-panel" class="tab-content active">
+            <div class="section-title">🛒 Available Panels</div>
+            <div class="panel-item">
+                <div>
+                    <strong style="font-size: 14px; color: #ffcc00;">PAID PANEL 1</strong>
+                    <p class="price-tag">Price: 500৳</p>
+                    <p style="font-size: 10px; color: #8b949e; margin-top: 2px;">Premium VIP Sensitivity Guide</p>
+                </div>
+                <!-- WhatsApp Redirection -->
+                <a href="https://wa.me/8801946730203?text=Hello%20Turjo%20X,%20I%20want%20to%20buy%20PAID%20PANEL%201%20for%20500%E0%A7%B3" target="_blank" class="whatsapp-link">
+                    BUY NOW
+                </a>
+            </div>
+        </div>
+
+        <!-- Section 2: Admin Tab -->
+        <div id="admin" class="tab-content">
+            <div class="section-title">👤 Admin Contacts</div>
+            
+            <!-- Admin 1 -->
+            <div class="admin-card">
+                <div class="admin-title">ADMIN 1 (TURJO X)</div>
+                <div class="admin-number">📱 01946730203</div>
+                <div class="btn-container">
+                    <a href="tel:01946730203" class="contact-btn btn-call">CALL NOW</a>
+                    <a href="https://wa.me/8801946730203" target="_blank" class="contact-btn btn-wa">WHATSAPP</a>
+                </div>
+            </div>
+
+            <!-- Admin 2 -->
+            <div class="admin-card">
+                <div class="admin-title">ADMIN 2 (INDIA)</div>
+                <div class="admin-number">📱 +916901300324</div>
+                <div class="btn-container">
+                    <a href="tel:+916901300324" class="contact-btn btn-call">CALL NOW</a>
+                    <a href="https://wa.me/916901300324" target="_blank" class="contact-btn btn-wa">WHATSAPP</a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Tab Switching Script -->
+    <script>
+        function openTab(tabName) {
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(tabName).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+    </script>
+
+</body>
+</html>
