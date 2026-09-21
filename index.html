@@ -1,717 +1,1087 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TURJO X BUY PANEL</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TURJO X | ULTRA PREMIUM NEON PANEL</title>
 
-        body {
-            background: linear-gradient(135deg, #0f0c1b, #1a0b2e, #090d16);
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+}
 
-        .app-card {
-            width: 100%;
-            max-width: 420px;
-            background: rgba(18, 22, 31, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 0, 127, 0.4);
-            border-radius: 20px;
-            padding: 22px;
-            box-shadow: 0 0 35px rgba(255, 0, 127, 0.25), inset 0 0 15px rgba(255, 0, 127, 0.05);
-            position: relative;
-        }
+body{
+    background:#05050a;
+    background-image:
+        radial-gradient(circle at 10% 20%,rgba(255,0,127,.15) 0%,transparent 40%),
+        radial-gradient(circle at 90% 80%,rgba(0,255,204,.15) 0%,transparent 40%);
+    color:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    padding:20px;
+}
 
-        /* Modern Glowing Header */
-        .app-header {
-            background: linear-gradient(135deg, rgba(255, 0, 127, 0.15), rgba(17, 24, 39, 0.9));
-            border: 1px solid rgba(255, 0, 127, 0.6);
-            border-radius: 14px;
-            padding: 16px 12px;
-            text-align: center;
-            box-shadow: 0 0 20px rgba(255, 0, 127, 0.3);
-            margin-bottom: 22px;
-            cursor: pointer;
-            user-select: none;
-            transition: all 0.3s ease;
-        }
+.app-card{
+    width:100%;
+    max-width:420px;
+    background:rgba(12,15,25,.9);
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+    border:1px solid rgba(255,0,127,.6);
+    border-radius:22px;
+    padding:24px;
+    box-shadow:0 0 40px rgba(255,0,127,.3),
+               inset 0 0 20px rgba(0,255,204,.05);
+    position:relative;
+    overflow:hidden;
+}
 
-        .app-header:hover {
-            box-shadow: 0 0 25px rgba(255, 0, 127, 0.5);
-            border-color: #ff007f;
-        }
+.app-card::before{
+    content:'';
+    position:absolute;
+    top:0;
+    left:-100%;
+    width:100%;
+    height:2px;
+    background:linear-gradient(90deg,transparent,#00ffcc,#ff007f);
+    animation:neonBorder 4s linear infinite;
+}
 
-        .app-header:active {
-            transform: scale(0.97);
-        }
+@keyframes neonBorder{
+    0%{left:-100%}
+    50%{left:100%}
+    100%{left:100%}
+}
 
-        .header-title {
-            font-size: 16px;
-            font-weight: bold;
-            color: #ffffff;
-            letter-spacing: 0.5px;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
-        }
+.app-header{
+    background:linear-gradient(135deg,rgba(255,0,127,.2),rgba(15,23,42,.95));
+    border:1px solid #ff007f;
+    border-radius:14px;
+    padding:18px 12px;
+    text-align:center;
+    box-shadow:0 0 25px rgba(255,0,127,.4),
+               inset 0 0 10px rgba(255,0,127,.2);
+    margin-bottom:22px;
+    cursor:pointer;
+    user-select:none;
+    transition:.3s;
+}
 
-        .highlight-yellow {
-            color: #ffcc00;
-            text-shadow: 0 0 12px rgba(255, 204, 0, 0.8);
-        }
+.app-header:hover{
+    box-shadow:0 0 35px rgba(255,0,127,.7);
+    transform:translateY(-2px);
+}
 
-        .highlight-pink {
-            color: #ff007f;
-            text-shadow: 0 0 12px rgba(255, 0, 127, 0.8);
-        }
+.header-title{
+    font-size:15px;
+    font-weight:800;
+    letter-spacing:1px;
+    text-shadow:0 0 10px rgba(255,255,255,.8);
+}
 
-        /* Navigation Menu Tabs */
-        .nav-menu {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
+.highlight-yellow{
+    color:#ffcc00;
+    text-shadow:0 0 15px rgba(255,204,0,.9);
+}
 
-        .nav-btn {
-            flex: 1;
-            padding: 11px;
-            background: rgba(16, 20, 29, 0.9);
-            border: 1px solid rgba(255, 0, 127, 0.3);
-            border-radius: 10px;
-            color: #c9d1d9;
-            font-size: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-        }
+.highlight-pink{
+    color:#ff007f;
+    text-shadow:0 0 15px rgba(255,0,127,.9);
+}
 
-        .nav-btn.active, .nav-btn:hover {
-            background: linear-gradient(135deg, #ff007f, #cc0066);
-            border-color: #ff007f;
-            color: #ffffff;
-            box-shadow: 0 0 15px rgba(255, 0, 127, 0.5);
-        }
+.nav-menu{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+}
 
-        /* Section Containers */
-        .tab-content {
-            display: none;
-            background: rgba(13, 17, 23, 0.7);
-            border: 1px solid rgba(255, 0, 127, 0.2);
-            border-radius: 14px;
-            padding: 16px;
-            margin-bottom: 10px;
-            animation: fadeIn 0.3s ease-in-out;
-        }
+.nav-btn{
+    flex:1;
+    padding:12px;
+    background:rgba(16,20,29,.9);
+    border:1px solid rgba(0,255,204,.3);
+    border-radius:10px;
+    color:#c9d1d9;
+    font-size:12px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.3s;
+}
 
-        .tab-content.active {
-            display: block;
-        }
+.nav-btn.active,
+.nav-btn:hover{
+    background:linear-gradient(135deg,#00ffcc,#0088cc);
+    border-color:#00ffcc;
+    color:#05050a;
+    box-shadow:0 0 20px rgba(0,255,204,.6);
+    font-weight:900;
+}
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+.tab-content{
+    display:none;
+    background:rgba(10,13,20,.8);
+    border:1px solid rgba(0,255,204,.2);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:10px;
+    animation:fadeIn .3s ease-in-out;
+}
 
-        .section-title {
-            font-size: 13px;
-            color: #ff007f;
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            margin-bottom: 14px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+.tab-content.active{
+    display:block;
+}
 
-        /* Panel Item Card */
-        .panel-item {
-            background: rgba(24, 29, 40, 0.8);
-            border: 1px solid rgba(255, 0, 127, 0.4);
-            border-radius: 12px;
-            padding: 14px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: 0.2s;
-        }
+@keyframes fadeIn{
+    from{opacity:0;transform:translateY(5px)}
+    to{opacity:1;transform:translateY(0)}
+}
 
-        .panel-item:hover {
-            border-color: #ffcc00;
-        }
+.section-title{
+    font-size:13px;
+    color:#00ffcc;
+    text-transform:uppercase;
+    letter-spacing:1.5px;
+    margin-bottom:14px;
+    font-weight:800;
+    text-shadow:0 0 10px rgba(0,255,204,.5);
+}
 
-        .price-tag {
-            color: #25D366;
-            font-weight: bold;
-            font-size: 13px;
-            margin-top: 3px;
-        }
+.panel-item{
+    background:rgba(20,25,38,.8);
+    border:1px solid rgba(255,0,127,.4);
+    border-radius:12px;
+    padding:14px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    transition:.3s;
+}
 
-        .whatsapp-link {
-            display: inline-block;
-            background: linear-gradient(135deg, #25D366, #1ebe57);
-            color: #ffffff;
-            text-decoration: none;
-            padding: 9px 14px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: bold;
-            box-shadow: 0 0 12px rgba(37, 211, 102, 0.4);
-            transition: 0.2s;
-        }
+.panel-item:hover{
+    border-color:#00ffcc;
+    box-shadow:0 0 15px rgba(0,255,204,.3);
+}
 
-        .whatsapp-link:hover {
-            transform: scale(1.05);
-        }
+.price-tag{
+    color:#25D366;
+    font-weight:bold;
+    font-size:13px;
+    margin-top:3px;
+}
 
-        /* Admin Card Styling */
-        .admin-card {
-            background: rgba(24, 29, 40, 0.8);
-            border: 1px solid rgba(255, 0, 127, 0.3);
-            border-radius: 12px;
-            padding: 14px;
-            margin-bottom: 12px;
-            transition: 0.2s;
-        }
+.whatsapp-link{
+    display:inline-block;
+    background:linear-gradient(135deg,#25D366,#1ebe57);
+    color:#fff;
+    text-decoration:none;
+    padding:9px 14px;
+    border-radius:8px;
+    font-size:12px;
+    font-weight:bold;
+    box-shadow:0 0 15px rgba(37,211,102,.5);
+    transition:.2s;
+}
 
-        .admin-card:hover {
-            border-color: #ff007f;
-            box-shadow: 0 0 10px rgba(255, 0, 127, 0.2);
-        }
+.whatsapp-link:hover{
+    transform:scale(1.05);
+}
 
-        .admin-title {
-            font-size: 13px;
-            color: #ffcc00;
-            font-weight: bold;
-            margin-bottom: 4px;
-        }
+.admin-card{
+    background:rgba(20,25,38,.8);
+    border:1px solid rgba(255,0,127,.3);
+    border-radius:12px;
+    padding:14px;
+    margin-bottom:12px;
+}
 
-        .admin-number {
-            font-size: 13px;
-            color: #e6edf3;
-            margin-bottom: 12px;
-        }
+.admin-title{
+    font-size:13px;
+    color:#ffcc00;
+    font-weight:bold;
+    margin-bottom:4px;
+}
 
-        .btn-container {
-            display: flex;
-            gap: 10px;
-        }
+.admin-number{
+    font-size:13px;
+    color:#e6edf3;
+    margin-bottom:12px;
+}
 
-        .contact-btn {
-            flex: 1;
-            padding: 9px;
-            border-radius: 8px;
-            text-decoration: none;
-            color: white;
-            font-size: 11px;
-            font-weight: bold;
-            text-align: center;
-            transition: 0.2s;
-        }
+.btn-container{
+    display:flex;
+    gap:10px;
+}
 
-        .btn-call {
-            background: linear-gradient(135deg, #0088cc, #006699);
-            box-shadow: 0 0 10px rgba(0, 136, 204, 0.4);
-        }
+.contact-btn{
+    flex:1;
+    padding:9px;
+    border-radius:8px;
+    text-decoration:none;
+    color:#fff;
+    font-size:11px;
+    font-weight:bold;
+    text-align:center;
+}
 
-        .btn-wa {
-            background: linear-gradient(135deg, #25D366, #1ebe57);
-            box-shadow: 0 0 10px rgba(37, 211, 102, 0.4);
-        }
+.btn-call{
+    background:linear-gradient(135deg,#0088cc,#004466);
+}
 
-        .contact-btn:hover {
-            transform: translateY(-2px);
-        }
+.btn-wa{
+    background:linear-gradient(135deg,#25D366,#1ebe57);
+}
 
-        /* Form Inputs & Select */
-        .form-group {
-            margin-bottom: 12px;
-        }
+.form-group{
+    margin-bottom:12px;
+}
 
-        .form-group label {
-            display: block;
-            font-size: 11px;
-            color: #ffcc00;
-            margin-bottom: 5px;
-            font-weight: bold;
-            letter-spacing: 0.5px;
-        }
+.form-group label{
+    display:block;
+    font-size:11px;
+    color:#00ffcc;
+    margin-bottom:5px;
+    font-weight:bold;
+}
 
-        .device-input {
-            width: 100%;
-            padding: 10px 12px;
-            background: rgba(13, 17, 23, 0.9);
-            border: 1px solid rgba(255, 0, 127, 0.3);
-            border-radius: 8px;
-            color: #ffffff;
-            font-size: 12px;
-            outline: none;
-            transition: all 0.3s ease;
-        }
+.device-input{
+    width:100%;
+    padding:10px 12px;
+    background:rgba(8,11,16,.9);
+    border:1px solid rgba(0,255,204,.3);
+    border-radius:8px;
+    color:#fff;
+    font-size:12px;
+    outline:none;
+}
 
-        .device-input:focus {
-            border-color: #ff007f;
-            box-shadow: 0 0 12px rgba(255, 0, 127, 0.4);
-        }
+.device-input:focus{
+    border-color:#00ffcc;
+    box-shadow:0 0 15px rgba(0,255,204,.5);
+}
 
-        .generate-btn {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, #ff007f, #ffcc00);
-            border: none;
-            border-radius: 9px;
-            color: #0b0e14;
-            font-size: 12px;
-            font-weight: 800;
-            cursor: pointer;
-            margin-top: 6px;
-            margin-bottom: 12px;
-            box-shadow: 0 0 15px rgba(255, 0, 127, 0.5);
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            transition: 0.2s;
-        }
+.generate-btn,
+.copy-btn{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:9px;
+    color:#05050a;
+    font-size:12px;
+    font-weight:900;
+    cursor:pointer;
+    margin-top:6px;
+    margin-bottom:12px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
 
-        .generate-btn:hover {
-            opacity: 0.95;
-            transform: scale(1.02);
-        }
+.generate-btn{
+    background:linear-gradient(135deg,#ff007f,#00ffcc);
+    box-shadow:0 0 20px rgba(255,0,127,.5);
+}
 
-        /* Game Open Button Styling */
-        .game-open-btn {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, #00ffcc, #0088cc);
-            border: none;
-            border-radius: 9px;
-            color: #0b0e14;
-            font-size: 12px;
-            font-weight: 800;
-            cursor: pointer;
-            margin-bottom: 16px;
-            box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            transition: 0.2s;
-        }
+.copy-btn{
+    background:linear-gradient(135deg,#ffcc00,#ff007f);
+    box-shadow:0 0 20px rgba(255,204,0,.4);
+}
 
-        .game-open-btn:hover {
-            opacity: 0.95;
-            transform: scale(1.02);
-        }
+.game-open-btn{
+    width:100%;
+    padding:12px;
+    background:linear-gradient(135deg,#00ffcc,#0088cc);
+    border:none;
+    border-radius:9px;
+    color:#05050a;
+    font-size:12px;
+    font-weight:900;
+    cursor:pointer;
+    margin-bottom:16px;
+}
 
-        /* Output Sensi Boxes */
-        .sensi-box {
-            background: rgba(24, 29, 40, 0.8);
-            border: 1px solid rgba(255, 0, 127, 0.3);
-            border-left: 4px solid #ff007f;
-            border-radius: 9px;
-            padding: 10px 14px;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+.sensi-box{
+    background:rgba(20,25,38,.8);
+    border:1px solid rgba(255,0,127,.3);
+    border-left:4px solid #ff007f;
+    border-radius:9px;
+    padding:10px 14px;
+    margin-bottom:8px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
 
-        .sensi-box.high-level {
-            border-left: 4px solid #00ffcc;
-            background: rgba(17, 40, 38, 0.6);
-            border-color: rgba(0, 255, 204, 0.3);
-        }
+.sensi-box.high-level{
+    border-left-color:#00ffcc;
+    background:rgba(10,35,32,.6);
+}
 
-        .sensi-name {
-            color: #e6edf3;
-            font-size: 12px;
-            font-weight: bold;
-        }
+.sensi-name{
+    color:#e6edf3;
+    font-size:12px;
+    font-weight:bold;
+}
 
-        .sensi-value {
-            color: #ffcc00;
-            font-size: 13px;
-            font-weight: bold;
-            text-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
-        }
+.sensi-value{
+    color:#ffcc00;
+    font-size:13px;
+    font-weight:bold;
+}
 
-        .sensi-value.cyan {
-            color: #00ffcc;
-            text-shadow: 0 0 8px rgba(0, 255, 204, 0.6);
-        }
+.sensi-value.cyan{
+    color:#00ffcc;
+}
 
-        /* Modal Overlay & Card */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
+.modal-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,.85);
+    backdrop-filter:blur(10px);
+    justify-content:center;
+    align-items:center;
+    z-index:1000;
+}
 
-        .popup-card {
-            background: #111827;
-            border: 2px solid #ff007f;
-            border-radius: 16px;
-            padding: 24px;
-            width: 90%;
-            max-width: 320px;
-            text-align: center;
-            box-shadow: 0 0 30px rgba(255, 0, 127, 0.6);
-            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
+.popup-card{
+    background:#0c0f19;
+    border:2px solid #00ffcc;
+    border-radius:16px;
+    padding:24px;
+    width:90%;
+    max-width:320px;
+    text-align:center;
+    box-shadow:0 0 40px rgba(0,255,204,.4);
+}
 
-        @keyframes popIn {
-            from { transform: scale(0.6); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
+.popup-title{
+    color:#00ffcc;
+    font-size:16px;
+    font-weight:800;
+    margin-bottom:6px;
+}
 
-        .popup-title {
-            color: #ffcc00;
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 6px;
-            text-shadow: 0 0 10px rgba(255, 204, 0, 0.4);
-        }
+.popup-sub{
+    color:#8b949e;
+    font-size:11px;
+    margin-bottom:18px;
+}
 
-        .popup-sub {
-            color: #8b949e;
-            font-size: 11px;
-            margin-bottom: 18px;
-        }
+.popup-input{
+    width:100%;
+    padding:11px;
+    background:#05050a;
+    border:1px solid #00ffcc;
+    border-radius:9px;
+    color:#fff;
+    font-size:14px;
+    text-align:center;
+    outline:none;
+    margin-bottom:16px;
+}
 
-        .popup-input {
-            width: 100%;
-            padding: 11px;
-            background: #0d1117;
-            border: 1px solid #ff007f;
-            border-radius: 9px;
-            color: #ffffff;
-            font-size: 14px;
-            text-align: center;
-            outline: none;
-            margin-bottom: 16px;
-            transition: 0.2s;
-        }
+.popup-btn-group{
+    display:flex;
+    gap:10px;
+}
 
-        .popup-input:focus {
-            box-shadow: 0 0 12px rgba(255, 0, 127, 0.5);
-        }
+.popup-btn{
+    flex:1;
+    padding:10px;
+    border:none;
+    border-radius:8px;
+    font-weight:bold;
+    font-size:12px;
+    cursor:pointer;
+}
 
-        .popup-btn-group {
-            display: flex;
-            gap: 10px;
-        }
+.btn-submit{
+    background:#00ffcc;
+    color:#05050a;
+}
 
-        .popup-btn {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 12px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
+.btn-cancel{
+    background:#21262d;
+    color:#c9d1d9;
+}
 
-        .btn-submit {
-            background: #ff007f;
-            color: #ffffff;
-            box-shadow: 0 0 12px rgba(255, 0, 127, 0.5);
-        }
+.error-msg{
+    color:#ff4d4d;
+    font-size:11px;
+    margin-top:10px;
+    display:none;
+    font-weight:bold;
+}
 
-        .btn-submit:hover {
-            opacity: 0.9;
-        }
-
-        .btn-cancel {
-            background: #21262d;
-            color: #c9d1d9;
-        }
-
-        .btn-cancel:hover {
-            background: #30363d;
-        }
-
-        .error-msg {
-            color: #ff4d4d;
-            font-size: 11px;
-            margin-top: 10px;
-            display: none;
-            font-weight: bold;
-        }
-
-        #sensi-results {
-            display: none;
-        }
-    </style>
+#sensi-results{
+    display:none;
+}
+</style>
 </head>
+
 <body>
 
-    <!-- ব্যাকগ্রাউন্ড ভয়েস অডিও (অ্যাপ ওপেন হওয়ার সাথে সাথে বাজার জন্য) -->
-    <audio id="bgVoice" preload="auto">
-        <source src="welcome-voice.mp3" type="audio/mpeg">
-    </audio>
+<div class="app-card">
 
-    <div class="app-card">
-        
-        <!-- Header -->
-        <div class="app-header" onclick="showPopup()">
-            <span class="header-title">
-                ⚡ <span class="highlight-yellow">[ TURJO X ]</span> ─► <span class="highlight-pink">BUY PANEL</span> ⚡
-            </span>
+    <div class="app-header" onclick="showPopup()">
+        <span class="header-title">
+            ⚡ <span class="highlight-yellow">[ TURJO X ]</span>
+            ─► <span class="highlight-pink">NEON PANEL</span> ⚡
+        </span>
+    </div>
+
+    <div class="nav-menu">
+        <button class="nav-btn active"
+                onclick="openTab('buy-panel',this)">
+            1. BUY PANEL
+        </button>
+
+        <button class="nav-btn"
+                onclick="openTab('admin',this)">
+            2. ADMIN
+        </button>
+    </div>
+
+    <!-- PAID BUY PANEL -->
+    <div id="buy-panel" class="tab-content active">
+
+        <div class="section-title">
+            🛒 PAID BUY PANEL
         </div>
 
-        <!-- Tab Buttons -->
-        <div class="nav-menu">
-            <button class="nav-btn active" id="btn-buy" onclick="openTab('buy-panel', this)">1. BUY PANEL</button>
-            <button class="nav-btn" id="btn-admin" onclick="openTab('admin', this)">2. ADMIN</button>
+        <div class="panel-item">
+
+            <div>
+                <strong style="font-size:14px;color:#ffcc00;">
+                    PAID BUY PANEL
+                </strong>
+
+                <p class="price-tag">
+                    Price: 500৳
+                </p>
+
+                <p style="font-size:10px;color:#8b949e;margin-top:3px;">
+                    TURJO X Premium Neon Panel
+                </p>
+            </div>
+
+            <a
+                href="https://wa.me/8801946730203?text=Hello%20Turjo%20X,%20I%20want%20to%20buy%20PAID%20NEON%20PANEL%20for%20500%E0%A7%B3"
+                target="_blank"
+                class="whatsapp-link">
+                BUY NOW
+            </a>
+
+        </div>
+    </div>
+
+    <!-- ADMIN -->
+    <div id="admin" class="tab-content">
+
+        <div class="section-title">
+            👤 ADMIN CONTACTS
         </div>
 
-        <!-- Section 1: Buy Panel -->
-        <div id="buy-panel" class="tab-content active">
-            <div class="section-title">🛒 Available Panels</div>
-            <div class="panel-item">
-                <div>
-                    <strong style="font-size: 14px; color: #ffcc00;">PAID PANEL 1</strong>
-                    <p class="price-tag">Price: 500৳</p>
-                    <p style="font-size: 10px; color: #8b949e; margin-top: 3px;">Premium VIP Sensitivity Guide</p>
-                </div>
-                <a href="https://wa.me/8801946730203?text=Hello%20Turjo%20X,%20I%20want%20to%20buy%20PAID%20PANEL%201%20for%20500%E0%A7%B3" target="_blank" class="whatsapp-link">
-                    BUY NOW
+        <div class="admin-card">
+
+            <div class="admin-title">
+                ADMIN 1 (TURJO X)
+            </div>
+
+            <div class="admin-number">
+                📱 01946730203
+            </div>
+
+            <div class="btn-container">
+
+                <a href="tel:01946730203"
+                   class="contact-btn btn-call">
+                    CALL NOW
                 </a>
+
+                <a href="https://wa.me/8801946730203"
+                   target="_blank"
+                   class="contact-btn btn-wa">
+                    WHATSAPP
+                </a>
+
             </div>
         </div>
 
-        <!-- Section 2: Admin Info -->
-        <div id="admin" class="tab-content">
-            <div class="section-title">👤 Admin Contacts</div>
-            
-            <div class="admin-card">
-                <div class="admin-title">ADMIN 1 (TURJO X)</div>
-                <div class="admin-number">📱 01946730203</div>
-                <div class="btn-container">
-                    <a href="tel:01946730203" class="contact-btn btn-call">CALL NOW</a>
-                    <a href="https://wa.me/8801946730203" target="_blank" class="contact-btn btn-wa">WHATSAPP</a>
-                </div>
+        <div class="admin-card">
+
+            <div class="admin-title">
+                ADMIN 2 (INDIA)
             </div>
 
-            <div class="admin-card">
-                <div class="admin-title">ADMIN 2 (INDIA)</div>
-                <div class="admin-number">📱 +916901300324</div>
-                <div class="btn-container">
-                    <a href="tel:+916901300324" class="contact-btn btn-call">CALL NOW</a>
-                    <a href="https://wa.me/916901300324" target="_blank" class="contact-btn btn-wa">WHATSAPP</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Hidden Section 3: Trial / HIGH-LEVEL SENSI -->
-        <div id="trial" class="tab-content">
-            <div class="section-title">🔥 190 - 200 SENSI GENERATOR</div>
-
-            <div class="form-group">
-                <label>PHONE BRAND NAME</label>
-                <input type="text" id="phoneBrand" class="device-input" placeholder="e.g. Xiaomi, Samsung, iPhone">
+            <div class="admin-number">
+                📱 +916901300324
             </div>
 
-            <div class="form-group">
-                <label>PHONE MODEL</label>
-                <input type="text" id="phoneModel" class="device-input" placeholder="e.g. Note 12 Pro, S23, 11X">
-            </div>
+            <div class="btn-container">
 
-            <div class="form-group">
-                <label>RAM (GB)</label>
-                <select id="phoneRam" class="device-input">
-                    <option value="">Select RAM</option>
-                    <option value="2">2 GB</option>
-                    <option value="3">3 GB</option>
-                    <option value="4">4 GB</option>
-                    <option value="6">6 GB</option>
-                    <option value="8">8 GB</option>
-                    <option value="12">12 GB +</option>
-                </select>
-            </div>
+                <a href="tel:+916901300324"
+                   class="contact-btn btn-call">
+                    CALL NOW
+                </a>
 
-            <button class="generate-btn" onclick="generateHighLevelSensi()">GENERATE 190-200 SENSI 👑</button>
+                <a href="https://wa.me/916901300324"
+                   target="_blank"
+                   class="contact-btn btn-wa">
+                    WHATSAPP
+                </a>
 
-            <!-- Results Output -->
-            <div id="sensi-results">
-                <!-- Direct Game Open Button inside Results -->
-                <button class="game-open-btn" onclick="openGame()">🎮 OPEN FREE FIRE ⚡</button>
-
-                <div class="sensi-box high-level">
-                    <span class="sensi-name">OPTIMIZED PRO DPI</span>
-                    <span class="sensi-value cyan" id="res-dpi">580</span>
-                </div>
-
-                <div class="sensi-box high-level">
-                    <span class="sensi-name">FIRE BUTTON SIZE</span>
-                    <span class="sensi-value cyan" id="res-fire">42%</span>
-                </div>
-
-                <div class="sensi-box high-level">
-                    <span class="sensi-name">ONE-TAP DRAG RATIO</span>
-                    <span class="sensi-value cyan" id="res-drag">ULTRA FAST 200X</span>
-                </div>
-
-                <div class="sensi-box">
-                    <span class="sensi-name">General</span>
-                    <span class="sensi-value" id="res-gen">200</span>
-                </div>
-
-                <div class="sensi-box">
-                    <span class="sensi-name">Red Dot</span>
-                    <span class="sensi-value" id="res-red">198</span>
-                </div>
-
-                <div class="sensi-box">
-                    <span class="sensi-name">2x Scope</span>
-                    <span class="sensi-value" id="res-2x">195</span>
-                </div>
-
-                <div class="sensi-box">
-                    <span class="sensi-name">4x Scope</span>
-                    <span class="sensi-value" id="res-4x">192</span>
-                </div>
-
-                <div class="sensi-box">
-                    <span class="sensi-name">Sniper Scope</span>
-                    <span class="sensi-value" id="res-sniper">190</span>
-                </div>
             </div>
         </div>
 
     </div>
 
-    <!-- Custom Popup Modal -->
-    <div class="modal-overlay" id="customPopup">
-        <div class="popup-card">
-            <div class="popup-title">🔐 TRIAL ACCESS</div>
-            <div class="popup-sub">Enter USERNAME to unlock trial settings</div>
-            <input type="text" id="userInput" class="popup-input" placeholder="Type Username..." autocomplete="off">
-            <div class="popup-btn-group">
-                <button class="popup-btn btn-cancel" onclick="closePopup()">CANCEL</button>
-                <button class="popup-btn btn-submit" onclick="verifyAccess()">UNLOCK</button>
-            </div>
-            <div class="error-msg" id="errorMsg">❌ Wrong Username! Try Again.</div>
+    <!-- TRIAL -->
+    <div id="trial" class="tab-content">
+
+        <div class="section-title">
+            🔥 PREMIUM NEON SENSI GENERATOR
         </div>
+
+        <div class="form-group">
+
+            <label>PHONE BRAND NAME</label>
+
+            <input
+                type="text"
+                id="phoneBrand"
+                class="device-input"
+                placeholder="e.g. Xiaomi, Samsung, iPhone">
+
+        </div>
+
+        <div class="form-group">
+
+            <label>PHONE MODEL</label>
+
+            <input
+                type="text"
+                id="phoneModel"
+                class="device-input"
+                placeholder="e.g. Note 12 Pro, S23, 11X">
+
+        </div>
+
+        <div class="form-group">
+
+            <label>RAM (GB)</label>
+
+            <select id="phoneRam" class="device-input">
+
+                <option value="">
+                    Select RAM
+                </option>
+
+                <option value="2">2 GB</option>
+                <option value="3">3 GB</option>
+                <option value="4">4 GB</option>
+                <option value="6">6 GB</option>
+                <option value="8">8 GB</option>
+                <option value="12">12 GB +</option>
+
+            </select>
+
+        </div>
+
+        <button
+            class="generate-btn"
+            onclick="generateHighLevelSensi()">
+            GENERATE NEON SENSI 👑
+        </button>
+
+        <div id="sensi-results">
+
+            <button
+                class="game-open-btn"
+                onclick="openGame()">
+                🎮 OPEN FREE FIRE ⚡
+            </button>
+
+            <div class="sensi-box high-level">
+                <span class="sensi-name">
+                    OPTIMIZED PRO DPI
+                </span>
+
+                <span class="sensi-value cyan"
+                      id="res-dpi">
+                    -
+                </span>
+            </div>
+
+            <div class="sensi-box high-level">
+                <span class="sensi-name">
+                    FIRE BUTTON SIZE
+                </span>
+
+                <span class="sensi-value cyan"
+                      id="res-fire">
+                    -
+                </span>
+            </div>
+
+            <div class="sensi-box high-level">
+                <span class="sensi-name">
+                    ONE-TAP DRAG RATIO
+                </span>
+
+                <span class="sensi-value cyan"
+                      id="res-drag">
+                    -
+                </span>
+            </div>
+
+            <div class="sensi-box">
+                <span class="sensi-name">
+                    General
+                </span>
+
+                <span class="sensi-value"
+                      id="res-gen">
+                    -
+                </span>
+            </div>
+
+            <div class="sensi-box">
+                <span class="sensi-name">
+                    Red Dot
+                </span>
+
+                <span class="sensi-value"
+                      id="res-red">
+                    -
+                </span>
+            </div>
+
+            <div class="sensi-box">
+                <span class="sensi-name">
+                    2x Scope
+                </span>
+
+                <span class="sensi-value"
+                      id="res-2x">
+                    -
+                </span>
+            </div>
+
+            <div class="sensi-box">
+                <span class="sensi-name">
+                    4x Scope
+                </span>
+
+                <span class="sensi-value"
+                      id="res-4x">
+                    -
+                </span>
+            </div>
+
+            <div class="sensi-box">
+                <span class="sensi-name">
+                    Sniper Scope
+                </span>
+
+                <span class="sensi-value"
+                      id="res-sniper">
+                    -
+                </span>
+            </div>
+
+            <button
+                class="copy-btn"
+                onclick="copySensi()">
+                📋 COPY ALL SENSI
+            </button>
+
+        </div>
+
     </div>
 
-    <script>
-        // পেজ লোড হওয়ার পর ১ সেকেন্ডের মধ্যে ভয়েস প্লে করার কোড
-        window.addEventListener('DOMContentLoaded', (event) => {
-            setTimeout(function() {
-                var audio = document.getElementById("bgVoice");
-                audio.play().catch(error => {
-                    console.log("ব্রাউজার অটো-প্লে পলিসির কারণে ভয়েস আটকে যেতে পারে:", error);
-                });
-            }, 1000); // ১ সেকেন্ড (1000 মিলিসেকেন্ড) ডিলে
+</div>
+
+<!-- LOGIN POPUP -->
+
+<div class="modal-overlay" id="customPopup">
+
+    <div class="popup-card">
+
+        <div class="popup-title">
+            🔐 NEON TRIAL ACCESS
+        </div>
+
+        <div class="popup-sub">
+            Enter USERNAME to unlock trial settings
+        </div>
+
+        <input
+            type="text"
+            id="userInput"
+            class="popup-input"
+            placeholder="Type Username..."
+            autocomplete="off">
+
+        <div class="popup-btn-group">
+
+            <button
+                class="popup-btn btn-cancel"
+                onclick="closePopup()">
+                CANCEL
+            </button>
+
+            <button
+                class="popup-btn btn-submit"
+                onclick="verifyAccess()">
+                UNLOCK
+            </button>
+
+        </div>
+
+        <div
+            class="error-msg"
+            id="errorMsg">
+            ❌ Wrong Username! Try Again.
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function openTab(tabName,element){
+
+    document
+        .querySelectorAll('.tab-content')
+        .forEach(tab=>{
+            tab.classList.remove('active');
         });
 
-        function openTab(tabName, element) {
-            const tabs = document.querySelectorAll('.tab-content');
-            tabs.forEach(tab => tab.classList.remove('active'));
+    document
+        .querySelectorAll('.nav-btn')
+        .forEach(btn=>{
+            btn.classList.remove('active');
+        });
 
-            const buttons = document.querySelectorAll('.nav-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
+    document
+        .getElementById(tabName)
+        .classList.add('active');
 
-            document.getElementById(tabName).classList.add('active');
-            if (element) {
-                element.classList.add('active');
-            }
-        }
+    if(element){
+        element.classList.add('active');
+    }
+}
 
-        function showPopup() {
-            document.getElementById('customPopup').style.display = 'flex';
-            document.getElementById('userInput').value = '';
-            document.getElementById('errorMsg').style.display = 'none';
-        }
 
-        function closePopup() {
-            document.getElementById('customPopup').style.display = 'none';
-        }
+function showPopup(){
 
-        function verifyAccess() {
-            const val = document.getElementById('userInput').value.trim();
-            if (val === "TURJO") {
-                closePopup();
-                openTab('trial', null);
-            } else {
-                document.getElementById('errorMsg').style.display = 'block';
-            }
-        }
+    document
+        .getElementById('customPopup')
+        .style.display='flex';
 
-        function generateHighLevelSensi() {
-            const brand = document.getElementById('phoneBrand').value.trim();
-            const model = document.getElementById('phoneModel').value.trim();
-            const ram = parseInt(document.getElementById('phoneRam').value);
+    document
+        .getElementById('userInput')
+        .value='';
 
-            if (!brand || !model || !ram) {
-                alert("Please fill in Phone Brand, Model, and RAM!");
-                return;
-            }
+    document
+        .getElementById('errorMsg')
+        .style.display='none';
+}
 
-            const deviceKey = (brand + model).toLowerCase();
-            let hash = 0;
-            for (let i = 0; i < deviceKey.length; i++) {
-                hash = (hash << 5) - hash + deviceKey.charCodeAt(i);
-                hash |= 0; 
-            }
 
-            let baseDpi = 520;
-            if (ram <= 3) baseDpi = 540;
-            else if (ram <= 6) baseDpi = 580;
-            else baseDpi = 620;
+function closePopup(){
 
-            const finalDpi = baseDpi + Math.abs(hash % 60);
-            const fireSize = 35 + Math.abs(hash % 8);
+    document
+        .getElementById('customPopup')
+        .style.display='none';
+}
 
-            const dragSpeeds = ["200X ULTRA DRAG", "195X FAST UP", "PRO J-DRAG 200", "MAX TOUCH 190"];
-            const selectedDrag = dragSpeeds[Math.abs(hash % dragSpeeds.length)];
 
-            const gen = 200;
-            const red = 197 + Math.abs(hash % 4); 
-            const scope2 = 194 + Math.abs((hash >> 1) % 5); 
-            const scope4 = 192 + Math.abs((hash >> 2) % 5); 
-            const sniper = 190 + Math.abs((hash >> 3) % 4); 
+function verifyAccess(){
 
-            document.getElementById('res-dpi').innerText = finalDpi;
-            document.getElementById('res-fire').innerText = fireSize + '%';
-            document.getElementById('res-drag').innerText = selectedDrag;
-            document.getElementById('res-gen').innerText = gen;
-            document.getElementById('res-red').innerText = red;
-            document.getElementById('res-2x').innerText = scope2;
-            document.getElementById('res-4x').innerText = scope4;
-            document.getElementById('res-sniper').innerText = sniper;
+    const val=
+        document
+        .getElementById('userInput')
+        .value
+        .trim();
 
-            document.getElementById('sensi-results').style.display = 'block';
-        }
+    if(val==="TURJO"){
 
-        function openGame() {
-            window.location.href = "intent://#Intent;package=com.dts.freefireth;scheme=freefire;end;";
-            
-            setTimeout(function() {
-                window.location.href = "https://play.google.com/store/apps/details?id=com.dts.freefireth";
-            }, 1000);
-        }
-    </script>
+        closePopup();
+
+        openTab('trial',null);
+
+    }else{
+
+        document
+            .getElementById('errorMsg')
+            .style.display='block';
+    }
+}
+
+
+function generateHighLevelSensi(){
+
+    const brand=
+        document
+        .getElementById('phoneBrand')
+        .value
+        .trim();
+
+    const model=
+        document
+        .getElementById('phoneModel')
+        .value
+        .trim();
+
+    const ram=
+        parseInt(
+            document
+            .getElementById('phoneRam')
+            .value
+        );
+
+    if(!brand || !model || !ram){
+
+        alert(
+            "Please fill in Phone Brand, Model, and RAM!"
+        );
+
+        return;
+    }
+
+    /*
+       Device-based deterministic generator.
+       একই ফোনের একই তথ্য দিলে একই profile
+       তৈরি হবে।
+    */
+
+    const deviceKey=
+        (brand+" "+model+" "+ram)
+        .toLowerCase()
+        .replace(/\s+/g,' ');
+
+    let hash=0;
+
+    for(let i=0;i<deviceKey.length;i++){
+
+        hash=
+            ((hash<<5)-hash)
+            +deviceKey.charCodeAt(i);
+
+        hash|=0;
+    }
+
+    const positiveHash=
+        Math.abs(hash);
+
+    let baseDpi;
+
+    if(ram<=3){
+
+        baseDpi=480;
+
+    }else if(ram<=4){
+
+        baseDpi=520;
+
+    }else if(ram<=6){
+
+        baseDpi=560;
+
+    }else if(ram<=8){
+
+        baseDpi=600;
+
+    }else{
+
+        baseDpi=640;
+    }
+
+    const finalDpi=
+        baseDpi+(positiveHash%61);
+
+    const fireSize=
+        35+(positiveHash%16);
+
+    const dragSpeeds=[
+        "NEON FAST",
+        "CYBER PRECISION",
+        "PRO DRAG",
+        "MAX TOUCH",
+        "ULTRA CONTROL"
+    ];
+
+    const selectedDrag=
+        dragSpeeds[
+            positiveHash%dragSpeeds.length
+        ];
+
+    const gen=
+        185+(positiveHash%16);
+
+    const red=
+        180+(Math.floor(positiveHash/7)%21);
+
+    const scope2=
+        175+(Math.floor(positiveHash/13)%26);
+
+    const scope4=
+        165+(Math.floor(positiveHash/19)%31);
+
+    const sniper=
+        150+(Math.floor(positiveHash/23)%41);
+
+
+    document
+        .getElementById('res-dpi')
+        .innerText=finalDpi;
+
+    document
+        .getElementById('res-fire')
+        .innerText=fireSize+"%";
+
+    document
+        .getElementById('res-drag')
+        .innerText=selectedDrag;
+
+    document
+        .getElementById('res-gen')
+        .innerText=gen;
+
+    document
+        .getElementById('res-red')
+        .innerText=red;
+
+    document
+        .getElementById('res-2x')
+        .innerText=scope2;
+
+    document
+        .getElementById('res-4x')
+        .innerText=scope4;
+
+    document
+        .getElementById('res-sniper')
+        .innerText=sniper;
+
+    document
+        .getElementById('sensi-results')
+        .style.display='block';
+}
+
+
+function copySensi(){
+
+    const brand=
+        document
+        .getElementById('phoneBrand')
+        .value
+        .trim();
+
+    const model=
+        document
+        .getElementById('phoneModel')
+        .value
+        .trim();
+
+    const ram=
+        document
+        .getElementById('phoneRam')
+        .value;
+
+    const text=
+`TURJO X — PREMIUM NEON SENSI
+
+PHONE: ${brand} ${model}
+RAM: ${ram} GB
+
+DPI: ${document.getElementById('res-dpi').innerText}
+FIRE BUTTON: ${document.getElementById('res-fire').innerText}
+DRAG: ${document.getElementById('res-drag').innerText}
+
+GENERAL: ${document.getElementById('res-gen').innerText}
+RED DOT: ${document.getElementById('res-red').innerText}
+2X SCOPE: ${document.getElementById('res-2x').innerText}
+4X SCOPE: ${document.getElementById('res-4x').innerText}
+SNIPER: ${document.getElementById('res-sniper').innerText}`;
+
+    if(navigator.clipboard){
+
+        navigator.clipboard
+            .writeText(text)
+            .then(()=>{
+
+                alert(
+                    "✅ Sensi copied successfully!"
+                );
+
+            })
+            .catch(()=>{
+
+                fallbackCopy(text);
+
+            });
+
+    }else{
+
+        fallbackCopy(text);
+    }
+}
+
+
+function fallbackCopy(text){
+
+    const area=
+        document.createElement('textarea');
+
+    area.value=text;
+
+    document.body.appendChild(area);
+
+    area.select();
+
+    try{
+
+        document.execCommand('copy');
+
+        alert(
+            "✅ Sensi copied successfully!"
+        );
+
+    }catch(e){
+
+        alert(
+            "❌ Copy failed."
+        );
+    }
+
+    document.body.removeChild(area);
+}
+
+
+function openGame(){
+
+    window.location.href=
+        "intent://#Intent;package=com.dts.freefireth;scheme=freefire;end;";
+
+    setTimeout(function(){
+
+        window.location.href=
+        "https://play.google.com/store/apps/details?id=com.dts.freefireth";
+
+    },1000);
+}
+
+</script>
 
 </body>
-</html>
+                    </html>
