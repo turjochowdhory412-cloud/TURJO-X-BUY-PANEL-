@@ -1084,4 +1084,1345 @@ function openGame(){
 </script>
 
 </body>
-                    </html>
+                <!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TURJO X BY NEON PANEL</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+  min-height:100vh;
+  color:#fff;
+  background:
+    radial-gradient(circle at 15% 20%,#142b5c 0%,transparent 30%),
+    radial-gradient(circle at 85% 80%,#3b075d 0%,transparent 30%),
+    #050711;
+}
+
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(rgba(0,255,255,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,255,255,.025) 1px,transparent 1px);
+  background-size:35px 35px;
+}
+
+/* AUTH */
+
+.auth-wrapper{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+}
+
+.auth-box{
+  width:100%;
+  max-width:410px;
+  padding:28px;
+  border-radius:26px;
+  background:rgba(7,10,25,.86);
+  border:1px solid rgba(0,247,255,.25);
+  backdrop-filter:blur(18px);
+  box-shadow:0 0 35px rgba(0,247,255,.12);
+}
+
+.logo{
+  text-align:center;
+  margin-bottom:25px;
+}
+
+.logo h1{
+  color:#00f7ff;
+  font-size:27px;
+  letter-spacing:3px;
+  text-shadow:0 0 12px #00f7ff;
+}
+
+.logo p{
+  color:#858ba0;
+  font-size:11px;
+  margin-top:7px;
+}
+
+.input{
+  width:100%;
+  padding:14px;
+  margin:7px 0;
+  border-radius:12px;
+  border:1px solid #242b45;
+  outline:none;
+  background:#0b1020;
+  color:#fff;
+}
+
+.input:focus{
+  border-color:#00f7ff;
+  box-shadow:0 0 12px rgba(0,247,255,.12);
+}
+
+.btn{
+  width:100%;
+  border:0;
+  padding:14px;
+  margin-top:11px;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:bold;
+  color:#031016;
+  background:linear-gradient(90deg,#00f7ff,#7b5cff,#ff28dc);
+}
+
+.switch{
+  text-align:center;
+  margin-top:18px;
+  color:#858ba0;
+  font-size:12px;
+}
+
+.switch span{
+  color:#00f7ff;
+  cursor:pointer;
+}
+
+/* DASHBOARD */
+
+.dashboard{
+  display:none;
+  min-height:100vh;
+}
+
+.topbar{
+  height:68px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 18px;
+  position:sticky;
+  top:0;
+  z-index:5;
+  background:rgba(5,7,17,.82);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  backdrop-filter:blur(15px);
+}
+
+.brand{
+  color:#00f7ff;
+  font-weight:bold;
+  font-size:13px;
+  letter-spacing:2px;
+  text-shadow:0 0 10px #00f7ff;
+}
+
+.logout{
+  padding:8px 13px;
+  border-radius:9px;
+  border:1px solid #ff2bd6;
+  background:transparent;
+  color:#ff5de1;
+  cursor:pointer;
+}
+
+.container{
+  max-width:950px;
+  margin:auto;
+  padding:20px 14px;
+}
+
+.welcome h2{
+  font-size:21px;
+}
+
+.welcome p{
+  color:#858ba0;
+  font-size:10px;
+  margin-top:5px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:9px;
+  margin-top:15px;
+}
+
+.card{
+  min-height:100px;
+  padding:14px;
+  border-radius:16px;
+  cursor:pointer;
+  background:linear-gradient(145deg,#0f152b,#080a18);
+  border:1px solid rgba(0,247,255,.16);
+  transition:.25s;
+}
+
+.card:hover{
+  transform:translateY(-3px);
+  border-color:#00f7ff;
+  box-shadow:0 0 20px rgba(0,247,255,.12);
+}
+
+.icon{
+  font-size:21px;
+  margin-bottom:7px;
+}
+
+.card h3{
+  font-size:13px;
+  margin-bottom:5px;
+}
+
+.card p{
+  color:#858ba0;
+  font-size:9px;
+  line-height:1.4;
+}
+
+/* PREMIUM */
+
+.section-title{
+  margin:20px 0 9px;
+  font-size:14px;
+}
+
+.paid{
+  min-height:185px;
+  padding:24px;
+  border-radius:23px;
+  border:1px solid rgba(255,0,221,.4);
+  background:linear-gradient(135deg,#18082b,#050c1e);
+}
+
+.badge{
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:20px;
+  color:#ff63e4;
+  background:rgba(255,0,217,.12);
+  border:1px solid rgba(255,0,217,.4);
+  font-size:9px;
+}
+
+.paid h2{
+  font-size:24px;
+  margin:11px 0 7px;
+}
+
+.paid p{
+  color:#969caf;
+  font-size:12px;
+}
+
+.buy{
+  margin-top:17px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.buy-price{
+  color:#00f7ff;
+  font-size:28px;
+  font-weight:bold;
+}
+
+.buy-btn{
+  padding:11px 18px;
+  border:0;
+  border-radius:11px;
+  color:#fff;
+  background:linear-gradient(90deg,#ff00c8,#7b35ff);
+  cursor:pointer;
+}
+
+/* WELCOME */
+
+.welcome-popup{
+  position:fixed;
+  left:50%;
+  top:20px;
+  width:calc(100% - 30px);
+  max-width:430px;
+  padding:16px;
+  text-align:center;
+  border-radius:16px;
+  background:rgba(8,13,31,.97);
+  border:1px solid rgba(0,247,255,.4);
+  box-shadow:0 0 30px rgba(0,247,255,.18);
+  transform:translate(-50%,-150px);
+  transition:.5s;
+  z-index:2000;
+}
+
+.welcome-popup.show{
+  transform:translate(-50%,0);
+}
+
+.welcome-popup .title{
+  color:#00f7ff;
+  font-weight:bold;
+  font-size:17px;
+  letter-spacing:1px;
+  text-shadow:0 0 10px #00f7ff;
+}
+
+/* SENSITIVITY MODAL */
+
+.sensi-modal{
+  position:fixed;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+  background:rgba(0,0,0,.78);
+  backdrop-filter:blur(12px);
+  z-index:999;
+}
+
+.sensi-box{
+  width:100%;
+  max-width:520px;
+  max-height:90vh;
+  overflow:auto;
+  padding:22px;
+  position:relative;
+  border-radius:24px;
+  background:linear-gradient(145deg,#0c1228,#090519);
+  border:1px solid rgba(0,247,255,.3);
+  box-shadow:0 0 45px rgba(0,247,255,.15);
+}
+
+.close-btn{
+  position:absolute;
+  right:13px;
+  top:11px;
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  border:1px solid #343b55;
+  background:#101529;
+  color:#fff;
+  cursor:pointer;
+  font-size:20px;
+}
+
+.sensi-title{
+  text-align:center;
+  margin-bottom:18px;
+}
+
+.sensi-icon{
+  font-size:35px;
+}
+
+.sensi-title h2{
+  color:#00f7ff;
+  font-size:20px;
+  margin-top:5px;
+  text-shadow:0 0 12px #00f7ff;
+}
+
+.sensi-title p{
+  color:#7f879d;
+  font-size:10px;
+  margin-top:5px;
+}
+
+.device-info{
+  display:flex;
+  gap:6px;
+  margin:10px 0;
+}
+
+.device-info span{
+  flex:1;
+  padding:7px;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  text-align:center;
+  border-radius:8px;
+  background:#0a1021;
+  color:#9da6bb;
+  font-size:8px;
+}
+
+.result-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:7px;
+}
+
+.result-card{
+  padding:10px 5px;
+  text-align:center;
+  border-radius:10px;
+  background:#090e20;
+  border:1px solid #202943;
+}
+
+.result-card small{
+  display:block;
+  color:#69738c;
+  font-size:7px;
+  margin-bottom:4px;
+}
+
+.result-card strong{
+  color:#00f7ff;
+  font-size:16px;
+}
+
+.result-card.dpi{
+  border-color:rgba(255,40,220,.25);
+}
+
+.result-card.dpi strong{
+  color:#ff4bdf;
+}
+
+/* TOGGLE */
+
+.feature-card{
+  margin:12px 0 9px;
+  padding:14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-radius:14px;
+  background:#090e20;
+  border:1px solid #202943;
+}
+
+.feature-info strong{
+  display:block;
+  font-size:13px;
+}
+
+.feature-info small{
+  display:block;
+  color:#7d859d;
+  font-size:9px;
+  margin-top:4px;
+}
+
+.toggle{
+  position:relative;
+  width:50px;
+  height:28px;
+  display:block;
+}
+
+.toggle input{
+  display:none;
+}
+
+.slider{
+  position:absolute;
+  inset:0;
+  border-radius:30px;
+  background:#202943;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.slider:before{
+  content:"";
+  position:absolute;
+  width:20px;
+  height:20px;
+  left:4px;
+  top:4px;
+  border-radius:50%;
+  background:#fff;
+  transition:.3s;
+}
+
+.toggle input:checked + .slider{
+  background:#00d9ff;
+  box-shadow:0 0 18px rgba(0,217,255,.55);
+}
+
+.toggle input:checked + .slider:before{
+  transform:translateX(22px);
+}
+
+.feature-status{
+  padding:10px;
+  border-radius:11px;
+  text-align:center;
+  color:#7d859d;
+  background:#070b18;
+  border:1px solid #1c243b;
+  font-size:9px;
+}
+
+.feature-status.active{
+  color:#00f7ff;
+  border-color:#00f7ff;
+  box-shadow:0 0 15px rgba(0,247,255,.15);
+}
+
+@media(max-width:500px){
+  .container{
+    padding:18px 12px;
+  }
+
+  .paid{
+    padding:21px;
+  }
+
+  .sensi-box{
+    padding:20px 16px;
+  }
+}
+
+@media(max-width:360px){
+  .result-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN / REGISTER -->
+
+<div class="auth-wrapper" id="auth">
+
+  <div class="auth-box">
+
+    <div class="logo">
+      <h1>TURJO X BY NEON</h1>
+      <p>Premium Free Fire Sensitivity Panel</p>
+    </div>
+
+    <div id="loginBox">
+
+      <input
+        class="input"
+        id="loginUser"
+        type="text"
+        placeholder="Username">
+
+      <input
+        class="input"
+        id="loginPass"
+        type="password"
+        placeholder="Password">
+
+      <button class="btn" onclick="login()">
+        LOGIN
+      </button>
+
+      <div class="switch">
+        নতুন ইউজার?
+        <span onclick="showRegister()">Register করুন</span>
+      </div>
+
+    </div>
+
+    <div id="registerBox" style="display:none">
+
+      <input
+        class="input"
+        id="regUser"
+        type="text"
+        placeholder="Create Username">
+
+      <input
+        class="input"
+        id="regPass"
+        type="password"
+        placeholder="Create Password">
+
+      <input
+        class="input"
+        id="regConfirm"
+        type="password"
+        placeholder="Confirm Password">
+
+      <button class="btn" onclick="register()">
+        CREATE ACCOUNT
+      </button>
+
+      <div class="switch">
+        আগে থেকেই account আছে?
+        <span onclick="showLogin()">Login করুন</span>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+
+<!-- DASHBOARD -->
+
+<div class="dashboard" id="dashboard">
+
+  <div class="topbar">
+
+    <div class="brand">
+      TURJO X BY NEON PANEL
+    </div>
+
+    <button class="logout" onclick="logout()">
+      Logout
+    </button>
+
+  </div>
+
+  <div class="container">
+
+    <div class="welcome">
+      <h2>
+        Welcome,
+        <span id="usernameDisplay"></span> 👋
+      </h2>
+
+      <p>
+        Your sensitivity dashboard is ready.
+      </p>
+    </div>
+
+
+    <div class="grid">
+
+      <div class="card" onclick="openSensitivity()">
+
+        <div class="icon">🎯</div>
+
+        <h3>
+          Sensitivity Generator
+        </h3>
+
+        <p>
+          Device-based sensitivity generator.
+        </p>
+
+      </div>
+
+
+      <div class="card">
+
+        <div class="icon">⚙️</div>
+
+        <h3>
+          Device Settings
+        </h3>
+
+        <p>
+          Quick device configuration.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="section-title">
+      💎 Premium Section
+    </div>
+
+
+    <div class="paid">
+
+      <span class="badge">
+        PREMIUM ACCESS
+      </span>
+
+      <h2>
+        PAID NEON PANEL
+      </h2>
+
+      <p>
+        Premium sensitivity panel and
+        advanced configuration section.
+      </p>
+
+      <div class="buy">
+
+        <div class="buy-price">
+          ৳200
+        </div>
+
+        <button
+          class="buy-btn"
+          onclick="buyPanel()">
+          GET PREMIUM
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <div class="section-title">
+      🔥 Free Fire Panel
+    </div>
+
+
+    <div class="grid">
+
+      <div class="card">
+
+        <div class="icon">🔥</div>
+
+        <h3>
+          FREE FIRE PANEL
+        </h3>
+
+        <p>
+          Basic panel section.
+        </p>
+
+      </div>
+
+
+      <div class="card">
+
+        <div class="icon">🛡️</div>
+
+        <h3>
+          PROTECTION
+        </h3>
+
+        <p>
+          Panel protection status.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+
+<!-- LOGIN WELCOME -->
+
+<div
+  class="welcome-popup"
+  id="welcomePopup">
+
+  <div class="title">
+    TURJO X BY NEON PANEL
+  </div>
+
+</div>
+
+
+<!-- SENSITIVITY -->
+
+<div
+  class="sensi-modal"
+  id="sensiModal">
+
+  <div class="sensi-box">
+
+    <button
+      class="close-btn"
+      onclick="closeSensitivity()">
+      ×
+    </button>
+
+
+    <div class="sensi-title">
+
+      <div class="sensi-icon">
+        🎯
+      </div>
+
+      <h2>
+        NEON SENSITIVITY
+      </h2>
+
+      <p>
+        Device-based generator
+      </p>
+
+    </div>
+
+
+    <div id="deviceForm">
+
+      <input
+        class="input"
+        id="phoneName"
+        placeholder="Phone Name">
+
+      <input
+        class="input"
+        id="phoneRam"
+        placeholder="RAM (Example: 8GB)">
+
+      <input
+        class="input"
+        id="phoneModel"
+        placeholder="Phone Model">
+
+      <button
+        class="btn"
+        onclick="generateSensitivity()">
+
+        GENERATE SENSITIVITY
+
+      </button>
+
+    </div>
+
+
+    <div
+      id="sensiResult"
+      style="display:none">
+
+      <div class="device-info">
+
+        <span id="resultDevice"></span>
+        <span id="resultRam"></span>
+        <span id="resultModel"></span>
+
+      </div>
+
+
+      <div class="result-grid">
+
+        <div class="result-card">
+          <small>GENERAL</small>
+          <strong id="generalValue">--</strong>
+        </div>
+
+        <div class="result-card">
+          <small>RED DOT</small>
+          <strong id="redDotValue">--</strong>
+        </div>
+
+        <div class="result-card">
+          <small>2X SCOPE</small>
+          <strong id="scope2Value">--</strong>
+        </div>
+
+        <div class="result-card">
+          <small>4X SCOPE</small>
+          <strong id="scope4Value">--</strong>
+        </div>
+
+        <div class="result-card">
+          <small>SNIPER</small>
+          <strong id="sniperValue">--</strong>
+        </div>
+
+        <div class="result-card dpi">
+          <small>DPI</small>
+          <strong id="dpiValue">--</strong>
+        </div>
+
+      </div>
+
+
+      <div class="feature-card">
+
+        <div class="feature-info">
+
+          <strong>
+            🎯 Headshot 80%
+          </strong>
+
+          <small>
+            Toggle ON করলে Free Fire launch করার চেষ্টা করবে
+          </small>
+
+        </div>
+
+
+        <label class="toggle">
+
+          <input
+            type="checkbox"
+            id="headshotToggle"
+            onchange="toggleHeadshot()">
+
+          <span class="slider"></span>
+
+        </label>
+
+      </div>
+
+
+      <div
+        id="headshotStatus"
+        class="feature-status">
+
+        HEADSHOT MODE: OFF
+
+      </div>
+
+
+      <button
+        class="btn"
+        onclick="resetSensitivity()">
+
+        RESET DEVICE DATA
+
+      </button>
+
+    </div>
+
+  </div>
+</div>
+
+
+<script>
+
+/* LOGIN / REGISTER */
+
+function showRegister(){
+
+  document.getElementById("loginBox")
+    .style.display="none";
+
+  document.getElementById("registerBox")
+    .style.display="block";
+}
+
+
+function showLogin(){
+
+  document.getElementById("registerBox")
+    .style.display="none";
+
+  document.getElementById("loginBox")
+    .style.display="block";
+}
+
+
+function register(){
+
+  const user =
+    document.getElementById("regUser").value.trim();
+
+  const pass =
+    document.getElementById("regPass").value;
+
+  const confirm =
+    document.getElementById("regConfirm").value;
+
+
+  if(!user || !pass || !confirm){
+
+    alert("সবগুলো ঘর পূরণ করুন!");
+    return;
+  }
+
+
+  if(pass !== confirm){
+
+    alert("Password মিলছে না!");
+    return;
+  }
+
+
+  if(pass.length < 6){
+
+    alert("Password কমপক্ষে ৬ অক্ষরের দিন!");
+    return;
+  }
+
+
+  localStorage.setItem("neon_user",user);
+  localStorage.setItem("neon_pass",pass);
+
+
+  alert("Registration সফল হয়েছে!");
+
+  document.getElementById("loginUser")
+    .value=user;
+
+  showLogin();
+}
+
+
+function login(){
+
+  const user =
+    document.getElementById("loginUser").value.trim();
+
+  const pass =
+    document.getElementById("loginPass").value;
+
+  const savedUser =
+    localStorage.getItem("neon_user");
+
+  const savedPass =
+    localStorage.getItem("neon_pass");
+
+
+  if(!savedUser || !savedPass){
+
+    alert("আগে Registration করুন!");
+    return;
+  }
+
+
+  if(user === savedUser && pass === savedPass){
+
+    document.getElementById("auth")
+      .style.display="none";
+
+    document.getElementById("dashboard")
+      .style.display="block";
+
+    document.getElementById("usernameDisplay")
+      .textContent=user;
+
+    localStorage.setItem(
+      "neon_logged",
+      "true"
+    );
+
+    showWelcome();
+
+  }else{
+
+    alert("Username অথবা Password ভুল!");
+
+  }
+}
+
+
+function showWelcome(){
+
+  const popup =
+    document.getElementById("welcomePopup");
+
+  popup.classList.add("show");
+
+  setTimeout(function(){
+
+    popup.classList.remove("show");
+
+  },3500);
+}
+
+
+function logout(){
+
+  localStorage.removeItem("neon_logged");
+
+  document.getElementById("dashboard")
+    .style.display="none";
+
+  document.getElementById("auth")
+    .style.display="flex";
+
+  document.getElementById("loginPass")
+    .value="";
+}
+
+
+/* PREMIUM */
+
+function buyPanel(){
+
+  alert(
+    "TURJO X BY NEON PANEL\n\n"+
+    "Premium Price: ৳200\n\n"+
+    "Payment system এখনো যুক্ত করা হয়নি।"
+  );
+}
+
+
+/* SENSITIVITY */
+
+function openSensitivity(){
+
+  const saved =
+    localStorage.getItem("neon_device_data");
+
+
+  document.getElementById("sensiModal")
+    .style.display="flex";
+
+
+  if(saved){
+
+    const data=JSON.parse(saved);
+
+    document.getElementById("deviceForm")
+      .style.display="none";
+
+    document.getElementById("sensiResult")
+      .style.display="block";
+
+    showSensitivityResult(data);
+
+  }else{
+
+    document.getElementById("deviceForm")
+      .style.display="block";
+
+    document.getElementById("sensiResult")
+      .style.display="none";
+
+  }
+}
+
+
+function closeSensitivity(){
+
+  document.getElementById("sensiModal")
+    .style.display="none";
+}
+
+
+/* GENERATOR */
+
+function generateSensitivity(){
+
+  const phone =
+    document.getElementById("phoneName")
+    .value.trim();
+
+  const ram =
+    document.getElementById("phoneRam")
+    .value.trim();
+
+  const model =
+    document.getElementById("phoneModel")
+    .value.trim();
+
+
+  if(!phone || !ram || !model){
+
+    alert(
+      "Phone Name, RAM এবং Phone Model — তিনটিই দিন!"
+    );
+
+    return;
+  }
+
+
+  const seedText =
+    phone+"|"+ram+"|"+model;
+
+  let seed=0;
+
+
+  for(let i=0;i<seedText.length;i++){
+
+    seed =
+      ((seed<<5)-seed)+
+      seedText.charCodeAt(i);
+
+    seed|=0;
+  }
+
+
+  seed=Math.abs(seed);
+
+
+  function value(min,max){
+
+    return min+
+      (seed%(max-min+1));
+  }
+
+
+  const data={
+
+    phone:phone,
+    ram:ram,
+    model:model,
+
+    general:value(175,200),
+    redDot:value(165,195),
+    scope2:value(150,185),
+    scope4:value(135,175),
+    sniper:value(110,150),
+
+    /* এটা শুধু recommendation, actual device DPI reading নয় */
+    dpi:value(400,600)
+
+  };
+
+
+  localStorage.setItem(
+    "neon_device_data",
+    JSON.stringify(data)
+  );
+
+
+  document.getElementById("deviceForm")
+    .style.display="none";
+
+  document.getElementById("sensiResult")
+    .style.display="block";
+
+
+  showSensitivityResult(data);
+}
+
+
+function showSensitivityResult(data){
+
+  document.getElementById("resultDevice")
+    .textContent=data.phone;
+
+  document.getElementById("resultRam")
+    .textContent=data.ram;
+
+  document.getElementById("resultModel")
+    .textContent=data.model;
+
+  document.getElementById("generalValue")
+    .textContent=data.general;
+
+  document.getElementById("redDotValue")
+    .textContent=data.redDot;
+
+  document.getElementById("scope2Value")
+    .textContent=data.scope2;
+
+  document.getElementById("scope4Value")
+    .textContent=data.scope4;
+
+  document.getElementById("sniperValue")
+    .textContent=data.sniper;
+
+  document.getElementById("dpiValue")
+    .textContent=data.dpi;
+}
+
+
+/* TOGGLE + FREE FIRE LAUNCH */
+
+function toggleHeadshot(){
+
+  const toggle =
+    document.getElementById("headshotToggle");
+
+  const status =
+    document.getElementById("headshotStatus");
+
+
+  if(toggle.checked){
+
+    status.textContent =
+      "HEADSHOT MODE: ON";
+
+    status.classList.add("active");
+
+
+    /*
+      Android/browser-এ Free Fire launch করার চেষ্টা।
+      সব browser/device custom URI block করতে পারে।
+    */
+
+    window.location.href="freefire://";
+
+
+  }else{
+
+    status.textContent =
+      "HEADSHOT MODE: OFF";
+
+    status.classList.remove("active");
+
+  }
+}
+
+
+/* RESET */
+
+function resetSensitivity(){
+
+  const reset =
+    confirm(
+      "Device information আবার দিতে চান?"
+    );
+
+
+  if(!reset) return;
+
+
+  localStorage.removeItem(
+    "neon_device_data"
+  );
+
+
+  document.getElementById("sensiResult")
+    .style.display="none";
+
+  document.getElementById("deviceForm")
+    .style.display="block";
+
+
+  document.getElementById("phoneName")
+    .value="";
+
+  document.getElementById("phoneRam")
+    .value="";
+
+  document.getElementById("phoneModel")
+    .value="";
+
+
+  document.getElementById("headshotToggle")
+    .checked=false;
+
+
+  document.getElementById("headshotStatus")
+    .textContent="HEADSHOT MODE: OFF";
+
+  document.getElementById("headshotStatus")
+    .classList.remove("active");
+}
+
+
+/* KEEP LOGIN */
+
+window.onload=function(){
+
+  const logged =
+    localStorage.getItem("neon_logged");
+
+  const user =
+    localStorage.getItem("neon_user");
+
+
+  if(logged==="true" && user){
+
+    document.getElementById("auth")
+      .style.display="none";
+
+    document.getElementById("dashboard")
+      .style.display="block";
+
+    document.getElementById("usernameDisplay")
+      .textContent=user;
+
+    showWelcome();
+  }
+
+};
+
+</script>
+
+</body>
+          </html>
