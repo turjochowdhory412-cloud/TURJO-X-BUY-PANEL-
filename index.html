@@ -1,3928 +1,472 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="theme-color" content="#050913">
-
-<title>TURJO X — Premium Intelligence</title>
-
-<script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<title>NOVA AI</title>
 
 <style>
-
-/* =========================================================
-   TURJO X — PREMIUM FUTURE UI
-========================================================= */
-
-:root{
-  --cyan:#00eaff;
-  --blue:#1677ff;
-  --green:#00ffb3;
-  --red:#ff4968;
-  --bg:#030711;
-  --panel:rgba(8,16,30,.86);
-  --line:rgba(0,234,255,.16);
-  --muted:#71819b;
-  --text:#f4f8ff;
-}
-
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
-
-html{
-  scroll-behavior:smooth;
-}
-
+*{box-sizing:border-box}
 body{
-  min-height:100vh;
-  font-family:
-    Inter,
-    Arial,
-    sans-serif;
-  color:var(--text);
-  background:
-    radial-gradient(
-      circle at 50% -10%,
-      rgba(0,234,255,.18),
-      transparent 32%
-    ),
-    radial-gradient(
-      circle at 100% 40%,
-      rgba(23,119,255,.12),
-      transparent 28%
-    ),
-    linear-gradient(
-      145deg,
-      #02040a,
-      #06101d 45%,
-      #02040a
-    );
-  overflow-x:hidden;
+  margin:0;
+  font-family:Arial,"Noto Sans Bengali",sans-serif;
+  background:#070914;
+  color:#fff;
 }
-
-button,
-input{
-  font:inherit;
-}
-
-
-/* =========================================================
-   BACKGROUND
-========================================================= */
-
-body:before{
-  content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  opacity:.12;
-  background-image:
-    linear-gradient(
-      rgba(255,255,255,.025) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      90deg,
-      rgba(255,255,255,.025) 1px,
-      transparent 1px
-    );
-  background-size:40px 40px;
-  mask-image:linear-gradient(
-    to bottom,
-    black,
-    transparent 80%
-  );
-}
-
-.orb{
-  position:fixed;
-  width:220px;
-  height:220px;
-  border-radius:50%;
-  filter:blur(70px);
-  opacity:.12;
-  pointer-events:none;
-}
-
-.orb.one{
-  top:15%;
-  left:-100px;
-  background:var(--cyan);
-}
-
-.orb.two{
-  right:-100px;
-  bottom:20%;
-  background:var(--blue);
-}
-
-
-/* =========================================================
-   FACE LOCK
-========================================================= */
-
-#faceLock{
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  padding:20px;
-}
-
-.faceBox{
-  width:100%;
-  max-width:430px;
-  text-align:center;
-}
-
-.brandMark{
-  margin-bottom:18px;
-}
-
-.brandMark h1{
-  color:var(--cyan);
-  font-size:34px;
-  font-weight:1000;
-  letter-spacing:6px;
-  text-shadow:
-    0 0 8px rgba(0,234,255,.8),
-    0 0 28px rgba(0,234,255,.35);
-}
-
-.brandMark p{
-  margin-top:6px;
-  color:#71829b;
-  font-size:9px;
-  letter-spacing:4px;
-}
-
-.securityBadge{
-  display:inline-flex;
-  align-items:center;
-  gap:7px;
-  margin-bottom:15px;
-  padding:7px 12px;
-  border-radius:30px;
-  border:1px solid rgba(0,234,255,.18);
-  background:rgba(0,234,255,.04);
-  color:#91a4be;
-  font-size:8px;
-  letter-spacing:2px;
-}
-
-.liveDot{
-  width:6px;
-  height:6px;
-  border-radius:50%;
-  background:var(--green);
-  box-shadow:0 0 10px var(--green);
-}
-
-.cameraBox{
-  position:relative;
-  width:100%;
-  aspect-ratio:3/4;
-  overflow:hidden;
-  border-radius:28px;
-  border:1px solid rgba(0,234,255,.3);
-  background:#000;
-  box-shadow:
-    0 25px 70px rgba(0,0,0,.5),
-    0 0 40px rgba(0,234,255,.08);
-}
-
-#video{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  transform:scaleX(-1);
-}
-
-.cameraShade{
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  background:
-    linear-gradient(
-      to bottom,
-      rgba(0,0,0,.2),
-      transparent 35%,
-      rgba(0,0,0,.5)
-    );
-}
-
-.faceCircle{
-  position:absolute;
-  left:18%;
-  right:18%;
-  top:15%;
-  bottom:15%;
-  border:1px solid rgba(0,234,255,.65);
-  border-radius:50%;
-  box-shadow:
-    0 0 20px rgba(0,234,255,.12),
-    inset 0 0 25px rgba(0,234,255,.05);
-}
-
-.scanLine{
-  position:absolute;
-  left:16%;
-  right:16%;
-  height:2px;
-  top:20%;
-  background:var(--cyan);
-  box-shadow:0 0 15px var(--cyan);
-  opacity:.7;
-  animation:scan 2.5s infinite ease-in-out;
-}
-
-@keyframes scan{
-  0%,100%{top:20%}
-  50%{top:80%}
-}
-
-#faceStatus{
-  min-height:48px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  margin:14px 0 8px;
-  padding:12px;
-  border-radius:13px;
-  background:rgba(8,18,32,.85);
-  border:1px solid rgba(255,255,255,.05);
-  color:#a9b7ca;
-  font-size:11px;
-  font-weight:700;
-}
-
-.success{
-  color:var(--green)!important;
-}
-
-.error{
-  color:#ff657e!important;
-}
-
-.faceBtn{
-  width:100%;
-  margin-top:8px;
-  padding:14px;
-  border:0;
-  border-radius:12px;
-  cursor:pointer;
-  color:#001018;
-  background:linear-gradient(
-    100deg,
-    var(--cyan),
-    #1680ff
-  );
-  font-size:11px;
-  font-weight:1000;
-  letter-spacing:1px;
-  box-shadow:0 8px 25px rgba(0,150,255,.14);
-}
-
-.faceBtn:disabled{
-  opacity:.35;
-  cursor:not-allowed;
-}
-
-.resetBtn{
-  color:#8998ad;
-  background:#0c1625;
-  box-shadow:none;
-}
-
-
-/* =========================================================
-   MAIN APP
-========================================================= */
-
-#mainApp{
-  display:none;
-}
-
 .app{
-  position:relative;
-  z-index:2;
-  width:100%;
-  max-width:520px;
+  max-width:700px;
+  margin:auto;
   min-height:100vh;
-  margin:auto;
-  padding:17px 15px 80px;
-}
-
-
-/* HEADER */
-
-.header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:18px;
-}
-
-.brand{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.brandIcon{
-  width:42px;
-  height:42px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  border-radius:13px;
-  border:1px solid rgba(0,234,255,.3);
-  background:
-    linear-gradient(
-      145deg,
-      rgba(0,234,255,.12),
-      rgba(22,119,255,.08)
-    );
-  color:var(--cyan);
-  font-weight:1000;
-  box-shadow:0 0 20px rgba(0,234,255,.07);
-}
-
-.brandText h1{
-  font-size:21px;
-  letter-spacing:2px;
-  font-weight:1000;
-}
-
-.brandText span{
-  display:block;
-  margin-top:3px;
-  color:#667790;
-  font-size:7px;
-  letter-spacing:3px;
-}
-
-.profileBtn{
-  width:44px;
-  height:44px;
-  border-radius:50%;
-  border:1px solid rgba(0,234,255,.4);
-  background:#07111e;
-  color:var(--cyan);
-  overflow:hidden;
-  cursor:pointer;
-}
-
-.profileBtn img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-
-/* STATUS STRIP */
-
-.statusStrip{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:13px;
-  padding:10px 12px;
-  border:1px solid var(--line);
-  border-radius:11px;
-  background:rgba(5,13,25,.65);
-}
-
-.statusLeft{
-  display:flex;
-  align-items:center;
-  gap:7px;
-  color:#8190a7;
-  font-size:8px;
-  letter-spacing:1.5px;
-}
-
-.statusRight{
-  color:var(--green);
-  font-size:8px;
-  font-weight:900;
-}
-
-
-/* HERO */
-
-.hero{
-  position:relative;
-  overflow:hidden;
-  padding:20px;
-  margin-bottom:13px;
-  border:1px solid rgba(0,234,255,.2);
-  border-radius:21px;
-  background:
-    linear-gradient(
-      145deg,
-      rgba(11,29,49,.95),
-      rgba(5,12,24,.94)
-    );
-  box-shadow:
-    0 20px 50px rgba(0,0,0,.25),
-    inset 0 0 40px rgba(0,234,255,.025);
-}
-
-.hero:after{
-  content:"";
-  position:absolute;
-  width:170px;
-  height:170px;
-  right:-80px;
-  top:-80px;
-  border-radius:50%;
-  border:1px solid rgba(0,234,255,.18);
-  box-shadow:
-    0 0 0 18px rgba(0,234,255,.025),
-    0 0 0 36px rgba(0,234,255,.015);
-}
-
-.heroTag{
-  color:var(--cyan);
-  font-size:8px;
-  font-weight:900;
-  letter-spacing:3px;
-}
-
-.hero h2{
-  margin-top:8px;
-  max-width:300px;
-  font-size:25px;
-  line-height:1.15;
-  letter-spacing:-.5px;
-}
-
-.hero p{
-  margin-top:9px;
-  max-width:330px;
-  color:#74849b;
-  font-size:9px;
-  line-height:1.6;
-}
-
-.heroStats{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:7px;
-  margin-top:17px;
-}
-
-.heroStat{
-  padding:10px;
-  border-radius:10px;
-  background:rgba(0,0,0,.16);
-  border:1px solid rgba(255,255,255,.04);
-}
-
-.heroStat span{
-  display:block;
-  color:#60718a;
-  font-size:7px;
-}
-
-.heroStat b{
-  display:block;
-  margin-top:5px;
-  color:#eaf4ff;
-  font-size:12px;
-}
-
-
-/* COMMON CARD */
-
-.card{
-  margin-bottom:13px;
-  padding:16px;
-  border:1px solid rgba(255,255,255,.06);
-  border-radius:18px;
-  background:var(--panel);
-  box-shadow:0 14px 40px rgba(0,0,0,.16);
-  backdrop-filter:blur(12px);
-}
-
-.cardTitle{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:13px;
-}
-
-.cardTitle b{
-  color:#dceaff;
-  font-size:10px;
-  letter-spacing:2px;
-}
-
-.cardTitle span{
-  color:#56667d;
-  font-size:7px;
-  letter-spacing:1px;
-}
-
-
-/* DEVICE */
-
-.deviceTop{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.phoneIcon{
-  width:50px;
-  height:63px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  flex-shrink:0;
-  border-radius:11px;
-  border:1px solid rgba(0,234,255,.3);
-  background:#061321;
-  color:var(--cyan);
-  font-size:23px;
-}
-
-.deviceName{
-  font-size:16px;
-  font-weight:900;
-  word-break:break-word;
-}
-
-.deviceSub{
-  margin-top:5px;
-  color:#64758e;
-  font-size:8px;
-}
-
-.deviceGrid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:7px;
-  margin-top:13px;
-}
-
-.infoBox{
-  padding:10px;
-  border-radius:10px;
-  background:#06101d;
-  border:1px solid rgba(255,255,255,.035);
-}
-
-.infoBox span{
-  display:block;
-  color:#5f7088;
-  font-size:7px;
-  letter-spacing:1px;
-}
-
-.infoBox b{
-  display:block;
-  margin-top:5px;
-  color:#dce8f8;
-  font-size:10px;
-  word-break:break-word;
-}
-
-
-/* BUTTONS */
-
-.mainBtn{
-  width:100%;
-  padding:14px;
-  border:0;
-  border-radius:11px;
-  color:#001018;
-  background:linear-gradient(
-    100deg,
-    #00eaff,
-    #1375ff
-  );
-  font-size:10px;
-  font-weight:1000;
-  letter-spacing:1px;
-  cursor:pointer;
-  box-shadow:0 8px 25px rgba(0,170,255,.12);
-}
-
-.secondaryBtn{
-  width:100%;
-  margin-top:8px;
-  padding:13px;
-  border-radius:11px;
-  border:1px solid rgba(0,234,255,.18);
-  color:var(--cyan);
-  background:#07111e;
-  font-size:9px;
-  font-weight:900;
-  cursor:pointer;
-}
-
-
-/* QUICK GRID */
-
-.quickGrid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:8px;
-}
-
-.quick{
-  min-height:76px;
-  padding:13px;
-  border-radius:13px;
-  border:1px solid rgba(255,255,255,.045);
-  background:#07111e;
-}
-
-.quickIcon{
-  font-size:19px;
-}
-
-.quick b{
-  display:block;
-  margin-top:7px;
-  font-size:9px;
-}
-
-.quick span{
-  display:block;
-  margin-top:3px;
-  color:#62738c;
-  font-size:7px;
-}
-
-
-/* PERFORMANCE */
-
-.performanceRow{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  margin-bottom:12px;
-}
-
-.performanceRow:last-child{
-  margin-bottom:0;
-}
-
-.performanceName{
-  width:70px;
-  color:#8090a6;
-  font-size:8px;
-}
-
-.performanceTrack{
-  flex:1;
-  height:6px;
-  overflow:hidden;
-  border-radius:10px;
-  background:#111d2e;
-}
-
-.performanceFill{
-  height:100%;
-  border-radius:10px;
-  background:linear-gradient(
-    90deg,
-    #00bde8,
-    #176eff
-  );
-}
-
-.performanceValue{
-  width:30px;
-  color:#dbeaff;
-  font-size:8px;
-  text-align:right;
-}
-
-
-/* FEATURE GRID */
-
-.features{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:8px;
-}
-
-.feature{
-  padding:14px 10px;
-  border-radius:12px;
-  background:#07111e;
-  border:1px solid rgba(255,255,255,.04);
-}
-
-.featureIcon{
-  font-size:20px;
-}
-
-.feature b{
-  display:block;
-  margin-top:7px;
-  font-size:9px;
-}
-
-.feature span{
-  display:block;
-  margin-top:3px;
-  color:#62738c;
-  font-size:7px;
-}
-
-
-/* FOOTER */
-
-.footer{
-  padding:15px 5px;
-  text-align:center;
-  color:#3f5068;
-  font-size:7px;
-  letter-spacing:2px;
-}
-
-
-/* =========================================================
-   OVERLAY
-========================================================= */
-
-.overlay{
-  position:fixed;
-  inset:0;
-  z-index:50;
-  display:none;
-  overflow-y:auto;
   padding:18px;
-  background:rgba(1,4,10,.94);
-  backdrop-filter:blur(14px);
-}
-
-.overlay.show{
-  display:block;
-}
-
-.panel{
-  width:100%;
-  max-width:500px;
-  min-height:100%;
-  margin:auto;
-}
-
-.panelTop{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:18px;
-}
-
-.panelTop h2{
-  color:var(--cyan);
-  font-size:17px;
-  letter-spacing:2px;
-}
-
-.panelTop span{
-  color:#5d6e87;
-  font-size:8px;
-}
-
-.uploadBox{
-  min-height:190px;
   display:flex;
   flex-direction:column;
+}
+header{
+  display:flex;
   align-items:center;
-  justify-content:center;
-  padding:20px;
-  text-align:center;
-  border:1px dashed rgba(0,234,255,.5);
-  border-radius:18px;
-  background:#06101d;
+  justify-content:space-between;
+  margin-bottom:15px;
 }
-
-.uploadIcon{
-  font-size:42px;
+.logo{
+  font-size:25px;
+  font-weight:800;
 }
-
-.uploadBox h3{
-  margin-top:10px;
+.status{
   font-size:12px;
+  color:#69f7b5;
 }
-
-.uploadBox p{
-  max-width:290px;
-  margin-top:7px;
-  color:#687990;
-  font-size:8px;
-  line-height:1.6;
+.ai{
+  width:130px;
+  height:130px;
+  margin:18px auto;
+  border-radius:50%;
+  background:radial-gradient(circle,#61e7ff,#4d38ff 45%,#11152e 70%);
+  box-shadow:0 0 55px #4d55ff;
+  animation:pulse 2s infinite;
 }
-
-.uploadBtn{
-  display:inline-block;
-  margin-top:14px;
-  padding:11px 16px;
-  border-radius:10px;
-  background:var(--cyan);
-  color:#001018;
-  font-size:8px;
-  font-weight:1000;
-  cursor:pointer;
+@keyframes pulse{
+  50%{transform:scale(1.06);box-shadow:0 0 80px #4d55ff}
 }
-
-#screenFile,
-#profileFile{
-  display:none;
+.chat{
+  flex:1;
+  min-height:300px;
+  background:#0d1120;
+  border:1px solid #202741;
+  border-radius:22px;
+  padding:14px;
+  overflow:auto;
 }
-
+.msg{
+  max-width:85%;
+  padding:11px 14px;
+  margin:9px 0;
+  border-radius:16px;
+  line-height:1.5;
+}
+.user{
+  margin-left:auto;
+  background:#3048b8;
+}
+.aiMsg{
+  background:#171d31;
+}
+.bottom{
+  margin-top:12px;
+}
+input[type=text]{
+  width:100%;
+  padding:15px;
+  border-radius:15px;
+  border:1px solid #29324e;
+  background:#101527;
+  color:white;
+  outline:none;
+}
+.row{
+  display:flex;
+  gap:9px;
+  margin-top:9px;
+}
+button{
+  flex:1;
+  padding:14px;
+  border:0;
+  border-radius:15px;
+  color:white;
+  background:#2938a8;
+  font-weight:bold;
+}
+button:active{transform:scale(.97)}
+.mic{
+  background:#7b32d8;
+}
+.file{
+  background:#175e70;
+}
 .preview{
   display:none;
-  width:100%;
-  max-height:330px;
-  margin-top:12px;
-  object-fit:contain;
-  border-radius:13px;
-  border:1px solid rgba(0,234,255,.15);
-}
-
-.fileName{
-  margin-top:7px;
-  color:var(--cyan);
-  font-size:8px;
-  text-align:center;
-  word-break:break-all;
-}
-
-.analyzeBtn{
-  display:none;
-  margin-top:12px;
-}
-
-.cancelBtn{
-  width:100%;
-  margin-top:8px;
-  padding:12px;
-  border:0;
-  border-radius:10px;
-  background:#0b1726;
-  color:#72839b;
-  font-size:9px;
-  font-weight:900;
-  cursor:pointer;
-}
-
-
-/* SCAN */
-
-#scanScreen,
-#invalidScreen,
-#resultScreen{
-  display:none;
-}
-
-.scanScreen{
-  padding-top:60px;
-  text-align:center;
-}
-
-.spinner{
-  width:66px;
-  height:66px;
-  margin:0 auto 20px;
-  border:4px solid #142238;
-  border-top-color:var(--cyan);
-  border-radius:50%;
-  animation:spin 1s linear infinite;
-}
-
-@keyframes spin{
-  to{
-    transform:rotate(360deg);
-  }
-}
-
-.scanScreen h3{
-  color:var(--cyan);
-  font-size:15px;
-  letter-spacing:2px;
-}
-
-.progressOuter{
-  width:100%;
-  height:7px;
-  margin-top:20px;
-  overflow:hidden;
-  border-radius:10px;
-  background:#101b2b;
-}
-
-.progressBar{
-  width:0%;
-  height:100%;
-  background:linear-gradient(
-    90deg,
-    var(--cyan),
-    var(--blue)
-  );
-  transition:.2s;
-}
-
-.progressText{
-  margin-top:8px;
-  color:#667790;
-  font-size:8px;
-}
-
-
-/* INVALID */
-
-.invalidScreen{
-  padding-top:60px;
-  text-align:center;
-}
-
-.invalidIcon{
-  font-size:48px;
-}
-
-.invalidScreen h3{
   margin-top:10px;
-  color:var(--red);
+  border-radius:15px;
+  max-width:100%;
+  max-height:230px;
 }
-
-.invalidScreen p{
-  margin-top:8px;
-  color:#718198;
-  font-size:9px;
-  line-height:1.6;
+.fileName{
+  font-size:12px;
+  color:#aeb8d6;
+  margin-top:6px;
 }
-
-
-/* RESULTS */
-
-.resultTitle{
-  margin-bottom:15px;
-  color:var(--green);
-  text-align:center;
-  font-size:19px;
-  font-weight:1000;
-  letter-spacing:2px;
-}
-
-.resultInfo{
-  margin-bottom:8px;
-  padding:12px;
-  border-radius:11px;
-  background:#06111f;
-  border:1px solid rgba(255,255,255,.04);
-}
-
-.resultInfo>span{
-  display:block;
-  color:#61728b;
-  font-size:7px;
-  letter-spacing:1px;
-}
-
-.resultInfo>b{
-  display:block;
-  margin-top:5px;
-  font-size:10px;
-  word-break:break-word;
-}
-
-.autoDpi{
-  margin-top:4px;
-  color:var(--cyan);
-  font-size:25px;
-  font-weight:1000;
-}
-
-.sensiGrid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:7px;
-  margin-top:8px;
-}
-
-.sensiItem{
-  padding:11px;
-  text-align:center;
-  border-radius:10px;
-  background:#091729;
-}
-
-.sensiItem span{
-  color:#60718a;
-  font-size:7px;
-}
-
-.sensiItem strong{
-  display:block;
-  margin-top:4px;
-  color:var(--cyan);
-  font-size:21px;
-}
-
-
-/* DEVICE INFO */
-
-.deviceInfoRow{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  padding:13px 0;
-  border-bottom:1px solid rgba(255,255,255,.05);
-}
-
-.deviceInfoRow span{
-  color:#65758d;
-  font-size:8px;
-}
-
-.deviceInfoRow b{
-  color:#d9e8fa;
-  font-size:9px;
-  text-align:right;
-  word-break:break-word;
-}
-
-
-/* PROFILE */
-
-.profileOverlay{
-  position:fixed;
-  inset:0;
-  z-index:80;
-  display:none;
-  background:rgba(0,0,0,.7);
-  backdrop-filter:blur(8px);
-}
-
-.profileOverlay.show{
-  display:block;
-}
-
-.profileSheet{
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:0;
-  max-width:500px;
-  margin:auto;
-  padding:22px;
-  border-radius:23px 23px 0 0;
-  background:#081322;
-  border:1px solid rgba(0,234,255,.16);
-}
-
-.profileSheet h3{
-  color:var(--cyan);
-  text-align:center;
-  font-size:14px;
-  letter-spacing:2px;
-}
-
-.profilePhoto{
-  display:block;
-  width:105px;
-  height:105px;
-  margin:17px auto;
-  object-fit:cover;
-  border-radius:50%;
-  border:2px solid var(--cyan);
-  background:#06101d;
-}
-
-.photoBtn{
-  display:block;
-  padding:13px;
-  border-radius:11px;
-  text-align:center;
-  background:var(--cyan);
-  color:#001018;
-  font-size:9px;
-  font-weight:1000;
-  cursor:pointer;
-}
-
-
-/* =========================================================
-   CORNER MENU
-========================================================= */
-
-.cornerMenu{
-  position:fixed;
-  right:14px;
-  bottom:15px;
-  z-index:120;
-}
-
-.dotBtn{
-  width:44px;
-  height:44px;
-  border-radius:50%;
-  border:1px solid rgba(0,234,255,.45);
-  background:rgba(5,14,26,.94);
-  color:var(--cyan);
-  font-size:22px;
-  font-weight:1000;
-  cursor:pointer;
-  box-shadow:
-    0 0 22px rgba(0,234,255,.13);
-}
-
-.headshotPanel{
-  position:fixed;
-  inset:0;
-  z-index:110;
-  display:none;
-  justify-content:center;
-  align-items:center;
-  padding:20px;
-  background:rgba(1,4,10,.88);
-  backdrop-filter:blur(12px);
-}
-
-.headshotPanel.show{
-  display:flex;
-}
-
-.headshotBox{
-  width:100%;
-  max-width:370px;
-  padding:23px;
-  border-radius:21px;
-  background:#081322;
-  border:1px solid rgba(0,234,255,.25);
-  box-shadow:0 20px 70px rgba(0,0,0,.5);
-}
-
-.headshotBox h2{
-  color:var(--cyan);
-  font-size:18px;
-  letter-spacing:2px;
-  text-align:center;
-}
-
-.headshotBox p{
-  margin:8px 0 18px;
-  color:#6e7f97;
-  font-size:9px;
-  line-height:1.7;
-  text-align:center;
-}
-
-.headshotToggle{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-  padding:14px;
-  border-radius:13px;
-  background:#06101d;
-  border:1px solid rgba(255,255,255,.05);
-}
-
-.headshotText b{
-  display:block;
-  font-size:10px;
-}
-
-.headshotText span{
-  display:block;
-  margin-top:4px;
-  color:#62738b;
-  font-size:7px;
-}
-
-.switch{
-  position:relative;
-  width:53px;
-  height:29px;
-  flex-shrink:0;
-}
-
-.switch input{
-  display:none;
-}
-
-.slider{
-  position:absolute;
-  inset:0;
-  border-radius:30px;
-  background:#253349;
-  cursor:pointer;
-  transition:.25s;
-}
-
-.slider:before{
-  content:"";
-  position:absolute;
-  left:4px;
-  top:4px;
-  width:21px;
-  height:21px;
-  border-radius:50%;
-  background:#fff;
-  transition:.25s;
-}
-
-.switch input:checked + .slider{
-  background:#00cfff;
-  box-shadow:0 0 17px rgba(0,207,255,.4);
-}
-
-.switch input:checked + .slider:before{
-  transform:translateX(24px);
-}
-
-#headshotStatus{
-  min-height:18px;
-  margin-top:11px;
-  color:var(--green);
-  font-size:8px;
-  font-weight:900;
-  text-align:center;
-}
-
-.panelClose{
-  width:100%;
-  margin-top:11px;
-  padding:12px;
-  border:1px solid rgba(0,234,255,.2);
-  border-radius:10px;
-  background:#07111e;
-  color:var(--cyan);
-  font-size:9px;
-  font-weight:900;
-  cursor:pointer;
-}
-
-
-/* MOBILE */
-
-@media(max-width:360px){
-
-  .hero h2{
-    font-size:21px;
-  }
-
-  .heroStats{
-    grid-template-columns:1fr;
-  }
-
-  .features,
-  .quickGrid{
-    grid-template-columns:1fr;
-  }
-
-}
-
 </style>
 </head>
 
 <body>
 
-<div class="orb one"></div>
-<div class="orb two"></div>
+<div class="app">
 
+<header>
+  <div class="logo">NOVA AI</div>
+  <div class="status" id="status">● ONLINE</div>
+</header>
 
-<!-- ========================================================
-     FACE SECURITY
-======================================================== -->
+<div class="ai"></div>
 
-<div id="faceLock">
-
-  <div class="faceBox">
-
-    <div class="securityBadge">
-      <span class="liveDot"></span>
-      BIOMETRIC SECURITY ACTIVE
-    </div>
-
-    <div class="brandMark">
-
-      <h1>TURJO X</h1>
-
-      <p>
-        PREMIUM INTELLIGENCE SYSTEM
-      </p>
-
-    </div>
-
-
-    <div class="cameraBox">
-
-      <video
-        id="video"
-        autoplay
-        muted
-        playsinline
-      ></video>
-
-      <div class="cameraShade"></div>
-
-      <div class="faceCircle"></div>
-
-      <div class="scanLine"></div>
-
-    </div>
-
-
-    <div id="faceStatus">
-      Initializing security system...
-    </div>
-
-
-    <button
-      id="registerBtn"
-      class="faceBtn"
-      disabled
-    >
-      REGISTER OWNER FACE
-    </button>
-
-
-    <button
-      id="verifyBtn"
-      class="faceBtn"
-      disabled
-    >
-      VERIFY OWNER FACE
-    </button>
-
-
-    <button
-      id="resetBtn"
-      class="faceBtn resetBtn"
-    >
-      RESET OWNER FACE
-    </button>
-
+<div class="chat" id="chat">
+  <div class="msg aiMsg">
+    হ্যালো 👋 আমি NOVA AI।<br>
+    আমাকে প্রশ্ন করো, অথবা screenshot পাঠিয়ে জিজ্ঞেস করো কী হচ্ছে।
   </div>
-
 </div>
 
-
-<!-- ========================================================
-     MAIN APP
-======================================================== -->
-
-<div id="mainApp">
-
-  <div class="app">
-
-
-    <!-- HEADER -->
-
-    <div class="header">
-
-      <div class="brand">
-
-        <div class="brandIcon">
-          TX
-        </div>
-
-        <div class="brandText">
-
-          <h1>TURJO X</h1>
-
-          <span>
-            SENSITIVITY INTELLIGENCE
-          </span>
-
-        </div>
-
-      </div>
-
-
-      <button
-        class="profileBtn"
-        onclick="openProfile()"
-        id="profileBtn"
-      >
-        👤
-      </button>
-
-    </div>
-
-
-    <!-- STATUS -->
-
-    <div class="statusStrip">
-
-      <div class="statusLeft">
-
-        <span class="liveDot"></span>
-
-        SYSTEM ONLINE
-
-      </div>
-
-      <div class="statusRight">
-        SECURE ✓
-      </div>
-
-    </div>
-
-
-    <!-- HERO -->
-
-    <div class="hero">
-
-      <div class="heroTag">
-        NEXT-GEN DEVICE ENGINE
-      </div>
-
-      <h2>
-        Your device.
-        Your profile.
-        Your control.
-      </h2>
-
-      <p>
-        Analyze your device information and generate
-        a clean sensitivity profile from your screenshot.
-      </p>
-
-
-      <div class="heroStats">
-
-        <div class="heroStat">
-          <span>ENGINE</span>
-          <b>TX-CORE</b>
-        </div>
-
-        <div class="heroStat">
-          <span>LIMIT</span>
-          <b>200 MAX</b>
-        </div>
-
-        <div class="heroStat">
-          <span>STATUS</span>
-          <b>READY</b>
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <!-- DEVICE CARD -->
-
-    <div class="card">
-
-      <div class="cardTitle">
-
-        <b>DEVICE INTELLIGENCE</b>
-
-        <span>LIVE PROFILE</span>
-
-      </div>
-
-
-      <div class="deviceTop">
-
-        <div class="phoneIcon">
-          📱
-        </div>
-
-        <div>
-
-          <div
-            class="deviceName"
-            id="homeDeviceName"
-          >
-            No device analyzed
-          </div>
-
-          <div class="deviceSub">
-            Device data will appear here
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <div class="deviceGrid">
-
-        <div class="infoBox">
-          <span>RAM</span>
-          <b id="homeRam">--</b>
-        </div>
-
-        <div class="infoBox">
-          <span>MODEL</span>
-          <b id="homeModel">--</b>
-        </div>
-
-        <div class="infoBox">
-          <span>ANDROID</span>
-          <b id="homeAndroid">--</b>
-        </div>
-
-        <div class="infoBox">
-          <span>BUILD</span>
-          <b id="homeBuild">--</b>
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <!-- ANALYZER -->
-
-    <div class="card">
-
-      <div class="cardTitle">
-
-        <b>SENSITIVITY LAB</b>
-
-        <span>OCR ENGINE</span>
-
-      </div>
-
-
-      <button
-        class="mainBtn"
-        onclick="startAnalysis()"
-      >
-        ⚡ ANALYZE SENSITIVITY
-      </button>
-
-
-      <button
-        class="secondaryBtn"
-        onclick="showDeviceInfo()"
-      >
-        ◈ DEVICE INFORMATION
-      </button>
-
-    </div>
-
-
-    <!-- QUICK ACCESS -->
-
-    <div class="card">
-
-      <div class="cardTitle">
-
-        <b>QUICK ACCESS</b>
-
-        <span>CONTROL CENTER</span>
-
-      </div>
-
-
-      <div class="quickGrid">
-
-        <div
-          class="quick"
-          onclick="startAnalysis()"
-        >
-
-          <div class="quickIcon">
-            🎯
-          </div>
-
-          <b>SMART AIM</b>
-
-          <span>
-            Sensitivity analysis
-          </span>
-
-        </div>
-
-
-        <div
-          class="quick"
-          onclick="showDeviceInfo()"
-        >
-
-          <div class="quickIcon">
-            📱
-          </div>
-
-          <b>DEVICE DATA</b>
-
-          <span>
-            System information
-          </span>
-
-        </div>
-
-
-        <div
-          class="quick"
-          onclick="openProfile()"
-        >
-
-          <div class="quickIcon">
-            👤
-          </div>
-
-          <b>PROFILE</b>
-
-          <span>
-            Personal profile
-          </span>
-
-        </div>
-
-
-        <div
-          class="quick"
-          onclick="openHeadshotPanel()"
-        >
-
-          <div class="quickIcon">
-            ⚙️
-          </div>
-
-          <b>CONTROL</b>
-
-          <span>
-            Quick controls
-          </span>
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <!-- PERFORMANCE -->
-
-    <div class="card">
-
-      <div class="cardTitle">
-
-        <b>ENGINE STATUS</b>
-
-        <span>TX MONITOR</span>
-
-      </div>
-
-
-      <div class="performanceRow">
-
-        <div class="performanceName">
-          ANALYZER
-        </div>
-
-        <div class="performanceTrack">
-          <div
-            class="performanceFill"
-            style="width:94%"
-          ></div>
-        </div>
-
-        <div class="performanceValue">
-          94%
-        </div>
-
-      </div>
-
-
-      <div class="performanceRow">
-
-        <div class="performanceName">
-          SECURITY
-        </div>
-
-        <div class="performanceTrack">
-          <div
-            class="performanceFill"
-            style="width:98%"
-          ></div>
-        </div>
-
-        <div class="performanceValue">
-          98%
-        </div>
-
-      </div>
-
-
-      <div class="performanceRow">
-
-        <div class="performanceName">
-          SYSTEM
-        </div>
-
-        <div class="performanceTrack">
-          <div
-            class="performanceFill"
-            style="width:91%"
-          ></div>
-        </div>
-
-        <div class="performanceValue">
-          91%
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <!-- FEATURES -->
-
-    <div class="card">
-
-      <div class="cardTitle">
-
-        <b>CORE FEATURES</b>
-
-        <span>PREMIUM</span>
-
-      </div>
-
-
-      <div class="features">
-
-        <div class="feature">
-
-          <div class="featureIcon">
-            🔐
-          </div>
-
-          <b>FACE SECURITY</b>
-
-          <span>
-            Owner face verification
-          </span>
-
-        </div>
-
-
-        <div class="feature">
-
-          <div class="featureIcon">
-            🧠
-          </div>
-
-          <b>SMART OCR</b>
-
-          <span>
-            Screenshot intelligence
-          </span>
-
-        </div>
-
-
-        <div class="feature">
-
-          <div class="featureIcon">
-            ⚡
-          </div>
-
-          <b>AUTO DPI</b>
-
-          <span>
-            Display-based recommendation
-          </span>
-
-        </div>
-
-
-        <div class="feature">
-
-          <div class="featureIcon">
-            📊
-          </div>
-
-          <b>PROFILE ENGINE</b>
-
-          <span>
-            Generated sensitivity profile
-          </span>
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div class="footer">
-      TURJO X • PREMIUM INTELLIGENCE • SECURE LOCAL UI
-    </div>
-
-  </div>
-
-
-  <!-- ======================================================
-       ANALYSIS OVERLAY
-  ====================================================== -->
-
-  <div
-    class="overlay"
-    id="overlay"
+<div class="bottom">
+
+  <input
+    id="text"
+    type="text"
+    placeholder="এখানে প্রশ্ন লিখো..."
+    onkeydown="if(event.key==='Enter')sendText()"
   >
 
-    <div class="panel">
-
-      <div class="panelTop">
-
-        <h2>
-          SENSITIVITY LAB
-        </h2>
-
-        <span>
-          TX-CORE
-        </span>
-
-      </div>
-
-
-      <!-- INPUT -->
-
-      <div id="inputScreen">
-
-        <div class="uploadBox">
-
-          <div class="uploadIcon">
-            📸
-          </div>
-
-          <h3>
-            DEVICE INFORMATION SCREENSHOT
-          </h3>
-
-          <p>
-            Select an About Phone / Device Information
-            screenshot for OCR analysis.
-          </p>
-
-
-          <label
-            class="uploadBtn"
-            for="screenFile"
-          >
-            SELECT SCREENSHOT
-          </label>
-
-          <input
-            id="screenFile"
-            type="file"
-            accept="image/*"
-          >
-
-        </div>
-
-
-        <img
-          id="preview"
-          class="preview"
-        >
-
-
-        <div
-          id="fileName"
-          class="fileName"
-        ></div>
-
-
-        <button
-          id="analyzeBtn"
-          class="mainBtn analyzeBtn"
-          onclick="runOCR()"
-        >
-          START AI ANALYSIS
-        </button>
-
-
-        <button
-          class="cancelBtn"
-          onclick="closeAnalysis()"
-        >
-          CANCEL
-        </button>
-
-      </div>
-
-
-      <!-- SCAN -->
-
-      <div
-        id="scanScreen"
-        class="scanScreen"
-      >
-
-        <div class="spinner"></div>
-
-        <h3>
-          ANALYZING DEVICE
-        </h3>
-
-        <div
-          id="scanStatus"
-          class="progressText"
-        >
-          Initializing OCR...
-        </div>
-
-
-        <div class="progressOuter">
-
-          <div
-            id="progressBar"
-            class="progressBar"
-          ></div>
-
-        </div>
-
-
-        <div
-          id="progressText"
-          class="progressText"
-        >
-          0%
-        </div>
-
-      </div>
-
-
-      <!-- INVALID -->
-
-      <div
-        id="invalidScreen"
-        class="invalidScreen"
-      >
-
-        <div class="invalidIcon">
-          ⚠️
-        </div>
-
-        <h3>
-          INVALID SCREENSHOT
-        </h3>
-
-        <p>
-          Device Information could not be identified.
-          Select a valid About Phone / Device Information
-          screenshot.
-        </p>
-
-
-        <button
-          class="mainBtn"
-          style="margin-top:20px"
-          onclick="tryAgain()"
-        >
-          SELECT AGAIN
-        </button>
-
-      </div>
-
-
-      <!-- RESULT -->
-
-      <div id="resultScreen">
-
-        <div
-          class="resultTitle"
-          id="resultTitle"
-        >
-          ANALYSIS COMPLETE
-        </div>
-
-
-        <div class="resultInfo">
-          <span>DEVICE NAME</span>
-          <b id="rDeviceName">--</b>
-        </div>
-
-
-        <div class="resultInfo">
-          <span>MODEL</span>
-          <b id="rModel">--</b>
-        </div>
-
-
-        <div class="resultInfo">
-          <span>RAM</span>
-          <b id="rRam">--</b>
-        </div>
-
-
-        <div class="resultInfo">
-          <span>ANDROID VERSION</span>
-          <b id="rAndroid">--</b>
-        </div>
-
-
-        <div class="resultInfo">
-          <span>BUILD NUMBER</span>
-          <b id="rBuild">--</b>
-        </div>
-
-
-        <div class="resultInfo">
-
-          <span>
-            AUTO DPI RECOMMENDATION
-          </span>
-
-          <div
-            id="dpi"
-            class="autoDpi"
-          >
-            --
-          </div>
-
-        </div>
-
-
-        <div class="resultInfo">
-
-          <span>
-            SENSITIVITY PROFILE
-          </span>
-
-
-          <div class="sensiGrid">
-
-            <div class="sensiItem">
-              <span>GENERAL</span>
-              <strong id="rGeneral">--</strong>
-            </div>
-
-            <div class="sensiItem">
-              <span>RED DOT</span>
-              <strong id="rRed">--</strong>
-            </div>
-
-            <div class="sensiItem">
-              <span>2X SCOPE</span>
-              <strong id="r2x">--</strong>
-            </div>
-
-            <div class="sensiItem">
-              <span>4X SCOPE</span>
-              <strong id="r4x">--</strong>
-            </div>
-
-            <div class="sensiItem">
-              <span>SNIPER</span>
-              <strong id="rSniper">--</strong>
-            </div>
-
-            <div class="sensiItem">
-              <span>FREE LOOK</span>
-              <strong id="rFree">--</strong>
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <button
-          class="mainBtn"
-          id="doneBtn"
-          onclick="doneAnalysis()"
-        >
-          DONE — RUN AGAIN
-        </button>
-
-
-        <button
-          class="secondaryBtn"
-          id="gameBtn"
-          onclick="openFreeFire()"
-          style="display:none"
-        >
-          🎮 OPEN FREE FIRE
-        </button>
-
-      </div>
-
-    </div>
-
+  <div class="row">
+    <button onclick="sendText()">SEND</button>
+    <button class="mic" onclick="startVoice()">🎙️ কথা বলো</button>
   </div>
 
-
-  <!-- ======================================================
-       DEVICE INFO
-  ====================================================== -->
-
-  <div
-    class="overlay"
-    id="deviceInfoOverlay"
-  >
-
-    <div class="panel">
-
-      <div class="panelTop">
-
-        <h2>
-          DEVICE INFORMATION
-        </h2>
-
-        <span>
-          SYSTEM
-        </span>
-
-      </div>
-
-
-      <div class="card">
-
-        <div class="deviceInfoRow">
-          <span>SCREEN</span>
-          <b id="diScreen">--</b>
-        </div>
-
-        <div class="deviceInfoRow">
-          <span>PIXEL RATIO</span>
-          <b id="diRatio">--</b>
-        </div>
-
-        <div class="deviceInfoRow">
-          <span>LANGUAGE</span>
-          <b id="diLanguage">--</b>
-        </div>
-
-      </div>
-
-
-      <button
-        class="mainBtn"
-        onclick="closeDeviceInfo()"
-      >
-        CLOSE
-
-      </button>
-
-    </div>
-
-  </div>
-
-
-  <!-- ======================================================
-       PROFILE
-  ====================================================== -->
-
-  <div
-    class="profileOverlay"
-    id="profileOverlay"
-    onclick="outsideProfile(event)"
-  >
-
-    <div
-      class="profileSheet"
-      onclick="event.stopPropagation()"
-    >
-
-      <h3>
-        TURJO X PROFILE
-      </h3>
-
-
-      <img
-        id="profilePhoto"
-        class="profilePhoto"
-        alt="Profile"
-      >
-
-
-      <label
-        class="photoBtn"
-        for="profileFile"
-      >
-        SELECT PROFILE PHOTO
-      </label>
-
-      <input
-        id="profileFile"
-        type="file"
-        accept="image/*"
-      >
-
-
-      <button
-        class="cancelBtn"
-        onclick="closeProfile()"
-      >
-        CLOSE
-      </button>
-
-    </div>
-
-  </div>
-
-
-  <!-- ======================================================
-       CORNER MENU
-  ====================================================== -->
-
-  <div class="cornerMenu">
-
-    <button
-      class="dotBtn"
-      onclick="openHeadshotPanel()"
-      aria-label="Control menu"
-    >
-      ⋮
+  <div class="row">
+    <button class="file" onclick="document.getElementById('imageInput').click()">
+      🖼️ Screenshot / ছবি
     </button>
 
+    <button onclick="clearChat()">🗑️ Clear</button>
   </div>
 
-
-  <!-- ======================================================
-       CONTROL PANEL
-  ====================================================== -->
-
-  <div
-    class="headshotPanel"
-    id="headshotPanel"
+  <input
+    id="imageInput"
+    type="file"
+    accept="image/*"
+    hidden
+    onchange="imageSelected(event)"
   >
 
-    <div class="headshotBox">
+  <img id="preview" class="preview">
 
-      <h2>
-        TURJO X CONTROL
-      </h2>
-
-      <p>
-        Don't ask me icon.<br>
-        Don't touch me icon.
-      </p>
-
-
-      <div class="headshotToggle">
-
-        <div class="headshotText">
-
-          <b>
-            HEADSHOT 100% ON
-          </b>
-
-          <span>
-            Sensitivity control UI
-          </span>
-
-        </div>
-
-
-        <label class="switch">
-
-          <input
-            type="checkbox"
-            id="headshotToggle"
-            onchange="headshotChanged()"
-          >
-
-          <span class="slider"></span>
-
-        </label>
-
-      </div>
-
-
-      <div id="headshotStatus"></div>
-
-
-      <button
-        class="panelClose"
-        onclick="closeHeadshotPanel()"
-      >
-        CLOSE
-      </button>
-
-    </div>
-
-  </div>
+  <div id="fileName" class="fileName"></div>
 
 </div>
-
+</div>
 
 <script>
 
-/* =========================================================
-   FACE SECURITY
-========================================================= */
+/* ==============================
+   CONFIG
+================================ */
 
-const video=
-  document.getElementById("video");
+const AI_ENDPOINT = "/api/chat";
 
-const faceStatus=
-  document.getElementById("faceStatus");
+/*
+  তোমার backend endpoint এখানে থাকবে।
 
-const registerBtn=
-  document.getElementById("registerBtn");
+  উদাহরণ:
+  https://your-server.com/api/chat
 
-const verifyBtn=
-  document.getElementById("verifyBtn");
-
-const resetBtn=
-  document.getElementById("resetBtn");
-
-const faceLock=
-  document.getElementById("faceLock");
-
-const mainApp=
-  document.getElementById("mainApp");
-
-const FACE_KEY=
-  "TURJO_X_OWNER_FACE";
-
-const MODEL_URL=
-  "https://justadudewhohacks.github.io/face-api.js/models";
-
-let modelsLoaded=false;
-let cameraReady=false;
-let faceProcessing=false;
+  API KEY এখানে লিখবে না।
+*/
 
 
-function faceMessage(message,type=""){
+let selectedImage = null;
 
-  faceStatus.innerText=message;
 
-  faceStatus.classList.remove(
-    "success",
-    "error"
-  );
+/* ==============================
+   CHAT UI
+================================ */
 
-  if(type==="success"){
-    faceStatus.classList.add("success");
-  }
+function addMessage(text,type){
 
-  if(type==="error"){
-    faceStatus.classList.add("error");
-  }
+  const chat=document.getElementById("chat");
+
+  const div=document.createElement("div");
+
+  div.className="msg "+type;
+
+  div.innerText=text;
+
+  chat.appendChild(div);
+
+  chat.scrollTop=chat.scrollHeight;
+}
+
+
+function setStatus(text){
+
+  document.getElementById("status").innerText="● "+text;
 
 }
 
 
-async function loadModels(){
+/* ==============================
+   SEND TEXT
+================================ */
 
-  faceMessage(
-    "Loading biometric engine..."
-  );
+async function sendText(){
 
-  try{
+  const input=document.getElementById("text");
 
-    await faceapi.nets.tinyFaceDetector
-      .loadFromUri(MODEL_URL);
+  const text=input.value.trim();
 
-    await faceapi.nets.faceLandmark68Net
-      .loadFromUri(MODEL_URL);
+  if(!text && !selectedImage) return;
 
-    await faceapi.nets.faceRecognitionNet
-      .loadFromUri(MODEL_URL);
+  if(text){
 
-    modelsLoaded=true;
+    addMessage(text,"user");
 
-    faceMessage(
-      "Security engine ready."
-    );
-
-  }catch(error){
-
-    console.error(error);
-
-    faceMessage(
-      "Face engine could not load.",
-      "error"
-    );
-
+    input.value="";
   }
 
+  await askAI(text,selectedImage);
 }
 
 
-async function startCamera(){
+/* ==============================
+   IMAGE SELECT
+================================ */
 
-  if(!navigator.mediaDevices){
+function imageSelected(event){
 
-    faceMessage(
-      "Camera is not supported.",
-      "error"
-    );
+  const file=event.target.files[0];
 
-    return;
-
-  }
-
-  try{
-
-    const stream=
-      await navigator.mediaDevices.getUserMedia({
-
-        video:{
-          facingMode:"user",
-          width:{ideal:640},
-          height:{ideal:480}
-        },
-
-        audio:false
-
-      });
-
-    video.srcObject=stream;
-
-    cameraReady=true;
-
-    registerBtn.disabled=false;
-    verifyBtn.disabled=false;
-
-    if(localStorage.getItem(FACE_KEY)){
-
-      registerBtn.disabled=true;
-
-      faceMessage(
-        "Owner face found. Verify to continue."
-      );
-
-    }else{
-
-      faceMessage(
-        "Register the first owner face."
-      );
-
-    }
-
-  }catch(error){
-
-    console.error(error);
-
-    faceMessage(
-      "Camera permission is required.",
-      "error"
-    );
-
-  }
-
-}
-
-
-async function getDescriptor(){
-
-  if(
-    !modelsLoaded||
-    !cameraReady
-  ){
-
-    return null;
-
-  }
-
-  const detection=
-    await faceapi
-      .detectSingleFace(
-        video,
-        new faceapi.TinyFaceDetectorOptions({
-          inputSize:320,
-          scoreThreshold:.5
-        })
-      )
-      .withFaceLandmarks()
-      .withFaceDescriptor();
-
-  if(!detection){
-    return null;
-  }
-
-  return detection.descriptor;
-
-}
-
-
-function faceDistance(a,b){
-
-  let sum=0;
-
-  for(
-    let i=0;
-    i<a.length;
-    i++
-  ){
-
-    const d=a[i]-b[i];
-
-    sum+=d*d;
-
-  }
-
-  return Math.sqrt(sum);
-
-}
-
-
-/* REGISTER */
-
-registerBtn.onclick=async function(){
-
-  if(faceProcessing)return;
-
-  faceProcessing=true;
-  registerBtn.disabled=true;
-
-  try{
-
-    faceMessage(
-      "Scanning owner face..."
-    );
-
-    const descriptor=
-      await getDescriptor();
-
-    if(!descriptor){
-
-      faceMessage(
-        "No face detected.",
-        "error"
-      );
-
-      return;
-
-    }
-
-    localStorage.setItem(
-      FACE_KEY,
-      JSON.stringify(
-        Array.from(descriptor)
-      )
-    );
-
-    faceMessage(
-      "OWNER FACE REGISTERED ✓",
-      "success"
-    );
-
-  }catch(error){
-
-    console.error(error);
-
-    faceMessage(
-      "Registration failed.",
-      "error"
-    );
-
-  }finally{
-
-    faceProcessing=false;
-
-    if(localStorage.getItem(FACE_KEY)){
-      registerBtn.disabled=true;
-    }else{
-      registerBtn.disabled=false;
-    }
-
-  }
-
-};
-
-
-/* VERIFY */
-
-verifyBtn.onclick=async function(){
-
-  if(faceProcessing)return;
-
-  const saved=
-    localStorage.getItem(FACE_KEY);
-
-  if(!saved){
-
-    faceMessage(
-      "Register owner face first.",
-      "error"
-    );
-
-    return;
-
-  }
-
-  faceProcessing=true;
-  verifyBtn.disabled=true;
-
-  try{
-
-    faceMessage(
-      "Verifying owner identity..."
-    );
-
-    const current=
-      await getDescriptor();
-
-    if(!current){
-
-      faceMessage(
-        "Face not detected.",
-        "error"
-      );
-
-      return;
-
-    }
-
-    const owner=
-      new Float32Array(
-        JSON.parse(saved)
-      );
-
-    const d=
-      faceDistance(
-        owner,
-        current
-      );
-
-    if(d<.50){
-
-      faceMessage(
-        "ACCESS GRANTED ✓",
-        "success"
-      );
-
-      setTimeout(()=>{
-
-        faceLock.style.display="none";
-        mainApp.style.display="block";
-
-        stopCamera();
-
-      },600);
-
-    }else{
-
-      faceMessage(
-        "ACCESS DENIED — FACE MISMATCH.",
-        "error"
-      );
-
-    }
-
-  }catch(error){
-
-    console.error(error);
-
-    faceMessage(
-      "Verification failed.",
-      "error"
-    );
-
-  }finally{
-
-    faceProcessing=false;
-    verifyBtn.disabled=false;
-
-  }
-
-};
-
-
-/* RESET */
-
-resetBtn.onclick=async function(){
-
-  if(faceProcessing)return;
-
-  if(!localStorage.getItem(FACE_KEY)){
-
-    faceMessage(
-      "No owner face is registered.",
-      "error"
-    );
-
-    return;
-
-  }
-
-  faceProcessing=true;
-  resetBtn.disabled=true;
-
-  try{
-
-    faceMessage(
-      "Verify current owner face..."
-    );
-
-    const current=
-      await getDescriptor();
-
-    if(!current){
-
-      faceMessage(
-        "Face not detected.",
-        "error"
-      );
-
-      return;
-
-    }
-
-    const owner=
-      new Float32Array(
-        JSON.parse(
-          localStorage.getItem(FACE_KEY)
-        )
-      );
-
-    if(
-      faceDistance(owner,current)<.50
-    ){
-
-      localStorage.removeItem(FACE_KEY);
-
-      registerBtn.disabled=false;
-
-      faceMessage(
-        "Owner face reset successfully.",
-        "success"
-      );
-
-    }else{
-
-      faceMessage(
-        "Reset denied — face mismatch.",
-        "error"
-      );
-
-    }
-
-  }catch(error){
-
-    console.error(error);
-
-    faceMessage(
-      "Reset failed.",
-      "error"
-    );
-
-  }finally{
-
-    faceProcessing=false;
-    resetBtn.disabled=false;
-
-  }
-
-};
-
-
-function stopCamera(){
-
-  if(video.srcObject){
-
-    video.srcObject
-      .getTracks()
-      .forEach(
-        track=>track.stop()
-      );
-
-  }
-
-}
-
-
-(async function(){
-
-  await loadModels();
-
-  if(modelsLoaded){
-
-    await startCamera();
-
-  }
-
-})();
-
-
-/* =========================================================
-   ANALYSIS ENGINE
-========================================================= */
-
-let selectedImage=null;
-let analysisRound=0;
-let analysisRunning=false;
-
-const overlay=
-  document.getElementById("overlay");
-
-const inputScreen=
-  document.getElementById("inputScreen");
-
-const scanScreen=
-  document.getElementById("scanScreen");
-
-const invalidScreen=
-  document.getElementById("invalidScreen");
-
-const resultScreen=
-  document.getElementById("resultScreen");
-
-const screenFile=
-  document.getElementById("screenFile");
-
-const preview=
-  document.getElementById("preview");
-
-const fileName=
-  document.getElementById("fileName");
-
-const analyzeBtn=
-  document.getElementById("analyzeBtn");
-
-const progressBar=
-  document.getElementById("progressBar");
-
-const progressText=
-  document.getElementById("progressText");
-
-const scanStatus=
-  document.getElementById("scanStatus");
-
-const doneBtn=
-  document.getElementById("doneBtn");
-
-const gameBtn=
-  document.getElementById("gameBtn");
-
-
-function startAnalysis(){
-
-  analysisRound=0;
-  analysisRunning=false;
-
-  gameBtn.style.display="none";
-
-  overlay.classList.add("show");
-
-  inputScreen.style.display="block";
-  scanScreen.style.display="none";
-  invalidScreen.style.display="none";
-  resultScreen.style.display="none";
-
-}
-
-
-screenFile.onchange=function(){
-
-  const file=
-    this.files&&this.files[0];
-
-  if(!file)return;
-
-  if(!file.type.startsWith("image/")){
-
-    alert(
-      "Please select an image."
-    );
-
-    return;
-
-  }
+  if(!file) return;
 
   selectedImage=file;
 
-  const reader=
-    new FileReader();
+  const preview=document.getElementById("preview");
 
-  reader.onload=function(e){
+  preview.src=URL.createObjectURL(file);
 
-    preview.src=e.target.result;
-    preview.style.display="block";
+  preview.style.display="block";
 
-  };
+  document.getElementById("fileName").innerText=
+    "📎 "+file.name;
 
-  reader.readAsDataURL(file);
-
-  fileName.innerText=
-    "SELECTED • "+file.name;
-
-  analyzeBtn.style.display="block";
-
-};
+  addMessage("আমি একটি screenshot পেয়েছি। এখন এটা নিয়ে প্রশ্ন করো।","aiMsg");
+}
 
 
-async function runOCR(){
+/* ==============================
+   AI REQUEST
+================================ */
 
-  if(!selectedImage){
+async function askAI(text,image){
 
-    alert(
-      "Select a screenshot first."
-    );
+  setStatus("THINKING...");
+
+  /*
+    Demo mode:
+    backend না থাকলে নিচের message দেখাবে।
+  */
+
+  if(!AI_ENDPOINT){
+
+    fakeAI(text,image);
 
     return;
-
   }
-
-  if(analysisRunning)return;
-
-  analysisRunning=true;
-
-  inputScreen.style.display="none";
-  scanScreen.style.display="block";
-  invalidScreen.style.display="none";
-  resultScreen.style.display="none";
-
-  gameBtn.style.display="none";
-
-  progressBar.style.width="0%";
-  progressText.innerText="0%";
-
-  scanStatus.innerText=
-    analysisRound===0
-      ?"FIRST ANALYSIS..."
-      :"SECOND ANALYSIS...";
 
   try{
 
-    const result=
-      await Tesseract.recognize(
-        selectedImage,
-        "eng",
-        {
-          logger:function(m){
+    const formData=new FormData();
 
-            if(
-              m.status===
-              "recognizing text"
-            ){
+    formData.append("message",text || "");
 
-              const p=
-                Math.round(
-                  (m.progress||0)*100
-                );
+    if(image){
 
-              progressBar.style.width=
-                p+"%";
+      formData.append("image",image);
+    }
 
-              progressText.innerText=
-                p+"%";
+    const response=await fetch(AI_ENDPOINT,{
+      method:"POST",
+      body:formData
+    });
 
-            }
+    if(!response.ok){
 
-          }
+      throw new Error("Server error");
+    }
 
-        }
-      );
+    const data=await response.json();
+
+    const answer=data.answer || "আমি কোনো উত্তর পাইনি।";
+
+    addMessage(answer,"aiMsg");
+
+    speak(answer);
+
+    setStatus("ONLINE");
+
+  }catch(error){
+
+    addMessage(
+      "AI server-এর সাথে সংযোগ হচ্ছে না। Backend চালু আছে কিনা দেখো।",
+      "aiMsg"
+    );
+
+    setStatus("OFFLINE");
+  }
+}
+
+
+/* ==============================
+   DEMO AI
+================================ */
+
+function fakeAI(text,image){
+
+  setTimeout(()=>{
+
+    let answer="";
+
+    if(image){
+
+      answer=
+      "Screenshot পাওয়া গেছে। সত্যিকারের AI image analysis চালু করতে এই অ্যাপকে একটি AI backend-এর সাথে connect করতে হবে। তারপর তুমি জিজ্ঞেস করতে পারবে—“এটা কিসের?”, “এখানে কী সমস্যা?”, “কোথায় কী আছে?”";
+
+    }else if(text){
+
+      answer=
+      "তোমার প্রশ্ন আমি পেয়েছি। Full AI mode চালু হলে আমি এই প্রশ্নের বিস্তারিত উত্তর দিতে পারব।";
+
+    }else{
+
+      answer="আমি প্রস্তুত। আমাকে কিছু জিজ্ঞেস করো।";
+    }
+
+    addMessage(answer,"aiMsg");
+
+    speak(answer);
+
+    setStatus("ONLINE");
+
+  },700);
+}
+
+
+/* ==============================
+   VOICE INPUT
+================================ */
+
+function startVoice(){
+
+  const SpeechRecognition=
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+  if(!SpeechRecognition){
+
+    addMessage(
+      "এই browser-এ voice recognition support নেই। Chrome দিয়ে চেষ্টা করো।",
+      "aiMsg"
+    );
+
+    return;
+  }
+
+  const recognition=new SpeechRecognition();
+
+  recognition.lang="bn-BD";
+
+  recognition.interimResults=false;
+
+  recognition.maxAlternatives=1;
+
+  setStatus("LISTENING...");
+
+  recognition.start();
+
+  recognition.onresult=function(event){
 
     const text=
-      result.data.text||"";
+      event.results[0][0].transcript;
 
-    progressBar.style.width="100%";
-    progressText.innerText="100%";
+    document.getElementById("text").value=text;
 
-    scanStatus.innerText=
-      "ANALYSIS COMPLETE";
-
-    setTimeout(()=>{
-
-      analysisRunning=false;
-
-      if(
-        isDeviceInformationScreenshot(text)
-      ){
-
-        analyzeDeviceText(text);
-
-      }else{
-
-        showInvalid();
-
-      }
-
-    },350);
-
-  }catch(error){
-
-    console.error(error);
-
-    analysisRunning=false;
-
-    showInvalid();
-
-  }
-
-}
-
-
-function normalizeOCR(text){
-
-  return String(text||"")
-    .replace(/\u00a0/g," ")
-    .replace(/\r\n/g,"\n")
-    .replace(/\r/g,"\n")
-    .replace(/[ \t]+/g," ")
-    .replace(/\n{2,}/g,"\n")
-    .trim();
-
-}
-
-
-function normalizeLabel(text){
-
-  return String(text||"")
-    .toLowerCase()
-    .replace(/[._]/g," ")
-    .replace(/[^a-z0-9+ -]/g," ")
-    .replace(/\s+/g," ")
-    .trim();
-
-}
-
-
-function isDeviceInformationScreenshot(text){
-
-  const clean=
-    normalizeOCR(text).toLowerCase();
-
-  if(clean.length<15)return false;
-
-  const keywords=[
-    "about phone",
-    "about device",
-    "device information",
-    "device info",
-    "android",
-    "build",
-    "ram",
-    "memory",
-    "model",
-    "software",
-    "version"
-  ];
-
-  let found=0;
-
-  keywords.forEach(k=>{
-
-    if(clean.includes(k)){
-      found++;
-    }
-
-  });
-
-  return found>=2;
-
-}
-
-
-function getLines(text){
-
-  return normalizeOCR(text)
-    .split("\n")
-    .map(x=>x.trim())
-    .filter(Boolean);
-
-}
-
-
-function cleanValue(value){
-
-  return String(value||"")
-    .replace(/^[\s:：\-–—|]+/,"")
-    .replace(/[\s|]+$/,"")
-    .replace(/\s+/g," ")
-    .trim();
-
-}
-
-
-function nextUsefulLine(lines,index){
-
-  for(
-    let i=index+1;
-    i<Math.min(index+3,lines.length);
-    i++
-  ){
-
-    const value=
-      cleanValue(lines[i]);
-
-    if(
-      value &&
-      value.length>1
-    ){
-
-      return value;
-
-    }
-
-  }
-
-  return null;
-
-}
-
-
-/* DEVICE NAME */
-
-function extractDeviceName(text){
-
-  const lines=
-    getLines(text);
-
-  for(let i=0;i<lines.length;i++){
-
-    const match=
-      lines[i].match(
-        /^device\s*name\s*[:：\-]?\s*(.*)$/i
-      );
-
-    if(match){
-
-      const value=
-        cleanValue(
-          match[1]
-        )||
-        nextUsefulLine(
-          lines,
-          i
-        );
-
-      if(value)return value;
-
-    }
-
-  }
-
-  return "Not detected";
-
-}
-
-
-/* MODEL */
-
-function extractModel(text){
-
-  const lines=
-    getLines(text);
-
-  const patterns=[
-
-    /^model\s*name\s*[:：\-]?\s*(.*)$/i,
-
-    /^model\s*number\s*[:：\-]?\s*(.*)$/i,
-
-    /^device\s*model\s*[:：\-]?\s*(.*)$/i,
-
-    /^model\s*[:：\-]\s*(.*)$/i
-
-  ];
-
-  for(let i=0;i<lines.length;i++){
-
-    for(const pattern of patterns){
-
-      const match=
-        lines[i].match(pattern);
-
-      if(match){
-
-        const value=
-          cleanValue(match[1])||
-          nextUsefulLine(
-            lines,
-            i
-          );
-
-        if(
-          value &&
-          value.length>1
-        ){
-
-          return value;
-
-        }
-
-      }
-
-    }
-
-  }
-
-  const fallback=
-    normalizeOCR(text).match(
-      /\b(?:SM-[A-Z0-9-]+|RMX[A-Z0-9-]+|CPH[A-Z0-9-]+|XT[0-9A-Z-]+)\b/i
-    );
-
-  return fallback
-    ?fallback[0]
-    :"Not detected";
-
-}
-
-
-/* RAM */
-
-function extractRAM(text){
-
-  const clean=
-    normalizeOCR(text);
-
-  const patterns=[
-
-    /(?:ram|memory)\s*[:：\-]?\s*(\d{1,2})\s*(?:gb|g8|g b)\b/i,
-
-    /\b(\d{1,2})\s*(?:gb|g8|g b)\s*(?:ram|memory)\b/i,
-
-    /(?:ram|memory)[^\n]{0,30}?(\d{1,2})\s*(?:gb|g8|g b)\b/i
-
-  ];
-
-  for(const p of patterns){
-
-    const m=clean.match(p);
-
-    if(m){
-
-      const n=
-        parseInt(m[1],10);
-
-      if(n>=1&&n<=64){
-
-        return n+" GB";
-
-      }
-
-    }
-
-  }
-
-  return "Not detected";
-
-}
-
-
-/* ANDROID */
-
-function extractAndroid(text){
-
-  const clean=
-    normalizeOCR(text);
-
-  const patterns=[
-
-    /android\s*version\s*[:：\-]?\s*(\d+(?:\.\d+){0,2})/i,
-
-    /android\s*[:：\-]?\s*(\d+(?:\.\d+){0,2})/i
-
-  ];
-
-  for(const p of patterns){
-
-    const m=clean.match(p);
-
-    if(m){
-
-      return "Android "+m[1];
-
-    }
-
-  }
-
-  return "Not detected";
-
-}
-
-
-/* BUILD */
-
-function extractBuild(text){
-
-  const clean=
-    normalizeOCR(text);
-
-  const patterns=[
-
-    /build\s*number\s*[:：\-]?\s*([A-Za-z0-9._\-\/]+)/i,
-
-    /build\s*no\.?\s*[:：\-]?\s*([A-Za-z0-9._\-\/]+)/i,
-
-    /build\s*[:：\-]\s*([A-Za-z0-9._\-\/]+)/i
-
-  ];
-
-  for(const p of patterns){
-
-    const m=clean.match(p);
-
-    if(m){
-
-      return cleanValue(m[1]);
-
-    }
-
-  }
-
-  return "Not detected";
-
-}
-
-
-/* SENSITIVITY */
-
-function limit200(value){
-
-  return Math.max(
-    100,
-    Math.min(
-      200,
-      Math.round(value)
-    )
-  );
-
-}
-
-
-function generateSensitivity(
-  model,
-  ram,
-  android,
-  text
-){
-
-  let general=170;
-  let red=160;
-  let twoX=150;
-  let fourX=140;
-  let sniper=120;
-  let freeLook=150;
-
-  let dpi=440;
-
-  const ramNumber=
-    parseInt(ram,10)||4;
-
-  if(ramNumber>=12){
-
-    general+=18;
-    red+=18;
-    twoX+=15;
-    fourX+=12;
-    sniper+=10;
-    freeLook+=12;
-
-  }else if(ramNumber>=8){
-
-    general+=12;
-    red+=12;
-    twoX+=10;
-    fourX+=8;
-    sniper+=7;
-    freeLook+=8;
-
-  }else if(ramNumber<=3){
-
-    general-=12;
-    red-=10;
-    twoX-=10;
-    fourX-=8;
-    sniper-=5;
-    freeLook-=8;
-
-  }
-
-  const resolution=
-    String(text).match(
-      /\b(720|1080|1440|2160)\s*[x×]\s*(\d{3,5})\b/i
-    );
-
-  if(resolution){
-
-    const width=
-      parseInt(
-        resolution[1],
-        10
-      );
-
-    if(width>=2160){
-      dpi=560;
-    }else if(width>=1440){
-      dpi=520;
-    }else if(width>=1080){
-      dpi=480;
-    }else{
-      dpi=420;
-    }
-
-  }
-
-  return{
-
-    dpi,
-
-    general:limit200(general),
-
-    red:limit200(red),
-
-    twoX:limit200(twoX),
-
-    fourX:limit200(fourX),
-
-    sniper:limit200(sniper),
-
-    freeLook:limit200(freeLook)
-
+    sendText();
   };
 
-}
+  recognition.onerror=function(){
 
+    setStatus("ONLINE");
 
-function analyzeDeviceText(text){
-
-  const data={
-
-    deviceName:
-      extractDeviceName(text),
-
-    model:
-      extractModel(text),
-
-    ram:
-      extractRAM(text),
-
-    android:
-      extractAndroid(text),
-
-    build:
-      extractBuild(text)
-
+    addMessage(
+      "কথা বুঝতে পারিনি। আবার চেষ্টা করো।",
+      "aiMsg"
+    );
   };
 
-  const sensitivity=
-    generateSensitivity(
-      data.model,
-      data.ram,
-      data.android,
-      text
-    );
+  recognition.onend=function(){
 
-  showResult({
-
-    ...data,
-    ...sensitivity
-
-  });
-
+    setStatus("ONLINE");
+  };
 }
 
 
-function showResult(data){
+/* ==============================
+   AI VOICE
+================================ */
 
-  scanScreen.style.display="none";
-  invalidScreen.style.display="none";
-  resultScreen.style.display="block";
+function speak(text){
 
+  if(!("speechSynthesis" in window)) return;
 
-  document.getElementById("rDeviceName")
-    .innerText=data.deviceName;
+  speechSynthesis.cancel();
 
-  document.getElementById("rModel")
-    .innerText=data.model;
+  const voice=new SpeechSynthesisUtterance(text);
 
-  document.getElementById("rRam")
-    .innerText=data.ram;
+  voice.lang="bn-BD";
 
-  document.getElementById("rAndroid")
-    .innerText=data.android;
+  voice.rate=0.95;
 
-  document.getElementById("rBuild")
-    .innerText=data.build;
+  voice.pitch=1;
 
-  document.getElementById("dpi")
-    .innerText=data.dpi;
-
-  document.getElementById("rGeneral")
-    .innerText=data.general;
-
-  document.getElementById("rRed")
-    .innerText=data.red;
-
-  document.getElementById("r2x")
-    .innerText=data.twoX;
-
-  document.getElementById("r4x")
-    .innerText=data.fourX;
-
-  document.getElementById("rSniper")
-    .innerText=data.sniper;
-
-  document.getElementById("rFree")
-    .innerText=data.freeLook;
-
-
-  document.getElementById("homeDeviceName")
-    .innerText=data.deviceName;
-
-  document.getElementById("homeRam")
-    .innerText=data.ram;
-
-  document.getElementById("homeModel")
-    .innerText=data.model;
-
-  document.getElementById("homeAndroid")
-    .innerText=data.android;
-
-  document.getElementById("homeBuild")
-    .innerText=data.build;
-
-
-  if(analysisRound===0){
-
-    document.getElementById("resultTitle")
-      .innerText=
-        "ANALYSIS COMPLETE";
-
-    doneBtn.innerText=
-      "DONE — RUN AGAIN";
-
-    gameBtn.style.display="none";
-
-  }else{
-
-    document.getElementById("resultTitle")
-      .innerText=
-        "SECOND ANALYSIS COMPLETE";
-
-    doneBtn.innerText="DONE";
-
-    gameBtn.style.display="block";
-
-  }
-
+  speechSynthesis.speak(voice);
 }
 
 
-function doneAnalysis(){
+/* ==============================
+   CLEAR
+================================ */
 
-  if(analysisRunning)return;
+function clearChat(){
 
-  if(analysisRound===0){
-
-    analysisRound=1;
-
-    resultScreen.style.display="none";
-    scanScreen.style.display="block";
-
-    gameBtn.style.display="none";
-
-    progressBar.style.width="0%";
-    progressText.innerText="0%";
-
-    scanStatus.innerText=
-      "STARTING SECOND ANALYSIS...";
-
-    runOCR();
-
-  }else{
-
-    closeAnalysis();
-
-  }
-
-}
-
-
-function showInvalid(){
-
-  analysisRunning=false;
-
-  gameBtn.style.display="none";
-
-  scanScreen.style.display="none";
-  resultScreen.style.display="none";
-  invalidScreen.style.display="block";
-
-}
-
-
-function tryAgain(){
-
-  analysisRound=0;
-  analysisRunning=false;
+  document.getElementById("chat").innerHTML=
+  `<div class="msg aiMsg">
+  Chat পরিষ্কার করা হয়েছে। আবার প্রশ্ন করো।
+  </div>`;
 
   selectedImage=null;
 
-  gameBtn.style.display="none";
+  document.getElementById("preview").style.display="none";
 
-  screenFile.value="";
-
-  preview.src="";
-  preview.style.display="none";
-
-  fileName.innerText="";
-
-  analyzeBtn.style.display="none";
-
-  inputScreen.style.display="block";
-  scanScreen.style.display="none";
-  invalidScreen.style.display="none";
-  resultScreen.style.display="none";
-
-}
-
-
-function closeAnalysis(){
-
-  analysisRound=0;
-  analysisRunning=false;
-
-  selectedImage=null;
-
-  gameBtn.style.display="none";
-
-  screenFile.value="";
-
-  preview.src="";
-  preview.style.display="none";
-
-  fileName.innerText="";
-
-  analyzeBtn.style.display="none";
-
-  inputScreen.style.display="block";
-  scanScreen.style.display="none";
-  invalidScreen.style.display="none";
-  resultScreen.style.display="none";
-
-  overlay.classList.remove("show");
-
-}
-
-
-/* =========================================================
-   FREE FIRE LAUNCH
-========================================================= */
-
-function openFreeFire(){
-
-  const intentUrl=
-    "intent://#Intent;"+
-    "scheme=freefire;"+
-    "package=com.dts.freefireth;"+
-    "end";
-
-  window.location.href=
-    intentUrl;
-
-}
-
-
-/* =========================================================
-   DEVICE INFO
-========================================================= */
-
-function showDeviceInfo(){
-
-  document.getElementById("diScreen")
-    .innerText=
-      screen.width+
-      " × "+
-      screen.height;
-
-  document.getElementById("diRatio")
-    .innerText=
-      window.devicePixelRatio||1;
-
-  document.getElementById("diLanguage")
-    .innerText=
-      navigator.language||"--";
-
-  document
-    .getElementById("deviceInfoOverlay")
-    .classList.add("show");
-
-}
-
-
-function closeDeviceInfo(){
-
-  document
-    .getElementById("deviceInfoOverlay")
-    .classList.remove("show");
-
-}
-
-
-/* =========================================================
-   PROFILE
-========================================================= */
-
-function openProfile(){
-
-  document
-    .getElementById("profileOverlay")
-    .classList.add("show");
-
-}
-
-
-function closeProfile(){
-
-  document
-    .getElementById("profileOverlay")
-    .classList.remove("show");
-
-}
-
-
-function outsideProfile(event){
-
-  if(
-    event.target.id===
-    "profileOverlay"
-  ){
-
-    closeProfile();
-
-  }
-
-}
-
-
-const profileFile=
-  document.getElementById("profileFile");
-
-const profilePhoto=
-  document.getElementById("profilePhoto");
-
-const profileBtn=
-  document.getElementById("profileBtn");
-
-
-profileFile.onchange=function(){
-
-  const file=
-    this.files&&this.files[0];
-
-  if(!file)return;
-
-  if(
-    !file.type.startsWith("image/")
-  ){
-
-    alert(
-      "Please select an image."
-    );
-
-    return;
-
-  }
-
-  const reader=
-    new FileReader();
-
-  reader.onload=function(e){
-
-    const image=
-      e.target.result;
-
-    profilePhoto.src=image;
-
-    profileBtn.innerHTML=
-      '<img src="'+
-      image+
-      '" alt="Profile">';
-
-    try{
-
-      localStorage.setItem(
-        "turjo_x_profile_photo",
-        image
-      );
-
-    }catch(error){
-
-      console.error(error);
-
-    }
-
-  };
-
-  reader.readAsDataURL(file);
-
-};
-
-
-(function(){
-
-  try{
-
-    const saved=
-      localStorage.getItem(
-        "turjo_x_profile_photo"
-      );
-
-    if(saved){
-
-      profilePhoto.src=saved;
-
-      profileBtn.innerHTML=
-        '<img src="'+
-        saved+
-        '" alt="Profile">';
-
-    }
-
-  }catch(error){
-
-    console.error(error);
-
-  }
-
-})();
-
-
-/* =========================================================
-   CORNER CONTROL
-========================================================= */
-
-let iconClickCount=0;
-
-
-function openHeadshotPanel(){
-
-  iconClickCount++;
-
-  if(
-    iconClickCount%2===1
-  ){
-
-    alert(
-      "Don't ask me icon"
-    );
-
-  }else{
-
-    alert(
-      "Don't touch me icon"
-    );
-
-  }
-
-  document
-    .getElementById("headshotPanel")
-    .classList.add("show");
-
-}
-
-
-function closeHeadshotPanel(){
-
-  document
-    .getElementById("headshotPanel")
-    .classList.remove("show");
-
-}
-
-
-function headshotChanged(){
-
-  const toggle=
-    document.getElementById(
-      "headshotToggle"
-    );
-
-  const status=
-    document.getElementById(
-      "headshotStatus"
-    );
-
-
-  if(toggle.checked){
-
-    status.innerText=
-      "HEADSHOT 100% ON ✓ — OPENING FREE FIRE...";
-
-    /*
-      Visual/demo control only.
-      Does not modify game behavior.
-    */
-
-    setTimeout(function(){
-
-      openFreeFire();
-
-    },700);
-
-  }else{
-
-    status.innerText=
-      "HEADSHOT CONTROL OFF";
-
-  }
-
+  document.getElementById("fileName").innerText="";
 }
 
 </script>
 
 </body>
-          </html>
+</html>
