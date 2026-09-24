@@ -1,472 +1,94 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>NOVA AI</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SENSI Social - Login</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* আপনার কাকাসির ছবির নাম এখানে ঠিকমতো বসিয়ে দিন */
+            background-image: url('kakashi.jpg'); 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
+        }
 
-<style>
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Arial,"Noto Sans Bengali",sans-serif;
-  background:#070914;
-  color:#fff;
-}
-.app{
-  max-width:700px;
-  margin:auto;
-  min-height:100vh;
-  padding:18px;
-  display:flex;
-  flex-direction:column;
-}
-header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:15px;
-}
-.logo{
-  font-size:25px;
-  font-weight:800;
-}
-.status{
-  font-size:12px;
-  color:#69f7b5;
-}
-.ai{
-  width:130px;
-  height:130px;
-  margin:18px auto;
-  border-radius:50%;
-  background:radial-gradient(circle,#61e7ff,#4d38ff 45%,#11152e 70%);
-  box-shadow:0 0 55px #4d55ff;
-  animation:pulse 2s infinite;
-}
-@keyframes pulse{
-  50%{transform:scale(1.06);box-shadow:0 0 80px #4d55ff}
-}
-.chat{
-  flex:1;
-  min-height:300px;
-  background:#0d1120;
-  border:1px solid #202741;
-  border-radius:22px;
-  padding:14px;
-  overflow:auto;
-}
-.msg{
-  max-width:85%;
-  padding:11px 14px;
-  margin:9px 0;
-  border-radius:16px;
-  line-height:1.5;
-}
-.user{
-  margin-left:auto;
-  background:#3048b8;
-}
-.aiMsg{
-  background:#171d31;
-}
-.bottom{
-  margin-top:12px;
-}
-input[type=text]{
-  width:100%;
-  padding:15px;
-  border-radius:15px;
-  border:1px solid #29324e;
-  background:#101527;
-  color:white;
-  outline:none;
-}
-.row{
-  display:flex;
-  gap:9px;
-  margin-top:9px;
-}
-button{
-  flex:1;
-  padding:14px;
-  border:0;
-  border-radius:15px;
-  color:white;
-  background:#2938a8;
-  font-weight:bold;
-}
-button:active{transform:scale(.97)}
-.mic{
-  background:#7b32d8;
-}
-.file{
-  background:#175e70;
-}
-.preview{
-  display:none;
-  margin-top:10px;
-  border-radius:15px;
-  max-width:100%;
-  max-height:230px;
-}
-.fileName{
-  font-size:12px;
-  color:#aeb8d6;
-  margin-top:6px;
-}
-</style>
+        .login-box {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 25px;
+            border-radius: 12px;
+            width: 85%;
+            max-width: 320px;
+            color: #fff;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+        }
+
+        .login-box h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #ff4757;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: #222;
+            color: #fff;
+            box-sizing: border-box;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 10px;
+            background: #ff4757;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .login-btn:hover {
+            background: #ff6b81;
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="app">
-
-<header>
-  <div class="logo">NOVA AI</div>
-  <div class="status" id="status">● ONLINE</div>
-</header>
-
-<div class="ai"></div>
-
-<div class="chat" id="chat">
-  <div class="msg aiMsg">
-    হ্যালো 👋 আমি NOVA AI।<br>
-    আমাকে প্রশ্ন করো, অথবা screenshot পাঠিয়ে জিজ্ঞেস করো কী হচ্ছে।
-  </div>
-</div>
-
-<div class="bottom">
-
-  <input
-    id="text"
-    type="text"
-    placeholder="এখানে প্রশ্ন লিখো..."
-    onkeydown="if(event.key==='Enter')sendText()"
-  >
-
-  <div class="row">
-    <button onclick="sendText()">SEND</button>
-    <button class="mic" onclick="startVoice()">🎙️ কথা বলো</button>
-  </div>
-
-  <div class="row">
-    <button class="file" onclick="document.getElementById('imageInput').click()">
-      🖼️ Screenshot / ছবি
-    </button>
-
-    <button onclick="clearChat()">🗑️ Clear</button>
-  </div>
-
-  <input
-    id="imageInput"
-    type="file"
-    accept="image/*"
-    hidden
-    onchange="imageSelected(event)"
-  >
-
-  <img id="preview" class="preview">
-
-  <div id="fileName" class="fileName"></div>
-
-</div>
-</div>
-
-<script>
-
-/* ==============================
-   CONFIG
-================================ */
-
-const AI_ENDPOINT = "/api/chat";
-
-/*
-  তোমার backend endpoint এখানে থাকবে।
-
-  উদাহরণ:
-  https://your-server.com/api/chat
-
-  API KEY এখানে লিখবে না।
-*/
-
-
-let selectedImage = null;
-
-
-/* ==============================
-   CHAT UI
-================================ */
-
-function addMessage(text,type){
-
-  const chat=document.getElementById("chat");
-
-  const div=document.createElement("div");
-
-  div.className="msg "+type;
-
-  div.innerText=text;
-
-  chat.appendChild(div);
-
-  chat.scrollTop=chat.scrollHeight;
-}
-
-
-function setStatus(text){
-
-  document.getElementById("status").innerText="● "+text;
-
-}
-
-
-/* ==============================
-   SEND TEXT
-================================ */
-
-async function sendText(){
-
-  const input=document.getElementById("text");
-
-  const text=input.value.trim();
-
-  if(!text && !selectedImage) return;
-
-  if(text){
-
-    addMessage(text,"user");
-
-    input.value="";
-  }
-
-  await askAI(text,selectedImage);
-}
-
-
-/* ==============================
-   IMAGE SELECT
-================================ */
-
-function imageSelected(event){
-
-  const file=event.target.files[0];
-
-  if(!file) return;
-
-  selectedImage=file;
-
-  const preview=document.getElementById("preview");
-
-  preview.src=URL.createObjectURL(file);
-
-  preview.style.display="block";
-
-  document.getElementById("fileName").innerText=
-    "📎 "+file.name;
-
-  addMessage("আমি একটি screenshot পেয়েছি। এখন এটা নিয়ে প্রশ্ন করো।","aiMsg");
-}
-
-
-/* ==============================
-   AI REQUEST
-================================ */
-
-async function askAI(text,image){
-
-  setStatus("THINKING...");
-
-  /*
-    Demo mode:
-    backend না থাকলে নিচের message দেখাবে।
-  */
-
-  if(!AI_ENDPOINT){
-
-    fakeAI(text,image);
-
-    return;
-  }
-
-  try{
-
-    const formData=new FormData();
-
-    formData.append("message",text || "");
-
-    if(image){
-
-      formData.append("image",image);
-    }
-
-    const response=await fetch(AI_ENDPOINT,{
-      method:"POST",
-      body:formData
-    });
-
-    if(!response.ok){
-
-      throw new Error("Server error");
-    }
-
-    const data=await response.json();
-
-    const answer=data.answer || "আমি কোনো উত্তর পাইনি।";
-
-    addMessage(answer,"aiMsg");
-
-    speak(answer);
-
-    setStatus("ONLINE");
-
-  }catch(error){
-
-    addMessage(
-      "AI server-এর সাথে সংযোগ হচ্ছে না। Backend চালু আছে কিনা দেখো।",
-      "aiMsg"
-    );
-
-    setStatus("OFFLINE");
-  }
-}
-
-
-/* ==============================
-   DEMO AI
-================================ */
-
-function fakeAI(text,image){
-
-  setTimeout(()=>{
-
-    let answer="";
-
-    if(image){
-
-      answer=
-      "Screenshot পাওয়া গেছে। সত্যিকারের AI image analysis চালু করতে এই অ্যাপকে একটি AI backend-এর সাথে connect করতে হবে। তারপর তুমি জিজ্ঞেস করতে পারবে—“এটা কিসের?”, “এখানে কী সমস্যা?”, “কোথায় কী আছে?”";
-
-    }else if(text){
-
-      answer=
-      "তোমার প্রশ্ন আমি পেয়েছি। Full AI mode চালু হলে আমি এই প্রশ্নের বিস্তারিত উত্তর দিতে পারব।";
-
-    }else{
-
-      answer="আমি প্রস্তুত। আমাকে কিছু জিজ্ঞেস করো।";
-    }
-
-    addMessage(answer,"aiMsg");
-
-    speak(answer);
-
-    setStatus("ONLINE");
-
-  },700);
-}
-
-
-/* ==============================
-   VOICE INPUT
-================================ */
-
-function startVoice(){
-
-  const SpeechRecognition=
-    window.SpeechRecognition ||
-    window.webkitSpeechRecognition;
-
-  if(!SpeechRecognition){
-
-    addMessage(
-      "এই browser-এ voice recognition support নেই। Chrome দিয়ে চেষ্টা করো।",
-      "aiMsg"
-    );
-
-    return;
-  }
-
-  const recognition=new SpeechRecognition();
-
-  recognition.lang="bn-BD";
-
-  recognition.interimResults=false;
-
-  recognition.maxAlternatives=1;
-
-  setStatus("LISTENING...");
-
-  recognition.start();
-
-  recognition.onresult=function(event){
-
-    const text=
-      event.results[0][0].transcript;
-
-    document.getElementById("text").value=text;
-
-    sendText();
-  };
-
-  recognition.onerror=function(){
-
-    setStatus("ONLINE");
-
-    addMessage(
-      "কথা বুঝতে পারিনি। আবার চেষ্টা করো।",
-      "aiMsg"
-    );
-  };
-
-  recognition.onend=function(){
-
-    setStatus("ONLINE");
-  };
-}
-
-
-/* ==============================
-   AI VOICE
-================================ */
-
-function speak(text){
-
-  if(!("speechSynthesis" in window)) return;
-
-  speechSynthesis.cancel();
-
-  const voice=new SpeechSynthesisUtterance(text);
-
-  voice.lang="bn-BD";
-
-  voice.rate=0.95;
-
-  voice.pitch=1;
-
-  speechSynthesis.speak(voice);
-}
-
-
-/* ==============================
-   CLEAR
-================================ */
-
-function clearChat(){
-
-  document.getElementById("chat").innerHTML=
-  `<div class="msg aiMsg">
-  Chat পরিষ্কার করা হয়েছে। আবার প্রশ্ন করো।
-  </div>`;
-
-  selectedImage=null;
-
-  document.getElementById("preview").style.display="none";
-
-  document.getElementById("fileName").innerText="";
-}
-
-</script>
+    <div class="login-box">
+        <h2>SENSI Social</h2>
+        <form>
+            <div class="input-group">
+                <label>ইমেইল বা ইউজারনেম</label>
+                <input type="text" placeholder="আপনার নাম দিন" required>
+            </div>
+            <div class="input-group">
+                <label>পাসওয়ার্ড</label>
+                <input type="password" placeholder="পাসওয়ার্ড দিন" required>
+            </div>
+            <button type="submit" class="login-btn">লগইন করুন</button>
+        </form>
+    </div>
 
 </body>
 </html>
