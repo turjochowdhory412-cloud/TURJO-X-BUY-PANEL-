@@ -3,121 +3,214 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
 <title>TURJO X — Face Lock + Sensitivity</title>
 
 <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html{
+  min-height:100%;
+}
 
 body{
-  min-height:100vh;
-  background:radial-gradient(circle at top,#18264d,#080b16 48%,#03050a);
-  color:#fff;
   font-family:Arial,sans-serif;
+  min-height:100vh;
+  background:
+    radial-gradient(circle at top,#172b58,#080b16 50%,#02040a);
+  color:#fff;
+  position:relative;
+  overflow-x:hidden;
 }
+
+/* =====================================================
+   TURJO X NEON BACKGROUND LOGO
+===================================================== */
+
+body::before{
+  content:"TX";
+
+  position:fixed;
+  left:50%;
+  top:50%;
+
+  transform:
+    translate(-50%,-50%)
+    rotate(-8deg);
+
+  font-family:Arial,sans-serif;
+  font-size:clamp(190px,48vw,430px);
+  font-weight:900;
+  line-height:1;
+
+  letter-spacing:-18px;
+
+  color:rgba(0,234,255,.035);
+
+  -webkit-text-stroke:
+    2px rgba(0,234,255,.065);
+
+  text-shadow:
+    0 0 20px rgba(0,234,255,.08),
+    0 0 45px rgba(0,234,255,.06),
+    0 0 90px rgba(0,234,255,.035);
+
+  pointer-events:none;
+  user-select:none;
+
+  z-index:0;
+}
+
+/* দ্বিতীয় হালকা glow layer */
+
+body::after{
+  content:"TURJO X";
+
+  position:fixed;
+  left:50%;
+  top:58%;
+
+  transform:
+    translate(-50%,-50%);
+
+  font-size:clamp(20px,6vw,42px);
+  font-weight:900;
+  letter-spacing:10px;
+
+  color:rgba(0,234,255,.025);
+
+  text-shadow:
+    0 0 20px rgba(0,234,255,.08);
+
+  pointer-events:none;
+  user-select:none;
+
+  z-index:0;
+}
+
+/* সব মূল UI logo-এর উপরে থাকবে */
+
+#faceLock,
+#mainApp{
+  position:relative;
+  z-index:1;
+}
+
 
 /* ================= FACE LOCK ================= */
 
 #faceLock{
   min-height:100vh;
   display:flex;
-  justify-content:center;
   align-items:center;
+  justify-content:center;
   padding:18px;
 }
 
-.faceContainer{
+.faceBox{
   width:100%;
   max-width:430px;
   text-align:center;
 }
 
-.logo{
-  font-size:30px;
+.faceLogo{
+  font-size:31px;
   font-weight:900;
-  letter-spacing:3px;
+  letter-spacing:4px;
   color:#00eaff;
-  text-shadow:0 0 15px #00eaff;
+  text-shadow:0 0 18px #00eaff;
 }
 
-.sub{
-  color:#9ca3af;
+.faceSub{
   margin:7px 0 18px;
-  font-size:11px;
-  letter-spacing:2px;
+  font-size:10px;
+  letter-spacing:3px;
+  color:#8190a9;
 }
 
-.camera{
+.cameraBox{
   position:relative;
   width:100%;
   aspect-ratio:3/4;
-  overflow:hidden;
-  border-radius:24px;
   background:#000;
-  border:2px solid #26304f;
-  box-shadow:0 0 35px rgba(0,234,255,.2);
+  border-radius:25px;
+  overflow:hidden;
+  border:2px solid #203654;
+  box-shadow:0 0 35px rgba(0,234,255,.18);
 }
 
-.camera video{
+#video{
   width:100%;
   height:100%;
   object-fit:cover;
   transform:scaleX(-1);
 }
 
-.scan{
+.faceCircle{
   position:absolute;
   left:18%;
   right:18%;
-  top:18%;
-  bottom:18%;
-  border:2px solid rgba(0,255,255,.7);
+  top:17%;
+  bottom:17%;
+  border:2px solid rgba(0,234,255,.7);
   border-radius:50%;
-  box-shadow:0 0 25px rgba(0,255,255,.25);
+  box-shadow:0 0 25px rgba(0,234,255,.25);
   pointer-events:none;
 }
 
-.status{
+#faceStatus{
   min-height:52px;
-  margin:16px 0;
+  margin:15px 0;
   padding:14px;
-  border-radius:14px;
-  background:#101526;
+  border-radius:13px;
+  background:#0d1728;
+  color:#d5deed;
   display:flex;
-  justify-content:center;
   align-items:center;
+  justify-content:center;
+  font-size:12px;
   font-weight:bold;
-  font-size:13px;
 }
 
-.green{color:#22c55e}
-.red{color:#ef4444}
+.success{
+  color:#22c55e !important;
+}
+
+.error{
+  color:#ff526b !important;
+}
 
 .faceBtn{
   width:100%;
   border:0;
+  border-radius:12px;
   padding:14px;
   margin-top:9px;
-  border-radius:13px;
-  background:#2563eb;
   color:white;
-  font-size:15px;
-  font-weight:bold;
+  background:linear-gradient(90deg,#00bfe9,#1468ff);
+  font-size:14px;
+  font-weight:900;
   cursor:pointer;
 }
 
 .faceBtn:disabled{
-  opacity:.45;
+  opacity:.4;
   cursor:not-allowed;
 }
 
-.reset{
-  background:#252b3d;
+.resetBtn{
+  background:#202a3b;
 }
 
-/* ================= APP ================= */
+
+/* ================= MAIN APP ================= */
 
 #mainApp{
   display:none;
@@ -133,38 +226,38 @@ body{
 
 .header{
   display:flex;
-  justify-content:space-between;
   align-items:center;
+  justify-content:space-between;
   margin-bottom:18px;
 }
 
-.logoSmall{
+.logo{
+  color:#00eaff;
   font-size:25px;
   font-weight:900;
   letter-spacing:2px;
-  color:#00eaff;
-  text-shadow:0 0 12px #00eaff;
+  text-shadow:0 0 13px #00eaff;
 }
 
-.logoSmall small{
+.logo small{
   display:block;
-  font-size:9px;
+  color:#71819b;
+  font-size:8px;
   letter-spacing:4px;
-  color:#8492aa;
-  margin-top:3px;
+  margin-top:4px;
 }
 
 .profileBtn{
   width:46px;
   height:46px;
+  padding:0;
   border-radius:50%;
   border:1px solid #00eaff;
   background:#07121f;
   color:#00eaff;
-  font-size:20px;
   cursor:pointer;
   overflow:hidden;
-  padding:0;
+  font-size:20px;
 }
 
 .profileBtn img{
@@ -174,20 +267,20 @@ body{
 }
 
 .card{
-  background:rgba(10,18,34,.88);
-  border:1px solid rgba(0,234,255,.25);
+  background:rgba(8,17,32,.92);
+  border:1px solid rgba(0,234,255,.22);
   border-radius:18px;
   padding:18px;
-  margin-bottom:15px;
+  margin-bottom:14px;
   box-shadow:
-    0 0 25px rgba(0,234,255,.08),
-    inset 0 0 20px rgba(255,255,255,.015);
+    0 0 25px rgba(0,234,255,.06),
+    inset 0 0 20px rgba(255,255,255,.01);
 }
 
 .cardTitle{
   color:#00eaff;
-  font-size:12px;
-  font-weight:bold;
+  font-size:11px;
+  font-weight:900;
   letter-spacing:2px;
   margin-bottom:15px;
 }
@@ -201,24 +294,23 @@ body{
 .phoneIcon{
   width:52px;
   height:68px;
-  border:2px solid #00eaff;
-  border-radius:9px;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:25px;
-  flex-shrink:0;
+  border:2px solid #00eaff;
+  border-radius:9px;
+  font-size:24px;
 }
 
 .deviceName{
-  font-size:19px;
-  font-weight:800;
+  font-size:18px;
+  font-weight:900;
   word-break:break-word;
 }
 
 .deviceSub{
-  color:#7d8ca5;
-  font-size:12px;
+  color:#71819a;
+  font-size:10px;
   margin-top:5px;
 }
 
@@ -230,31 +322,31 @@ body{
 }
 
 .infoBox{
-  background:#07101e;
-  border:1px solid rgba(255,255,255,.07);
+  background:#07111f;
   border-radius:10px;
   padding:11px;
+  border:1px solid rgba(255,255,255,.05);
 }
 
 .infoBox span{
   display:block;
-  color:#718098;
-  font-size:9px;
-  letter-spacing:1px;
+  color:#6e7d94;
+  font-size:8px;
   margin-bottom:5px;
+  letter-spacing:1px;
 }
 
 .infoBox b{
-  font-size:12px;
+  font-size:11px;
   word-break:break-word;
 }
 
 .mainBtn{
   width:100%;
-  padding:15px;
   border:0;
   border-radius:12px;
-  background:linear-gradient(90deg,#00cfff,#007bff);
+  padding:15px;
+  background:linear-gradient(90deg,#00cfff,#006dff);
   color:white;
   font-weight:900;
   letter-spacing:1px;
@@ -263,57 +355,57 @@ body{
 
 .secondaryBtn{
   width:100%;
-  padding:14px;
-  border:1px solid rgba(0,234,255,.4);
+  border:1px solid rgba(0,234,255,.35);
   border-radius:12px;
+  padding:14px;
+  margin-top:10px;
   background:#07111f;
   color:#00eaff;
-  font-weight:bold;
+  font-weight:900;
   cursor:pointer;
-  margin-top:10px;
 }
 
 .features{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:10px;
+  gap:9px;
 }
 
 .feature{
-  padding:15px 10px;
-  border-radius:12px;
   background:#07111f;
-  border:1px solid rgba(255,255,255,.06);
+  border-radius:11px;
+  padding:14px 8px;
   text-align:center;
 }
 
 .featureIcon{
-  font-size:25px;
-  margin-bottom:7px;
+  font-size:23px;
+  margin-bottom:6px;
 }
 
 .feature b{
   display:block;
-  font-size:11px;
+  font-size:10px;
 }
 
 .feature span{
   display:block;
-  color:#6f7e96;
-  font-size:9px;
+  color:#697992;
+  font-size:8px;
   margin-top:4px;
 }
 
-/* ================= OVERLAYS ================= */
+
+/* ================= OVERLAY ================= */
 
 .overlay{
   position:fixed;
   inset:0;
-  background:rgba(2,5,12,.94);
-  backdrop-filter:blur(10px);
   z-index:50;
   display:none;
   overflow-y:auto;
+  background:rgba(2,5,12,.96);
+  backdrop-filter:blur(9px);
 }
 
 .overlay.show{
@@ -335,40 +427,40 @@ body{
 
 .panelHeader h2{
   color:#00eaff;
+  font-size:19px;
   letter-spacing:2px;
-  font-size:20px;
 }
 
 .panelHeader p{
-  color:#718098;
-  font-size:11px;
+  color:#71819a;
+  font-size:10px;
   margin-top:7px;
 }
 
 .uploadBox{
-  border:1px dashed #00eaff;
-  border-radius:17px;
   min-height:190px;
+  padding:20px;
   display:flex;
   flex-direction:column;
   justify-content:center;
   align-items:center;
   text-align:center;
+  border:1px dashed #00eaff;
+  border-radius:17px;
   background:#06101c;
-  padding:20px;
 }
 
 .uploadIcon{
-  font-size:48px;
+  font-size:46px;
   margin-bottom:10px;
 }
 
 .uploadBox h3{
-  font-size:15px;
+  font-size:14px;
 }
 
 .uploadBox p{
-  color:#73839b;
+  color:#71819a;
   font-size:10px;
   line-height:1.5;
   margin-top:7px;
@@ -376,17 +468,18 @@ body{
 
 .uploadBtn{
   display:inline-block;
-  margin-top:16px;
-  padding:12px 18px;
+  padding:12px 17px;
+  margin-top:15px;
   border-radius:10px;
-  background:#00bfe9;
-  color:#001019;
+  background:#00c5eb;
+  color:#001018;
+  font-size:10px;
   font-weight:900;
-  font-size:11px;
   cursor:pointer;
 }
 
-#screenFile,#profileFile{
+#screenFile,
+#profileFile{
   display:none;
 }
 
@@ -395,41 +488,53 @@ body{
   width:100%;
   max-height:330px;
   object-fit:contain;
+  margin-top:14px;
   border-radius:12px;
-  margin-top:15px;
-  border:1px solid rgba(0,234,255,.25);
 }
 
 .fileName{
-  color:#00eaff;
-  font-size:11px;
   text-align:center;
-  margin-top:9px;
+  color:#00eaff;
+  font-size:10px;
+  margin-top:8px;
   word-break:break-all;
 }
 
 .analyzeBtn{
   display:none;
-  margin-top:15px;
+  margin-top:14px;
 }
 
-.scanScreen,.invalidScreen,.resultScreen{
+.cancelBtn{
+  width:100%;
+  border:0;
+  border-radius:10px;
+  padding:12px;
+  margin-top:9px;
+  background:#111c2b;
+  color:#8795aa;
+  cursor:pointer;
+}
+
+#scanScreen,
+#invalidScreen,
+#resultScreen{
   display:none;
 }
 
 .scanScreen{
   text-align:center;
-  padding-top:45px;
+  padding-top:50px;
 }
 
 .spinner{
   width:65px;
   height:65px;
-  border-radius:50%;
+  margin:0 auto 20px;
   border:4px solid #16273c;
   border-top-color:#00eaff;
+  border-radius:50%;
   animation:spin 1s linear infinite;
-  margin:0 auto 22px;
 }
 
 @keyframes spin{
@@ -444,75 +549,73 @@ body{
 .progressOuter{
   width:100%;
   height:8px;
-  background:#101c2c;
-  border-radius:10px;
   margin-top:20px;
+  background:#111c2c;
+  border-radius:10px;
   overflow:hidden;
 }
 
 .progressBar{
   width:0%;
   height:100%;
-  background:linear-gradient(90deg,#00eaff,#007bff);
-  transition:.25s;
+  background:#00eaff;
+  transition:.2s;
 }
 
 .progressText{
-  margin-top:9px;
-  color:#8190a8;
-  font-size:11px;
+  margin-top:8px;
+  color:#7889a1;
+  font-size:10px;
 }
 
 .invalidScreen{
   text-align:center;
-  padding-top:45px;
+  padding-top:50px;
 }
 
 .invalidIcon{
-  font-size:55px;
-  margin-bottom:15px;
+  font-size:52px;
+  margin-bottom:12px;
 }
 
 .invalidScreen h3{
-  color:#ff5b72;
+  color:#ff536d;
 }
 
 .invalidScreen p{
-  color:#8491a6;
-  font-size:11px;
+  color:#7b899f;
+  font-size:10px;
   line-height:1.6;
-  margin-top:9px;
+  margin-top:8px;
 }
 
 .resultTitle{
-  text-align:center;
   color:#00ffb3;
-  font-size:22px;
+  text-align:center;
+  font-size:21px;
   font-weight:900;
   letter-spacing:2px;
-  margin-bottom:18px;
+  margin-bottom:17px;
 }
 
 .resultInfo{
   background:#07111f;
-  border:1px solid rgba(0,234,255,.16);
-  border-radius:12px;
-  padding:13px;
-  margin-bottom:9px;
+  border:1px solid rgba(0,234,255,.14);
+  border-radius:11px;
+  padding:12px;
+  margin-bottom:8px;
 }
 
 .resultInfo>span{
   display:block;
-  color:#687991;
-  font-size:9px;
-  letter-spacing:1.5px;
+  color:#6d7d94;
+  font-size:8px;
+  letter-spacing:1.2px;
   margin-bottom:6px;
 }
 
 .resultInfo>b{
-  display:block;
-  color:#fff;
-  font-size:13px;
+  font-size:12px;
   word-break:break-word;
 }
 
@@ -521,7 +624,6 @@ body{
   font-size:25px;
   font-weight:900;
   text-align:center;
-  padding:6px;
 }
 
 .sensiGrid{
@@ -532,23 +634,22 @@ body{
 
 .sensiItem{
   background:#0b1728;
-  border-radius:9px;
   padding:11px;
+  border-radius:9px;
   text-align:center;
 }
 
 .sensiItem span{
   display:block;
-  color:#687991;
+  color:#6b7b93;
   font-size:8px;
-  letter-spacing:1px;
 }
 
 .sensiItem strong{
   display:block;
   color:#00eaff;
-  font-size:23px;
-  margin-top:5px;
+  font-size:22px;
+  margin-top:4px;
 }
 
 .closeBtn{
@@ -563,44 +664,37 @@ body{
   cursor:pointer;
 }
 
-.cancelBtn{
-  width:100%;
-  padding:12px;
-  margin-top:9px;
-  background:#101c2b;
-  color:#9aa8bb;
-  border:0;
-  border-radius:10px;
-  cursor:pointer;
-}
+
+/* ================= DEVICE INFO ================= */
 
 .deviceInfoRow{
   display:flex;
   justify-content:space-between;
   gap:15px;
-  padding:12px 0;
+  padding:13px 0;
   border-bottom:1px solid rgba(255,255,255,.06);
 }
 
 .deviceInfoRow span{
-  color:#708098;
+  color:#708099;
   font-size:10px;
 }
 
 .deviceInfoRow b{
+  font-size:10px;
   text-align:right;
-  font-size:11px;
   word-break:break-word;
 }
 
-/* PROFILE */
+
+/* ================= PROFILE ================= */
 
 .profileOverlay{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.65);
   z-index:80;
   display:none;
+  background:rgba(0,0,0,.7);
 }
 
 .profileOverlay.show{
@@ -614,10 +708,9 @@ body{
   bottom:0;
   max-width:480px;
   margin:auto;
-  background:#091321;
-  border:1px solid rgba(0,234,255,.2);
-  border-radius:22px 22px 0 0;
   padding:22px;
+  background:#091321;
+  border-radius:22px 22px 0 0;
 }
 
 .profileSheet h3{
@@ -627,11 +720,11 @@ body{
 }
 
 .profilePhoto{
+  display:block;
   width:105px;
   height:105px;
-  border-radius:50%;
   margin:auto;
-  display:block;
+  border-radius:50%;
   object-fit:cover;
   border:2px solid #00eaff;
   background:#07111f;
@@ -640,14 +733,14 @@ body{
 .photoBtn{
   display:block;
   width:100%;
-  text-align:center;
   padding:13px;
-  background:#00bfe9;
-  color:#001019;
-  border-radius:11px;
-  font-size:11px;
-  font-weight:900;
   margin-top:15px;
+  border-radius:11px;
+  background:#00bfe9;
+  color:#001018;
+  text-align:center;
+  font-size:10px;
+  font-weight:900;
   cursor:pointer;
 }
 </style>
@@ -655,556 +748,610 @@ body{
 
 <body>
 
-<!-- =========================================================
-     FACE LOCK
-========================================================= -->
+<!-- ================= FACE LOGIN ================= -->
 
-<section id="faceLock">
+<div id="faceLock">
 
-  <div class="faceContainer">
+  <div class="faceBox">
 
-    <div class="logo">TURJO X</div>
+    <div class="faceLogo">TURJO X</div>
 
-    <div class="sub">
-      FACE LOCK SECURITY
+    <div class="faceSub">
+      OWNER FACE SECURITY
     </div>
 
-    <div class="camera">
-      <video id="video" autoplay muted playsinline></video>
-      <div class="scan"></div>
+    <div class="cameraBox">
+
+      <video
+        id="video"
+        autoplay
+        muted
+        playsinline
+      ></video>
+
+      <div class="faceCircle"></div>
+
     </div>
 
-    <div id="status" class="status">
-      Loading face system...
+    <div id="faceStatus">
+      Loading face recognition...
     </div>
 
-    <button id="registerBtn" class="faceBtn">
+    <button
+      id="registerBtn"
+      class="faceBtn"
+      disabled
+    >
       REGISTER OWNER FACE
     </button>
 
-    <button id="verifyBtn" class="faceBtn" disabled>
+    <button
+      id="verifyBtn"
+      class="faceBtn"
+      disabled
+    >
       VERIFY FACE
     </button>
 
-    <button id="resetBtn" class="faceBtn reset">
+    <button
+      id="resetBtn"
+      class="faceBtn resetBtn"
+    >
       RESET OWNER FACE
     </button>
 
   </div>
 
-</section>
-
-
-<!-- =========================================================
-     MAIN TURJO X APP
-========================================================= -->
-
-<section id="mainApp">
-
-<div class="app">
-
-  <div class="header">
-
-    <div class="logoSmall">
-      TURJO X
-      <small>SENSITIVITY SYSTEM</small>
-    </div>
-
-    <button
-      class="profileBtn"
-      onclick="openProfile()"
-      id="profileBtn"
-    >👤</button>
-
-  </div>
-
-
-  <!-- DEVICE -->
-
-  <div class="card">
-
-    <div class="cardTitle">
-      ANALYZED DEVICE
-    </div>
-
-    <div class="deviceTop">
-
-      <div class="phoneIcon">📱</div>
-
-      <div>
-
-        <div
-          class="deviceName"
-          id="homeDeviceName"
-        >
-          No screenshot analyzed
-        </div>
-
-        <div class="deviceSub">
-          Screenshot based device information
-        </div>
-
-      </div>
-
-    </div>
-
-    <div class="deviceGrid">
-
-      <div class="infoBox">
-        <span>RAM</span>
-        <b id="homeRam">--</b>
-      </div>
-
-      <div class="infoBox">
-        <span>MODEL</span>
-        <b id="homeModel">--</b>
-      </div>
-
-      <div class="infoBox">
-        <span>ANDROID</span>
-        <b id="homeAndroid">--</b>
-      </div>
-
-      <div class="infoBox">
-        <span>BUILD</span>
-        <b id="homeBuild">--</b>
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- ANALYZER -->
-
-  <div class="card">
-
-    <div class="cardTitle">
-      SENSITIVITY ANALYZER
-    </div>
-
-    <button
-      class="mainBtn"
-      onclick="startAnalysis()"
-    >
-      ANALYZE SENSITIVITY
-    </button>
-
-    <button
-      class="secondaryBtn"
-      onclick="showDeviceInfo()"
-    >
-      DEVICE INFORMATION
-    </button>
-
-  </div>
-
-
-  <!-- FEATURES -->
-
-  <div class="card">
-
-    <div class="cardTitle">
-      FEATURES
-    </div>
-
-    <div class="features">
-
-      <div class="feature">
-        <div class="featureIcon">🎯</div>
-        <b>SMART ANALYSIS</b>
-        <span>Screenshot OCR</span>
-      </div>
-
-      <div class="feature">
-        <div class="featureIcon">⚡</div>
-        <b>AUTO DPI</b>
-        <span>Recommendation</span>
-      </div>
-
-      <div class="feature">
-        <div class="featureIcon">📱</div>
-        <b>DEVICE DATA</b>
-        <span>From screenshot</span>
-      </div>
-
-      <div class="feature">
-        <div class="featureIcon">🎮</div>
-        <b>SENSITIVITY</b>
-        <span>Maximum 200</span>
-      </div>
-
-    </div>
-
-  </div>
-
 </div>
 
 
-<!-- =========================================================
-     ANALYSIS OVERLAY
-========================================================= -->
+<!-- ================= MAIN APP ================= -->
 
-<div class="overlay" id="overlay">
+<div id="mainApp">
 
-  <div class="panel">
+  <div class="app">
 
-    <div class="panelHeader">
+    <div class="header">
 
-      <h2>TURJO X ANALYSIS</h2>
-
-      <p>
-        Settings → About Phone / Device Information
-      </p>
-
-    </div>
-
-
-    <!-- INPUT -->
-
-    <div id="inputScreen">
-
-      <div class="uploadBox">
-
-        <div class="uploadIcon">📸</div>
-
-        <h3>
-          SELECT DEVICE INFO SCREENSHOT
-        </h3>
-
-        <p>
-          Use a screenshot from Settings →
-          About Phone / Device Information.
-        </p>
-
-        <label
-          for="screenFile"
-          class="uploadBtn"
-        >
-          SELECT SCREENSHOT
-        </label>
-
-        <input
-          id="screenFile"
-          type="file"
-          accept="image/*"
-        >
-
-      </div>
-
-      <img
-        id="preview"
-        class="preview"
-      >
-
-      <div
-        id="fileName"
-        class="fileName"
-      ></div>
-
-      <button
-        id="analyzeBtn"
-        class="mainBtn analyzeBtn"
-        onclick="runOCR()"
-      >
-        START ANALYSIS
-      </button>
-
-      <button
-        class="cancelBtn"
-        onclick="closeAnalysis()"
-      >
-        CANCEL
-      </button>
-
-    </div>
-
-
-    <!-- SCAN -->
-
-    <div
-      id="scanScreen"
-      class="scanScreen"
-    >
-
-      <div class="spinner"></div>
-
-      <h3>
-        ANALYZING PHONE
-      </h3>
-
-      <p
-        id="scanStatus"
-        class="progressText"
-      >
-        Reading screenshot...
-      </p>
-
-      <div class="progressOuter">
-
-        <div
-          id="progressBar"
-          class="progressBar"
-        ></div>
-
-      </div>
-
-      <div
-        id="progressText"
-        class="progressText"
-      >
-        0%
-      </div>
-
-    </div>
-
-
-    <!-- INVALID -->
-
-    <div
-      id="invalidScreen"
-      class="invalidScreen"
-    >
-
-      <div class="invalidIcon">❌</div>
-
-      <h3>INVALID SCREENSHOT</h3>
-
-      <p>
-        Device Information শনাক্ত করা যায়নি।
-        Settings → About Phone / Device Information
-        থেকে screenshot নির্বাচন করুন।
-      </p>
-
-      <button
-        class="mainBtn"
-        style="margin-top:20px"
-        onclick="tryAgain()"
-      >
-        SELECT AGAIN
-      </button>
-
-    </div>
-
-
-    <!-- RESULT -->
-
-    <div
-      id="resultScreen"
-      class="resultScreen"
-    >
-
-      <div
-        class="resultTitle"
-        id="resultTitle"
-      >
-        ANALYSIS COMPLETE
-      </div>
-
-      <div class="resultInfo">
-        <span>DEVICE NAME</span>
-        <b id="rDeviceName">Not detected</b>
-      </div>
-
-      <div class="resultInfo">
-        <span>MODEL</span>
-        <b id="rModel">Not detected</b>
-      </div>
-
-      <div class="resultInfo">
-        <span>RAM</span>
-        <b id="rRam">Not detected</b>
-      </div>
-
-      <div class="resultInfo">
-        <span>ANDROID VERSION</span>
-        <b id="rAndroid">Not detected</b>
-      </div>
-
-      <div class="resultInfo">
-        <span>BUILD NUMBER</span>
-        <b id="rBuild">Not detected</b>
-      </div>
-
-      <div class="resultInfo">
-
-        <span>AUTO DPI RECOMMENDATION</span>
-
-        <div
-          id="dpi"
-          class="autoDpi"
-        >--</div>
-
-      </div>
-
-      <div class="resultInfo">
-
-        <span>
-          GENERATED SENSITIVITY — MAX 200
-        </span>
-
-        <div class="sensiGrid">
-
-          <div class="sensiItem">
-            <span>GENERAL</span>
-            <strong id="rGeneral">--</strong>
-          </div>
-
-          <div class="sensiItem">
-            <span>RED DOT</span>
-            <strong id="rRed">--</strong>
-          </div>
-
-          <div class="sensiItem">
-            <span>2X SCOPE</span>
-            <strong id="r2x">--</strong>
-          </div>
-
-          <div class="sensiItem">
-            <span>4X SCOPE</span>
-            <strong id="r4x">--</strong>
-          </div>
-
-          <div class="sensiItem">
-            <span>SNIPER</span>
-            <strong id="rSniper">--</strong>
-          </div>
-
-          <div class="sensiItem">
-            <span>FREE LOOK</span>
-            <strong id="rFree">--</strong>
-          </div>
-
-        </div>
-
+      <div class="logo">
+        TURJO X
+        <small>SENSITIVITY SYSTEM</small>
       </div>
 
       <button
-        class="closeBtn"
-        id="doneBtn"
-        onclick="doneAnalysis()"
-      >
-        DONE
-      </button>
+        class="profileBtn"
+        id="profileBtn"
+        onclick="openProfile()"
+      >👤</button>
 
     </div>
 
-  </div>
-
-</div>
-
-
-<!-- =========================================================
-     DEVICE INFO
-========================================================= -->
-
-<div
-  class="overlay"
-  id="deviceInfoOverlay"
->
-
-  <div class="panel">
-
-    <div class="panelHeader">
-
-      <h2>DEVICE INFORMATION</h2>
-
-      <p>Browser information</p>
-
-    </div>
 
     <div class="card">
 
-      <div class="deviceInfoRow">
-        <span>SCREEN</span>
-        <b id="diScreen">--</b>
+      <div class="cardTitle">
+        ANALYZED DEVICE
       </div>
 
-      <div class="deviceInfoRow">
-        <span>PIXEL RATIO</span>
-        <b id="diRatio">--</b>
+      <div class="deviceTop">
+
+        <div class="phoneIcon">
+          📱
+        </div>
+
+        <div>
+
+          <div
+            class="deviceName"
+            id="homeDeviceName"
+          >
+            No screenshot analyzed
+          </div>
+
+          <div class="deviceSub">
+            Screenshot based device information
+          </div>
+
+        </div>
+
       </div>
 
-      <div class="deviceInfoRow">
-        <span>LANGUAGE</span>
-        <b id="diLanguage">--</b>
+      <div class="deviceGrid">
+
+        <div class="infoBox">
+          <span>RAM</span>
+          <b id="homeRam">--</b>
+        </div>
+
+        <div class="infoBox">
+          <span>MODEL</span>
+          <b id="homeModel">--</b>
+        </div>
+
+        <div class="infoBox">
+          <span>ANDROID</span>
+          <b id="homeAndroid">--</b>
+        </div>
+
+        <div class="infoBox">
+          <span>BUILD</span>
+          <b id="homeBuild">--</b>
+        </div>
+
       </div>
 
     </div>
 
-    <button
-      class="closeBtn"
-      onclick="closeDeviceInfo()"
-    >
-      CLOSE
-    </button>
+
+    <div class="card">
+
+      <div class="cardTitle">
+        SENSITIVITY ANALYZER
+      </div>
+
+      <button
+        class="mainBtn"
+        onclick="startAnalysis()"
+      >
+        ANALYZE SENSITIVITY
+      </button>
+
+      <button
+        class="secondaryBtn"
+        onclick="showDeviceInfo()"
+      >
+        DEVICE INFORMATION
+      </button>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="cardTitle">
+        FEATURES
+      </div>
+
+      <div class="features">
+
+        <div class="feature">
+          <div class="featureIcon">🎯</div>
+          <b>SMART ANALYSIS</b>
+          <span>Screenshot OCR</span>
+        </div>
+
+        <div class="feature">
+          <div class="featureIcon">⚡</div>
+          <b>AUTO DPI</b>
+          <span>Recommendation</span>
+        </div>
+
+        <div class="feature">
+          <div class="featureIcon">📱</div>
+          <b>DEVICE DATA</b>
+          <span>From screenshot</span>
+        </div>
+
+        <div class="feature">
+          <div class="featureIcon">🎮</div>
+          <b>SENSITIVITY</b>
+          <span>Maximum 200</span>
+        </div>
+
+      </div>
+
+    </div>
 
   </div>
 
-</div>
 
-
-<!-- =========================================================
-     PROFILE
-========================================================= -->
-
-<div
-  class="profileOverlay"
-  id="profileOverlay"
-  onclick="outsideProfile(event)"
->
+  <!-- ================= ANALYSIS ================= -->
 
   <div
-    class="profileSheet"
-    onclick="event.stopPropagation()"
+    class="overlay"
+    id="overlay"
   >
 
-    <h3>TURJO X PROFILE</h3>
+    <div class="panel">
 
-    <img
-      id="profilePhoto"
-      class="profilePhoto"
-      alt="Profile Photo"
+      <div class="panelHeader">
+
+        <h2>TURJO X ANALYSIS</h2>
+
+        <p>
+          Settings → About Phone / Device Information
+        </p>
+
+      </div>
+
+
+      <div id="inputScreen">
+
+        <div class="uploadBox">
+
+          <div class="uploadIcon">
+            📸
+          </div>
+
+          <h3>
+            SELECT DEVICE INFO SCREENSHOT
+          </h3>
+
+          <p>
+            Select a screenshot from
+            About Phone / Device Information.
+          </p>
+
+          <label
+            class="uploadBtn"
+            for="screenFile"
+          >
+            SELECT SCREENSHOT
+          </label>
+
+          <input
+            id="screenFile"
+            type="file"
+            accept="image/*"
+          >
+
+        </div>
+
+
+        <img
+          id="preview"
+          class="preview"
+        >
+
+
+        <div
+          id="fileName"
+          class="fileName"
+        ></div>
+
+
+        <button
+          id="analyzeBtn"
+          class="mainBtn analyzeBtn"
+          onclick="runOCR()"
+        >
+          START ANALYSIS
+        </button>
+
+
+        <button
+          class="cancelBtn"
+          onclick="closeAnalysis()"
+        >
+          CANCEL
+        </button>
+
+      </div>
+
+
+      <!-- SCAN -->
+
+      <div
+        id="scanScreen"
+        class="scanScreen"
+      >
+
+        <div class="spinner"></div>
+
+        <h3>
+          ANALYZING PHONE
+        </h3>
+
+        <p
+          id="scanStatus"
+          class="progressText"
+        >
+          Reading screenshot...
+        </p>
+
+        <div class="progressOuter">
+
+          <div
+            id="progressBar"
+            class="progressBar"
+          ></div>
+
+        </div>
+
+        <div
+          id="progressText"
+          class="progressText"
+        >
+          0%
+        </div>
+
+      </div>
+
+
+      <!-- INVALID -->
+
+      <div
+        id="invalidScreen"
+        class="invalidScreen"
+      >
+
+        <div class="invalidIcon">
+          ❌
+        </div>
+
+        <h3>
+          INVALID SCREENSHOT
+        </h3>
+
+        <p>
+          Device Information শনাক্ত করা যায়নি।
+          About Phone / Device Information
+          থেকে সঠিক screenshot নির্বাচন করুন।
+        </p>
+
+        <button
+          class="mainBtn"
+          style="margin-top:20px"
+          onclick="tryAgain()"
+        >
+          SELECT AGAIN
+        </button>
+
+      </div>
+
+
+      <!-- RESULT -->
+
+      <div id="resultScreen">
+
+        <div
+          class="resultTitle"
+          id="resultTitle"
+        >
+          ANALYSIS COMPLETE
+        </div>
+
+
+        <div class="resultInfo">
+          <span>DEVICE NAME</span>
+          <b id="rDeviceName">Not detected</b>
+        </div>
+
+
+        <div class="resultInfo">
+          <span>MODEL</span>
+          <b id="rModel">Not detected</b>
+        </div>
+
+
+        <div class="resultInfo">
+          <span>RAM</span>
+          <b id="rRam">Not detected</b>
+        </div>
+
+
+        <div class="resultInfo">
+          <span>ANDROID VERSION</span>
+          <b id="rAndroid">Not detected</b>
+        </div>
+
+
+        <div class="resultInfo">
+          <span>BUILD NUMBER</span>
+          <b id="rBuild">Not detected</b>
+        </div>
+
+
+        <div class="resultInfo">
+
+          <span>
+            AUTO DPI RECOMMENDATION
+          </span>
+
+          <div
+            class="autoDpi"
+            id="dpi"
+          >
+            --
+          </div>
+
+        </div>
+
+
+        <div class="resultInfo">
+
+          <span>
+            GENERATED SENSITIVITY — MAX 200
+          </span>
+
+          <div class="sensiGrid">
+
+            <div class="sensiItem">
+              <span>GENERAL</span>
+              <strong id="rGeneral">--</strong>
+            </div>
+
+            <div class="sensiItem">
+              <span>RED DOT</span>
+              <strong id="rRed">--</strong>
+            </div>
+
+            <div class="sensiItem">
+              <span>2X SCOPE</span>
+              <strong id="r2x">--</strong>
+            </div>
+
+            <div class="sensiItem">
+              <span>4X SCOPE</span>
+              <strong id="r4x">--</strong>
+            </div>
+
+            <div class="sensiItem">
+              <span>SNIPER</span>
+              <strong id="rSniper">--</strong>
+            </div>
+
+            <div class="sensiItem">
+              <span>FREE LOOK</span>
+              <strong id="rFree">--</strong>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- DONE -->
+
+        <button
+          class="closeBtn"
+          id="doneBtn"
+          onclick="doneAnalysis()"
+        >
+          DONE — RUN AGAIN
+        </button>
+
+
+        <!-- GAME -->
+
+        <button
+          class="closeBtn"
+          id="gameBtn"
+          onclick="openFreeFire()"
+          style="
+            display:none;
+            background:linear-gradient(90deg,#00eaff,#006dff);
+            color:#001018;
+            border:none;
+          "
+        >
+          🎮 OPEN FREE FIRE
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================= DEVICE INFORMATION ================= -->
+
+  <div
+    class="overlay"
+    id="deviceInfoOverlay"
+  >
+
+    <div class="panel">
+
+      <div class="panelHeader">
+
+        <h2>DEVICE INFORMATION</h2>
+
+        <p>
+          Current browser information
+        </p>
+
+      </div>
+
+
+      <div class="card">
+
+        <div class="deviceInfoRow">
+          <span>SCREEN</span>
+          <b id="diScreen">--</b>
+        </div>
+
+        <div class="deviceInfoRow">
+          <span>PIXEL RATIO</span>
+          <b id="diRatio">--</b>
+        </div>
+
+        <div class="deviceInfoRow">
+          <span>LANGUAGE</span>
+          <b id="diLanguage">--</b>
+        </div>
+
+      </div>
+
+
+      <button
+        class="closeBtn"
+        onclick="closeDeviceInfo()"
+      >
+        CLOSE
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================= PROFILE ================= -->
+
+  <div
+    class="profileOverlay"
+    id="profileOverlay"
+    onclick="outsideProfile(event)"
+  >
+
+    <div
+      class="profileSheet"
+      onclick="event.stopPropagation()"
     >
 
-    <label
-      for="profileFile"
-      class="photoBtn"
-    >
-      SELECT PROFILE PHOTO
-    </label>
+      <h3>
+        TURJO X PROFILE
+      </h3>
 
-    <input
-      id="profileFile"
-      type="file"
-      accept="image/*"
-    >
 
-    <button
-      class="cancelBtn"
-      onclick="closeProfile()"
-    >
-      CLOSE
-    </button>
+      <img
+        id="profilePhoto"
+        class="profilePhoto"
+        alt="Profile"
+      >
+
+
+      <label
+        class="photoBtn"
+        for="profileFile"
+      >
+        SELECT PROFILE PHOTO
+      </label>
+
+
+      <input
+        id="profileFile"
+        type="file"
+        accept="image/*"
+      >
+
+
+      <button
+        class="cancelBtn"
+        onclick="closeProfile()"
+      >
+        CLOSE
+      </button>
+
+    </div>
 
   </div>
 
 </div>
-
-</section>
 
 
 <script>
 
-/* =========================================================
-   FACE LOCK SYSTEM
-========================================================= */
+/* =====================================================
+   FACE LOCK
+===================================================== */
 
 const video =
   document.getElementById("video");
 
 const faceStatus =
-  document.getElementById("status");
+  document.getElementById("faceStatus");
 
 const registerBtn =
   document.getElementById("registerBtn");
@@ -1221,7 +1368,7 @@ const faceLock =
 const mainApp =
   document.getElementById("mainApp");
 
-const STORAGE_KEY =
+const FACE_KEY =
   "TURJO_X_OWNER_FACE";
 
 const MODEL_URL =
@@ -1229,35 +1376,36 @@ const MODEL_URL =
 
 let modelsLoaded=false;
 let cameraReady=false;
-let faceBusy=false;
+let faceProcessing=false;
 
 
 /* STATUS */
 
-function setFaceStatus(message,type="normal"){
+function faceMessage(message,type=""){
 
   faceStatus.textContent=message;
 
   faceStatus.classList.remove(
-    "green",
-    "red"
+    "success",
+    "error"
   );
 
-  if(type==="green"){
-    faceStatus.classList.add("green");
+  if(type==="success"){
+    faceStatus.classList.add("success");
   }
 
-  if(type==="red"){
-    faceStatus.classList.add("red");
+  if(type==="error"){
+    faceStatus.classList.add("error");
   }
+
 }
 
 
-/* MODELS */
+/* LOAD MODELS */
 
-async function loadFaceModels(){
+async function loadModels(){
 
-  setFaceStatus(
+  faceMessage(
     "Loading face recognition..."
   );
 
@@ -1274,17 +1422,17 @@ async function loadFaceModels(){
 
     modelsLoaded=true;
 
-    setFaceStatus(
-      "Face system ready."
+    faceMessage(
+      "Face system ready. Starting camera..."
     );
 
   }catch(error){
 
     console.error(error);
 
-    setFaceStatus(
+    faceMessage(
       "Face model loading failed.",
-      "red"
+      "error"
     );
 
   }
@@ -1296,17 +1444,15 @@ async function loadFaceModels(){
 
 async function startCamera(){
 
-  if(
-    !navigator.mediaDevices ||
-    !navigator.mediaDevices.getUserMedia
-  ){
+  if(!navigator.mediaDevices){
 
-    setFaceStatus(
-      "Camera is not supported here.",
-      "red"
+    faceMessage(
+      "Camera is not supported by this browser.",
+      "error"
     );
 
     return;
+
   }
 
   try{
@@ -1328,38 +1474,71 @@ async function startCamera(){
 
     cameraReady=true;
 
+    registerBtn.disabled=false;
     verifyBtn.disabled=false;
 
-    setFaceStatus(
-      "Camera ready — show your face."
-    );
+    if(localStorage.getItem(FACE_KEY)){
+
+      registerBtn.disabled=true;
+
+      faceMessage(
+        "Owner face found. Press VERIFY FACE."
+      );
+
+    }else{
+
+      faceMessage(
+        "No owner face found. Register your face."
+      );
+
+    }
 
   }catch(error){
 
     console.error(error);
 
-    setFaceStatus(
-      "Camera permission was not allowed.",
-      "red"
-    );
+    if(error.name==="NotAllowedError"){
+
+      faceMessage(
+        "Camera permission denied. Allow camera permission and reload.",
+        "error"
+      );
+
+    }else if(error.name==="NotFoundError"){
+
+      faceMessage(
+        "No camera was found.",
+        "error"
+      );
+
+    }else{
+
+      faceMessage(
+        "Unable to start camera.",
+        "error"
+      );
+
+    }
 
   }
 
 }
 
 
-/* FACE DESCRIPTOR */
+/* GET FACE */
 
-async function getFaceDescriptor(){
+async function getDescriptor(){
 
   if(
-    !modelsLoaded ||
+    !modelsLoaded||
     !cameraReady
   ){
+
     return null;
+
   }
 
-  const result =
+  const detection =
     await faceapi
       .detectSingleFace(
         video,
@@ -1371,312 +1550,395 @@ async function getFaceDescriptor(){
       .withFaceLandmarks()
       .withFaceDescriptor();
 
-  if(!result){
+  if(!detection){
+
     return null;
+
   }
 
-  return result.descriptor;
+  return detection.descriptor;
+
 }
 
 
 /* DISTANCE */
 
-function faceDistance(a,b){
+function distance(a,b){
 
-  let total=0;
+  let sum=0;
 
-  for(
-    let i=0;
-    i<a.length;
-    i++
-  ){
+  for(let i=0;i<a.length;i++){
 
     const d=a[i]-b[i];
 
-    total+=d*d;
+    sum+=d*d;
+
   }
 
-  return Math.sqrt(total);
+  return Math.sqrt(sum);
+
 }
 
 
 /* REGISTER */
 
-registerBtn.addEventListener(
-  "click",
-  async function(){
+registerBtn.onclick=async function(){
 
-    if(faceBusy)return;
+  if(faceProcessing)return;
 
-    faceBusy=true;
-    registerBtn.disabled=true;
+  if(localStorage.getItem(FACE_KEY)){
 
-    try{
+    faceMessage(
+      "Owner already registered.",
+      "error"
+    );
 
-      const existing =
-        localStorage.getItem(STORAGE_KEY);
+    return;
 
-      if(existing){
+  }
 
-        setFaceStatus(
-          "Owner already registered. Reset first.",
-          "red"
-        );
+  faceProcessing=true;
+  registerBtn.disabled=true;
 
-        return;
-      }
+  try{
 
-      setFaceStatus(
-        "Detecting your face..."
+    faceMessage(
+      "Detecting your face..."
+    );
+
+    const descriptor=
+      await getDescriptor();
+
+    if(!descriptor){
+
+      faceMessage(
+        "Face not detected. Keep your face inside the circle.",
+        "error"
       );
 
-      const descriptor =
-        await getFaceDescriptor();
-
-      if(!descriptor){
-
-        setFaceStatus(
-          "No face detected. Look at the camera.",
-          "red"
-        );
-
-        return;
-      }
-
-      localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(
-          Array.from(descriptor)
-        )
-      );
-
-      setFaceStatus(
-        "OWNER FACE REGISTERED ✓",
-        "green"
-      );
-
-    }catch(error){
-
-      console.error(error);
-
-      setFaceStatus(
-        "Owner registration failed.",
-        "red"
-      );
-
-    }finally{
-
-      faceBusy=false;
-      registerBtn.disabled=false;
+      return;
 
     }
 
+    localStorage.setItem(
+      FACE_KEY,
+      JSON.stringify(
+        Array.from(descriptor)
+      )
+    );
+
+    registerBtn.disabled=true;
+
+    faceMessage(
+      "OWNER FACE REGISTERED ✓ — Now press VERIFY FACE.",
+      "success"
+    );
+
+  }catch(error){
+
+    console.error(error);
+
+    faceMessage(
+      "Registration failed.",
+      "error"
+    );
+
+  }finally{
+
+    faceProcessing=false;
+
   }
-);
+
+};
 
 
 /* VERIFY */
 
-verifyBtn.addEventListener(
-  "click",
-  async function(){
+verifyBtn.onclick=async function(){
 
-    if(faceBusy)return;
+  if(faceProcessing)return;
 
-    faceBusy=true;
-    verifyBtn.disabled=true;
+  const saved=
+    localStorage.getItem(FACE_KEY);
 
-    try{
+  if(!saved){
 
-      const saved =
-        localStorage.getItem(STORAGE_KEY);
+    faceMessage(
+      "No owner face registered. Register first.",
+      "error"
+    );
 
-      if(!saved){
+    return;
 
-        setFaceStatus(
-          "No owner face registered.",
-          "red"
-        );
+  }
 
-        return;
-      }
+  faceProcessing=true;
+  verifyBtn.disabled=true;
 
-      setFaceStatus(
-        "Matching owner face..."
+  try{
+
+    faceMessage(
+      "Checking owner face..."
+    );
+
+    const current=
+      await getDescriptor();
+
+    if(!current){
+
+      faceMessage(
+        "Face not detected.",
+        "error"
       );
 
-      const ownerDescriptor =
-        new Float32Array(
-          JSON.parse(saved)
-        );
-
-      const currentDescriptor =
-        await getFaceDescriptor();
-
-      if(!currentDescriptor){
-
-        setFaceStatus(
-          "No face detected.",
-          "red"
-        );
-
-        return;
-      }
-
-      const distance =
-        faceDistance(
-          ownerDescriptor,
-          currentDescriptor
-        );
-
-      console.log(
-        "Face distance:",
-        distance
-      );
-
-      const MATCH_THRESHOLD=.50;
-
-      if(distance<MATCH_THRESHOLD){
-
-        setFaceStatus(
-          "ACCESS GRANTED ✓",
-          "green"
-        );
-
-        /* FACE LOCK থেকে APP */
-
-        setTimeout(function(){
-
-          faceLock.style.display="none";
-          mainApp.style.display="block";
-
-        },500);
-
-      }else{
-
-        setFaceStatus(
-          "ACCESS DENIED ✕",
-          "red"
-        );
-
-      }
-
-    }catch(error){
-
-      console.error(error);
-
-      setFaceStatus(
-        "Face verification error.",
-        "red"
-      );
-
-    }finally{
-
-      faceBusy=false;
-      verifyBtn.disabled=false;
+      return;
 
     }
 
+    const owner=
+      new Float32Array(
+        JSON.parse(saved)
+      );
+
+    const matchDistance=
+      distance(
+        owner,
+        current
+      );
+
+    console.log(
+      "Face distance:",
+      matchDistance
+    );
+
+    if(matchDistance < 0.50){
+
+      faceMessage(
+        "ACCESS GRANTED ✓",
+        "success"
+      );
+
+      setTimeout(function(){
+
+        faceLock.style.display="none";
+        mainApp.style.display="block";
+
+        stopCamera();
+
+      },500);
+
+    }else{
+
+      faceMessage(
+        "ACCESS DENIED ✕ — Face does not match.",
+        "error"
+      );
+
+    }
+
+  }catch(error){
+
+    console.error(error);
+
+    faceMessage(
+      "Verification failed.",
+      "error"
+    );
+
+  }finally{
+
+    faceProcessing=false;
+    verifyBtn.disabled=false;
+
   }
-);
+
+};
 
 
 /* RESET */
 
-resetBtn.addEventListener(
-  "click",
-  function(){
+resetBtn.onclick=async function(){
 
-    const ok =
-      confirm(
-        "Reset the registered owner face?"
-      );
+  const saved=
+    localStorage.getItem(FACE_KEY);
 
-    if(!ok)return;
+  if(!saved){
 
-    localStorage.removeItem(
-      STORAGE_KEY
+    faceMessage(
+      "No registered owner face.",
+      "error"
     );
 
-    mainApp.style.display="none";
-    faceLock.style.display="flex";
-
-    setFaceStatus(
-      "Owner face reset. Register again."
-    );
+    return;
 
   }
-);
+
+  if(faceProcessing)return;
+
+  faceProcessing=true;
+  resetBtn.disabled=true;
+
+  try{
+
+    faceMessage(
+      "Verify your owner face before reset..."
+    );
+
+    const current=
+      await getDescriptor();
+
+    if(!current){
+
+      faceMessage(
+        "Face not detected.",
+        "error"
+      );
+
+      return;
+
+    }
+
+    const owner=
+      new Float32Array(
+        JSON.parse(saved)
+      );
+
+    const d=
+      distance(
+        owner,
+        current
+      );
+
+    if(d < 0.50){
+
+      localStorage.removeItem(FACE_KEY);
+
+      registerBtn.disabled=false;
+
+      faceMessage(
+        "Owner face reset. Register again.",
+        "success"
+      );
+
+    }else{
+
+      faceMessage(
+        "Reset denied — owner face does not match.",
+        "error"
+      );
+
+    }
+
+  }catch(error){
+
+    console.error(error);
+
+    faceMessage(
+      "Reset failed.",
+      "error"
+    );
+
+  }finally{
+
+    faceProcessing=false;
+    resetBtn.disabled=false;
+
+  }
+
+};
 
 
-/* START FACE SYSTEM */
+/* STOP CAMERA */
+
+function stopCamera(){
+
+  if(video.srcObject){
+
+    video.srcObject
+      .getTracks()
+      .forEach(
+        track=>track.stop()
+      );
+
+  }
+
+}
+
+
+/* INIT FACE */
 
 (async function(){
 
-  await loadFaceModels();
+  await loadModels();
 
   if(modelsLoaded){
+
     await startCamera();
+
   }
 
 })();
 
 
-/* =========================================================
+/* =====================================================
    SENSITIVITY ANALYZER
-========================================================= */
+===================================================== */
 
 let selectedImage=null;
 let analysisRound=0;
 let analysisRunning=false;
 
-const overlay =
+const overlay=
   document.getElementById("overlay");
 
-const inputScreen =
+const inputScreen=
   document.getElementById("inputScreen");
 
-const scanScreen =
+const scanScreen=
   document.getElementById("scanScreen");
 
-const invalidScreen =
+const invalidScreen=
   document.getElementById("invalidScreen");
 
-const resultScreen =
+const resultScreen=
   document.getElementById("resultScreen");
 
-const screenFile =
+const screenFile=
   document.getElementById("screenFile");
 
-const preview =
+const preview=
   document.getElementById("preview");
 
-const fileName =
+const fileName=
   document.getElementById("fileName");
 
-const analyzeBtn =
+const analyzeBtn=
   document.getElementById("analyzeBtn");
 
-const progressBar =
+const progressBar=
   document.getElementById("progressBar");
 
-const progressText =
+const progressText=
   document.getElementById("progressText");
 
-const scanStatus =
+const scanStatus=
   document.getElementById("scanStatus");
 
-const doneBtn =
+const doneBtn=
   document.getElementById("doneBtn");
 
-const resultTitle =
-  document.getElementById("resultTitle");
+const gameBtn=
+  document.getElementById("gameBtn");
 
+
+/* OPEN ANALYZER */
 
 function startAnalysis(){
 
   analysisRound=0;
   analysisRunning=false;
+
+  gameBtn.style.display="none";
 
   overlay.classList.add("show");
 
@@ -1688,50 +1950,45 @@ function startAnalysis(){
 }
 
 
-screenFile.addEventListener(
-  "change",
-  function(){
+/* SELECT IMAGE */
 
-    const file=
-      this.files&&this.files[0];
+screenFile.onchange=function(){
 
-    if(!file)return;
+  const file=
+    this.files&&this.files[0];
 
-    if(
-      !file.type ||
-      !file.type.startsWith("image/")
-    ){
+  if(!file)return;
 
-      alert(
-        "Please select an image screenshot."
-      );
+  if(!file.type.startsWith("image/")){
 
-      this.value="";
+    alert("Please select an image.");
 
-      return;
-    }
+    this.value="";
 
-    selectedImage=file;
-
-    const reader=
-      new FileReader();
-
-    reader.onload=function(e){
-
-      preview.src=e.target.result;
-      preview.style.display="block";
-
-    };
-
-    reader.readAsDataURL(file);
-
-    fileName.innerText=
-      "Selected: "+file.name;
-
-    analyzeBtn.style.display="block";
+    return;
 
   }
-);
+
+  selectedImage=file;
+
+  const reader=
+    new FileReader();
+
+  reader.onload=function(e){
+
+    preview.src=e.target.result;
+    preview.style.display="block";
+
+  };
+
+  reader.readAsDataURL(file);
+
+  fileName.innerText=
+    "Selected: "+file.name;
+
+  analyzeBtn.style.display="block";
+
+};
 
 
 /* OCR */
@@ -1741,10 +1998,11 @@ async function runOCR(){
   if(!selectedImage){
 
     alert(
-      "First select a Device Information screenshot."
+      "Select a Device Information screenshot first."
     );
 
     return;
+
   }
 
   if(analysisRunning)return;
@@ -1755,6 +2013,8 @@ async function runOCR(){
   scanScreen.style.display="block";
   invalidScreen.style.display="none";
   resultScreen.style.display="none";
+
+  gameBtn.style.display="none";
 
   progressBar.style.width="0%";
   progressText.innerText="0%";
@@ -1778,19 +2038,21 @@ async function runOCR(){
               "recognizing text"
             ){
 
-              const percent=
+              const p=
                 Math.round(
                   (message.progress||0)*100
                 );
 
               progressBar.style.width=
-                percent+"%";
+                p+"%";
 
               progressText.innerText=
-                percent+"%";
+                p+"%";
+
             }
 
           }
+
         }
       );
 
@@ -1798,7 +2060,7 @@ async function runOCR(){
       result.data.text||"";
 
     console.log(
-      "OCR RESULT:",
+      "OCR:",
       text
     );
 
@@ -1806,7 +2068,7 @@ async function runOCR(){
     progressText.innerText="100%";
 
     scanStatus.innerText=
-      "Analysis complete...";
+      "Analysis complete.";
 
     setTimeout(function(){
 
@@ -1839,19 +2101,15 @@ async function runOCR(){
 }
 
 
-/* OCR HELPERS */
+/* NORMALIZE */
 
 function normalizeOCR(text){
 
   return String(text||"")
     .replace(/\u00a0/g," ")
-    .replace(/[“”]/g,'"')
-    .replace(/[‘’]/g,"'")
-    .replace(/[|]/g," ")
     .replace(/\r\n/g,"\n")
     .replace(/\r/g,"\n")
     .replace(/[ \t]+/g," ")
-    .replace(/\n[ \t]+/g,"\n")
     .replace(/\n{2,}/g,"\n")
     .trim();
 
@@ -1862,7 +2120,6 @@ function normalizeLabel(text){
 
   return String(text||"")
     .toLowerCase()
-    .replace(/[|]/g," ")
     .replace(/[._]/g," ")
     .replace(/[^a-z0-9+ -]/g," ")
     .replace(/\s+/g," ")
@@ -1871,6 +2128,8 @@ function normalizeLabel(text){
 }
 
 
+/* SCREENSHOT CHECK */
+
 function isDeviceInformationScreenshot(text){
 
   const clean=
@@ -1878,64 +2137,44 @@ function isDeviceInformationScreenshot(text){
 
   if(clean.length<15)return false;
 
-  const phoneWords=[
+  const words=[
     "about phone",
     "about device",
     "device information",
     "device info",
     "phone information",
-    "software information",
-    "my phone",
-    "phone"
-  ];
-
-  const technicalWords=[
     "android",
     "build",
     "ram",
     "memory",
     "model",
-    "device",
     "version",
-    "software",
-    "serial",
-    "security patch"
+    "software"
   ];
 
-  let phoneFound=false;
-  let technicalFound=0;
+  let count=0;
 
-  phoneWords.forEach(word=>{
+  words.forEach(word=>{
+
     if(clean.includes(word)){
-      phoneFound=true;
+      count++;
     }
+
   });
 
-  technicalWords.forEach(word=>{
-    if(clean.includes(word)){
-      technicalFound++;
-    }
-  });
-
-  const modelCode=
-    /\b(?:SM-[A-Z0-9-]+|RMX[A-Z0-9-]+|CPH[A-Z0-9-]+|XT[0-9A-Z-]+|V[0-9A-Z]{2,})\b/i
-    .test(clean);
-
-  return(
-    (phoneFound&&technicalFound>=1)||
-    technicalFound>=3||
-    (phoneFound&&modelCode)
-  );
+  return count>=2;
 
 }
 
+
+/* LINES */
 
 function getLines(text){
 
   return normalizeOCR(text)
     .split("\n")
-    .map(line=>
-      line.trim().replace(/\s+/g," ")
+    .map(x=>
+      x.trim().replace(/\s+/g," ")
     )
     .filter(Boolean);
 
@@ -1955,18 +2194,16 @@ function cleanValue(value){
 
 function isGenericLabel(value){
 
-  const n=normalizeLabel(value);
+  const n=
+    normalizeLabel(value);
 
   return[
     "device",
     "device name",
     "phone",
-    "phone name",
     "model",
     "model name",
     "model number",
-    "device model",
-    "phone model",
     "ram",
     "memory",
     "android",
@@ -1974,15 +2211,9 @@ function isGenericLabel(value){
     "version",
     "build",
     "build number",
-    "build no",
     "software",
-    "software information",
-    "about phone",
-    "about device",
     "settings",
-    "system",
-    "name",
-    "number"
+    "system"
   ].includes(n);
 
 }
@@ -1991,19 +2222,23 @@ function isGenericLabel(value){
 function nextUsefulLine(lines,index){
 
   for(
-    let j=index+1;
-    j<Math.min(lines.length,index+3);
-    j++
+    let i=index+1;
+    i<Math.min(lines.length,index+3);
+    i++
   ){
 
-    const candidate=
-      cleanValue(lines[j]);
+    const value=
+      cleanValue(lines[i]);
 
-    if(!candidate)continue;
+    if(
+      value &&
+      !isGenericLabel(value)
+    ){
 
-    if(isGenericLabel(candidate))continue;
+      return value;
 
-    return candidate;
+    }
+
   }
 
   return null;
@@ -2014,22 +2249,27 @@ function nextUsefulLine(lines,index){
 function valueAfterLabel(
   lines,
   index,
-  labelRegex
+  regex
 ){
 
-  const line=lines[index];
+  const match=
+    lines[index].match(regex);
 
-  const same=line.match(labelRegex);
+  if(
+    match &&
+    match[1]
+  ){
 
-  if(same&&same[1]){
-
-    const value=cleanValue(same[1]);
+    const value=
+      cleanValue(match[1]);
 
     if(
-      value.length>=2 &&
+      value &&
       !isGenericLabel(value)
     ){
+
       return value;
+
     }
 
   }
@@ -2046,15 +2286,12 @@ function valueAfterLabel(
 
 function extractDeviceName(text){
 
-  const lines=getLines(text);
+  const lines=
+    getLines(text);
 
   const patterns=[
     /^\s*device\s*name\s*[:：\-]?\s*(.*)$/i,
-    /^\s*phone\s*name\s*[:：\-]?\s*(.*)$/i,
-    /^\s*device\s*nickname\s*[:：\-]?\s*(.*)$/i,
-    /^\s*phone\s*nickname\s*[:：\-]?\s*(.*)$/i,
-    /^\s*device\s*name\s+(.+)$/i,
-    /^\s*phone\s*name\s+(.+)$/i
+    /^\s*phone\s*name\s*[:：\-]?\s*(.*)$/i
   ];
 
   for(let i=0;i<lines.length;i++){
@@ -2069,46 +2306,20 @@ function extractDeviceName(text){
         );
 
       if(
-        value&&
-        isGoodDeviceName(value)
+        value &&
+        value.length>=2 &&
+        value.length<=100
       ){
+
         return value;
+
       }
 
     }
+
   }
 
   return "Not detected";
-
-}
-
-
-function isGoodDeviceName(value){
-
-  if(!value)return false;
-
-  value=cleanValue(value);
-
-  if(
-    value.length<2||
-    value.length>100
-  ){
-    return false;
-  }
-
-  if(isGenericLabel(value))return false;
-
-  if(
-    /^\d+(?:\.\d+)?\s*(?:gb|mb|tb)$/i.test(value)
-  ){
-    return false;
-  }
-
-  if(/^android\s+\d/i.test(value)){
-    return false;
-  }
-
-  return true;
 
 }
 
@@ -2117,16 +2328,15 @@ function isGoodDeviceName(value){
 
 function extractModel(text){
 
-  const lines=getLines(text);
+  const lines=
+    getLines(text);
 
   const patterns=[
     /^\s*model\s*name\s*[:：\-]?\s*(.*)$/i,
     /^\s*model\s*number\s*[:：\-]?\s*(.*)$/i,
     /^\s*device\s*model\s*[:：\-]?\s*(.*)$/i,
     /^\s*phone\s*model\s*[:：\-]?\s*(.*)$/i,
-    /^\s*model\s*[:：\-]\s*(.*)$/i,
-    /^\s*model\s+(.+)$/i,
-    /^\s*model\s*no\.?\s*[:：\-]?\s*(.*)$/i
+    /^\s*model\s*[:：\-]\s*(.*)$/i
   ];
 
   for(let i=0;i<lines.length;i++){
@@ -2141,62 +2351,28 @@ function extractModel(text){
         );
 
       if(
-        value&&
-        isGoodModel(value)
+        value &&
+        value.length>=2 &&
+        value.length<=100 &&
+        !isGenericLabel(value)
       ){
+
         return value;
+
       }
 
     }
 
   }
 
-  const modelPatterns=[
-    /\bSM-[A-Z0-9-]{3,}\b/i,
-    /\bRMX[A-Z0-9-]{3,}\b/i,
-    /\bCPH[A-Z0-9-]{3,}\b/i,
-    /\bXT[0-9A-Z-]{3,}\b/i,
-    /\bV[0-9A-Z]{2,}\b/i
-  ];
+  const match=
+    normalizeOCR(text).match(
+      /\b(?:SM-[A-Z0-9-]+|RMX[A-Z0-9-]+|CPH[A-Z0-9-]+|XT[0-9A-Z-]+)\b/i
+    );
 
-  for(const pattern of modelPatterns){
-
-    const match=
-      normalizeOCR(text).match(pattern);
-
-    if(match){
-      return cleanValue(match[0]);
-    }
-
-  }
-
-  return "Not detected";
-
-}
-
-
-function isGoodModel(value){
-
-  if(!value)return false;
-
-  value=cleanValue(value);
-
-  if(
-    value.length<2||
-    value.length>100
-  ){
-    return false;
-  }
-
-  if(isGenericLabel(value))return false;
-
-  if(
-    /^(android|build|ram|memory|version)\b/i.test(value)
-  ){
-    return false;
-  }
-
-  return true;
+  return match
+    ?cleanValue(match[0])
+    :"Not detected";
 
 }
 
@@ -2205,28 +2381,37 @@ function isGoodModel(value){
 
 function extractRAM(text){
 
-  const clean=normalizeOCR(text);
+  const clean=
+    normalizeOCR(text);
 
   const patterns=[
 
-    /(?:ram|memory)\s*[:：\-]?\s*(\d{1,2}(?:\s*\+\s*\d{1,2})?)\s*(?:gb|g8|g b)\b/i,
+    /(?:ram|memory)\s*[:：\-]?\s*(\d{1,2})\s*(?:gb|g8|g b)\b/i,
 
-    /\b(\d{1,2}(?:\s*\+\s*\d{1,2})?)\s*(?:gb|g8|g b)\s*(?:ram|memory)\b/i,
+    /\b(\d{1,2})\s*(?:gb|g8|g b)\s*(?:ram|memory)\b/i,
 
-    /(?:ram|memory)[^\n]{0,40}?(\d{1,2}(?:\s*\+\s*\d{1,2})?)\s*(?:gb|g8|g b)\b/i
+    /(?:ram|memory)[^\n]{0,40}?(\d{1,2})\s*(?:gb|g8|g b)\b/i
 
   ];
 
   for(const pattern of patterns){
 
-    const match=clean.match(pattern);
+    const match=
+      clean.match(pattern);
 
     if(match){
 
-      const value=
-        cleanRamValue(match[1]);
+      const n=
+        parseInt(match[1],10);
 
-      if(value)return value;
+      if(
+        n>=1 &&
+        n<=64
+      ){
+
+        return n+" GB";
+
+      }
 
     }
 
@@ -2237,69 +2422,27 @@ function extractRAM(text){
 }
 
 
-function cleanRamValue(value){
-
-  if(!value)return null;
-
-  const normalized=
-    String(value)
-      .replace(/\s+/g,"")
-      .replace(/g8/gi,"")
-      .trim();
-
-  const parts=normalized.split("+");
-
-  const first=parseInt(parts[0],10);
-
-  if(
-    !first||
-    first<1||
-    first>64
-  ){
-    return null;
-  }
-
-  if(parts.length>1){
-
-    const second=parseInt(parts[1],10);
-
-    if(
-      second>=1&&
-      second<=64
-    ){
-
-      return first+
-        "+"+
-        second+
-        " GB";
-
-    }
-
-  }
-
-  return first+" GB";
-
-}
-
-
 /* ANDROID */
 
 function extractAndroid(text){
 
-  const clean=normalizeOCR(text);
+  const clean=
+    normalizeOCR(text);
 
   const patterns=[
     /android\s*version\s*[:：\-]?\s*(\d+(?:\.\d+){0,2})/i,
-    /android\s*[:：\-]?\s*(\d+(?:\.\d+){0,2})/i,
-    /android\s+(\d+(?:\.\d+){0,2})/i
+    /android\s*[:：\-]?\s*(\d+(?:\.\d+){0,2})/i
   ];
 
   for(const pattern of patterns){
 
-    const match=clean.match(pattern);
+    const match=
+      clean.match(pattern);
 
     if(match){
+
       return "Android "+match[1];
+
     }
 
   }
@@ -2313,7 +2456,8 @@ function extractAndroid(text){
 
 function extractBuild(text){
 
-  const clean=normalizeOCR(text);
+  const clean=
+    normalizeOCR(text);
 
   const patterns=[
     /build\s*number\s*[:：\-]?\s*([A-Za-z0-9._\-\/]+)/i,
@@ -2323,13 +2467,12 @@ function extractBuild(text){
 
   for(const pattern of patterns){
 
-    const match=clean.match(pattern);
+    const match=
+      clean.match(pattern);
 
     if(match){
 
-      const value=cleanValue(match[1]);
-
-      if(value)return value;
+      return cleanValue(match[1]);
 
     }
 
@@ -2340,7 +2483,22 @@ function extractBuild(text){
 }
 
 
-/* SENSITIVITY */
+/* LIMIT */
+
+function limit200(value){
+
+  return Math.max(
+    100,
+    Math.min(
+      200,
+      Math.round(value)
+    )
+  );
+
+}
+
+
+/* GENERATE SENSITIVITY */
 
 function generateSensitivity(
   model,
@@ -2370,8 +2528,7 @@ function generateSensitivity(
     sniper+=10;
     freeLook+=12;
 
-  }
-  else if(ramNumber>=8){
+  }else if(ramNumber>=8){
 
     general+=12;
     red+=12;
@@ -2380,18 +2537,7 @@ function generateSensitivity(
     sniper+=7;
     freeLook+=8;
 
-  }
-  else if(ramNumber>=6){
-
-    general+=7;
-    red+=7;
-    twoX+=6;
-    fourX+=5;
-    sniper+=4;
-    freeLook+=5;
-
-  }
-  else if(ramNumber<=3){
+  }else if(ramNumber<=3){
 
     general-=12;
     red-=10;
@@ -2414,14 +2560,11 @@ function generateSensitivity(
 
     if(width>=2160){
       dpi=560;
-    }
-    else if(width>=1440){
+    }else if(width>=1440){
       dpi=520;
-    }
-    else if(width>=1080){
+    }else if(width>=1080){
       dpi=480;
-    }
-    else{
+    }else{
       dpi=420;
     }
 
@@ -2443,20 +2586,7 @@ function generateSensitivity(
 }
 
 
-function limit200(value){
-
-  return Math.max(
-    100,
-    Math.min(
-      200,
-      Math.round(value)
-    )
-  );
-
-}
-
-
-/* ANALYZE */
+/* ANALYZE DATA */
 
 function analyzeDeviceText(text){
 
@@ -2479,22 +2609,7 @@ function analyzeDeviceText(text){
 
   };
 
-  const detectedCount=
-    Object.values(data)
-      .filter(
-        value=>
-          value&&
-          value!=="Not detected"
-      ).length;
-
-  if(detectedCount<2){
-
-    showInvalid();
-    return;
-
-  }
-
-  const sensi=
+  const sensitivity=
     generateSensitivity(
       data.model,
       data.ram,
@@ -2506,62 +2621,91 @@ function analyzeDeviceText(text){
 
     ...data,
 
-    dpi:sensi.dpi,
-    general:sensi.general,
-    red:sensi.red,
-    twoX:sensi.twoX,
-    fourX:sensi.fourX,
-    sniper:sensi.sniper,
-    freeLook:sensi.freeLook
+    ...sensitivity
 
   });
 
 }
 
 
-/* RESULT */
+/* SHOW RESULT */
 
 function showResult(data){
 
   scanScreen.style.display="none";
+  invalidScreen.style.display="none";
   resultScreen.style.display="block";
 
-  document.getElementById("rDeviceName").innerText=data.deviceName;
-  document.getElementById("rModel").innerText=data.model;
-  document.getElementById("rRam").innerText=data.ram;
-  document.getElementById("rAndroid").innerText=data.android;
-  document.getElementById("rBuild").innerText=data.build;
+  document.getElementById("rDeviceName")
+    .innerText=data.deviceName;
 
-  document.getElementById("dpi").innerText=data.dpi;
+  document.getElementById("rModel")
+    .innerText=data.model;
 
-  document.getElementById("rGeneral").innerText=data.general;
-  document.getElementById("rRed").innerText=data.red;
-  document.getElementById("r2x").innerText=data.twoX;
-  document.getElementById("r4x").innerText=data.fourX;
-  document.getElementById("rSniper").innerText=data.sniper;
-  document.getElementById("rFree").innerText=data.freeLook;
+  document.getElementById("rRam")
+    .innerText=data.ram;
 
-  document.getElementById("homeDeviceName").innerText=data.deviceName;
-  document.getElementById("homeRam").innerText=data.ram;
-  document.getElementById("homeModel").innerText=data.model;
-  document.getElementById("homeAndroid").innerText=data.android;
-  document.getElementById("homeBuild").innerText=data.build;
+  document.getElementById("rAndroid")
+    .innerText=data.android;
+
+  document.getElementById("rBuild")
+    .innerText=data.build;
+
+  document.getElementById("dpi")
+    .innerText=data.dpi;
+
+  document.getElementById("rGeneral")
+    .innerText=data.general;
+
+  document.getElementById("rRed")
+    .innerText=data.red;
+
+  document.getElementById("r2x")
+    .innerText=data.twoX;
+
+  document.getElementById("r4x")
+    .innerText=data.fourX;
+
+  document.getElementById("rSniper")
+    .innerText=data.sniper;
+
+  document.getElementById("rFree")
+    .innerText=data.freeLook;
+
+  document.getElementById("homeDeviceName")
+    .innerText=data.deviceName;
+
+  document.getElementById("homeRam")
+    .innerText=data.ram;
+
+  document.getElementById("homeModel")
+    .innerText=data.model;
+
+  document.getElementById("homeAndroid")
+    .innerText=data.android;
+
+  document.getElementById("homeBuild")
+    .innerText=data.build;
+
 
   if(analysisRound===0){
 
-    resultTitle.innerText=
-      "ANALYSIS COMPLETE";
+    document.getElementById("resultTitle")
+      .innerText="ANALYSIS COMPLETE";
 
     doneBtn.innerText=
       "DONE — RUN AGAIN";
 
+    gameBtn.style.display="none";
+
   }else{
 
-    resultTitle.innerText=
-      "SECOND ANALYSIS COMPLETE";
+    document.getElementById("resultTitle")
+      .innerText="SECOND ANALYSIS COMPLETE";
 
-    doneBtn.innerText=
-      "DONE";
+    doneBtn.innerText="DONE";
+
+    gameBtn.style.display="block";
 
   }
 
@@ -2581,6 +2725,8 @@ function doneAnalysis(){
     resultScreen.style.display="none";
     scanScreen.style.display="block";
 
+    gameBtn.style.display="none";
+
     progressBar.style.width="0%";
     progressText.innerText="0%";
 
@@ -2589,12 +2735,7 @@ function doneAnalysis(){
 
     runOCR();
 
-    return;
-  }
-
-  if(analysisRound===1){
-
-    analysisRound=2;
+  }else{
 
     closeAnalysis();
 
@@ -2609,7 +2750,10 @@ function showInvalid(){
 
   analysisRunning=false;
 
+  gameBtn.style.display="none";
+
   scanScreen.style.display="none";
+  resultScreen.style.display="none";
   invalidScreen.style.display="block";
 
 }
@@ -2621,33 +2765,8 @@ function tryAgain(){
 
   analysisRound=0;
   analysisRunning=false;
-  selectedImage=null;
 
-  screenFile.value="";
-
-  preview.src="";
-  preview.style.display="none";
-
-  fileName.innerText="";
-
-  analyzeBtn.style.display="none";
-
-  invalidScreen.style.display="none";
-  resultScreen.style.display="none";
-
-  inputScreen.style.display="block";
-
-}
-
-
-/* CLOSE */
-
-function closeAnalysis(){
-
-  analysisRound=0;
-  analysisRunning=false;
-
-  overlay.classList.remove("show");
+  gameBtn.style.display="none";
 
   selectedImage=null;
 
@@ -2668,18 +2787,66 @@ function closeAnalysis(){
 }
 
 
+/* CLOSE ANALYSIS */
+
+function closeAnalysis(){
+
+  analysisRound=0;
+  analysisRunning=false;
+
+  gameBtn.style.display="none";
+
+  selectedImage=null;
+
+  screenFile.value="";
+
+  preview.src="";
+  preview.style.display="none";
+
+  fileName.innerText="";
+
+  analyzeBtn.style.display="none";
+
+  inputScreen.style.display="block";
+  scanScreen.style.display="none";
+  invalidScreen.style.display="none";
+  resultScreen.style.display="none";
+
+  overlay.classList.remove("show");
+
+}
+
+
+/* ================= OPEN FREE FIRE ================= */
+
+function openFreeFire(){
+
+  const intentUrl =
+    "intent://#Intent;" +
+    "scheme=freefire;" +
+    "package=com.dts.freefireth;" +
+    "end";
+
+  window.location.href=intentUrl;
+
+}
+
+
 /* DEVICE INFO */
 
 function showDeviceInfo(){
 
-  document.getElementById("diScreen").innerText=
-    screen.width+" × "+screen.height;
+  document.getElementById("diScreen")
+    .innerText=
+      screen.width+" × "+screen.height;
 
-  document.getElementById("diRatio").innerText=
-    window.devicePixelRatio||1;
+  document.getElementById("diRatio")
+    .innerText=
+      window.devicePixelRatio||1;
 
-  document.getElementById("diLanguage").innerText=
-    navigator.language||"--";
+  document.getElementById("diLanguage")
+    .innerText=
+      navigator.language||"--";
 
   document
     .getElementById("deviceInfoOverlay")
@@ -2730,6 +2897,8 @@ function outsideProfile(event){
 }
 
 
+/* PROFILE PHOTO */
+
 const profileFile=
   document.getElementById("profileFile");
 
@@ -2739,61 +2908,53 @@ const profilePhoto=
 const profileBtn=
   document.getElementById("profileBtn");
 
+profileFile.onchange=function(){
 
-profileFile.addEventListener(
-  "change",
-  function(){
+  const file=
+    this.files&&this.files[0];
 
-    const file=
-      this.files&&this.files[0];
+  if(!file)return;
 
-    if(!file)return;
+  if(!file.type.startsWith("image/")){
 
-    if(
-      !file.type||
-      !file.type.startsWith("image/")
-    ){
+    alert("Please select an image.");
 
-      alert("Please select an image.");
-
-      this.value="";
-
-      return;
-    }
-
-    const reader=
-      new FileReader();
-
-    reader.onload=function(e){
-
-      const image=e.target.result;
-
-      profilePhoto.src=image;
-
-      profileBtn.innerHTML=
-        '<img src="'+
-        image+
-        '" alt="Profile">';
-
-      try{
-
-        localStorage.setItem(
-          "turjo_x_profile_photo",
-          image
-        );
-
-      }catch(error){
-
-        console.error(error);
-
-      }
-
-    };
-
-    reader.readAsDataURL(file);
+    return;
 
   }
-);
+
+  const reader=
+    new FileReader();
+
+  reader.onload=function(e){
+
+    const image=e.target.result;
+
+    profilePhoto.src=image;
+
+    profileBtn.innerHTML=
+      '<img src="'+
+      image+
+      '" alt="Profile">';
+
+    try{
+
+      localStorage.setItem(
+        "turjo_x_profile_photo",
+        image
+      );
+
+    }catch(error){
+
+      console.error(error);
+
+    }
+
+  };
+
+  reader.readAsDataURL(file);
+
+};
 
 
 /* LOAD PROFILE */
