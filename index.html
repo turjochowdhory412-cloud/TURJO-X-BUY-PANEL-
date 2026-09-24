@@ -3,30 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>TURJO X — Face Lock</title>
+<title>TURJO X — Face Lock + Sensitivity</title>
 
 <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
 <style>
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
+*{box-sizing:border-box;margin:0;padding:0}
 
 body{
   min-height:100vh;
-  background:
-    radial-gradient(circle at top,#18204a,#080b18 48%,#03040a);
+  background:radial-gradient(circle at top,#18264d,#080b16 48%,#03050a);
   color:#fff;
   font-family:Arial,sans-serif;
+}
+
+/* ================= FACE LOCK ================= */
+
+#faceLock{
+  min-height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
   padding:18px;
 }
 
-.container{
+.faceContainer{
   width:100%;
   max-width:430px;
   text-align:center;
@@ -36,11 +38,15 @@ body{
   font-size:30px;
   font-weight:900;
   letter-spacing:3px;
+  color:#00eaff;
+  text-shadow:0 0 15px #00eaff;
 }
 
 .sub{
   color:#9ca3af;
   margin:7px 0 18px;
+  font-size:11px;
+  letter-spacing:2px;
 }
 
 .camera{
@@ -51,10 +57,10 @@ body{
   border-radius:24px;
   background:#000;
   border:2px solid #26304f;
-  box-shadow:0 0 35px rgba(70,100,255,.25);
+  box-shadow:0 0 35px rgba(0,234,255,.2);
 }
 
-video{
+.camera video{
   width:100%;
   height:100%;
   object-fit:cover;
@@ -69,7 +75,7 @@ video{
   bottom:18%;
   border:2px solid rgba(0,255,255,.7);
   border-radius:50%;
-  box-shadow:0 0 25px rgba(0,255,255,.2);
+  box-shadow:0 0 25px rgba(0,255,255,.25);
   pointer-events:none;
 }
 
@@ -83,17 +89,13 @@ video{
   justify-content:center;
   align-items:center;
   font-weight:bold;
+  font-size:13px;
 }
 
-.green{
-  color:#22c55e;
-}
+.green{color:#22c55e}
+.red{color:#ef4444}
 
-.red{
-  color:#ef4444;
-}
-
-button{
+.faceBtn{
   width:100%;
   border:0;
   padding:14px;
@@ -101,162 +103,1163 @@ button{
   border-radius:13px;
   background:#2563eb;
   color:white;
-  font-size:16px;
+  font-size:15px;
   font-weight:bold;
+  cursor:pointer;
 }
 
-button:disabled{
+.faceBtn:disabled{
   opacity:.45;
+  cursor:not-allowed;
 }
 
 .reset{
   background:#252b3d;
 }
 
-.hidden{
-  display:none!important;
+/* ================= APP ================= */
+
+#mainApp{
+  display:none;
 }
 
-#app{
-  margin-top:18px;
-  padding:24px;
-  border-radius:20px;
-  background:#101827;
-  border:1px solid #293650;
+.app{
+  width:100%;
+  max-width:480px;
+  min-height:100vh;
+  margin:auto;
+  padding:18px;
 }
 
-.access{
-  font-size:23px;
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
+}
+
+.logoSmall{
+  font-size:25px;
   font-weight:900;
+  letter-spacing:2px;
+  color:#00eaff;
+  text-shadow:0 0 12px #00eaff;
+}
+
+.logoSmall small{
+  display:block;
+  font-size:9px;
+  letter-spacing:4px;
+  color:#8492aa;
+  margin-top:3px;
+}
+
+.profileBtn{
+  width:46px;
+  height:46px;
+  border-radius:50%;
+  border:1px solid #00eaff;
+  background:#07121f;
+  color:#00eaff;
+  font-size:20px;
+  cursor:pointer;
+  overflow:hidden;
+  padding:0;
+}
+
+.profileBtn img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.card{
+  background:rgba(10,18,34,.88);
+  border:1px solid rgba(0,234,255,.25);
+  border-radius:18px;
+  padding:18px;
+  margin-bottom:15px;
+  box-shadow:
+    0 0 25px rgba(0,234,255,.08),
+    inset 0 0 20px rgba(255,255,255,.015);
+}
+
+.cardTitle{
+  color:#00eaff;
+  font-size:12px;
+  font-weight:bold;
+  letter-spacing:2px;
+  margin-bottom:15px;
+}
+
+.deviceTop{
+  display:flex;
+  align-items:center;
+  gap:13px;
+}
+
+.phoneIcon{
+  width:52px;
+  height:68px;
+  border:2px solid #00eaff;
+  border-radius:9px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:25px;
+  flex-shrink:0;
+}
+
+.deviceName{
+  font-size:19px;
+  font-weight:800;
+  word-break:break-word;
+}
+
+.deviceSub{
+  color:#7d8ca5;
+  font-size:12px;
+  margin-top:5px;
+}
+
+.deviceGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+  margin-top:16px;
+}
+
+.infoBox{
+  background:#07101e;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:10px;
+  padding:11px;
+}
+
+.infoBox span{
+  display:block;
+  color:#718098;
+  font-size:9px;
+  letter-spacing:1px;
+  margin-bottom:5px;
+}
+
+.infoBox b{
+  font-size:12px;
+  word-break:break-word;
+}
+
+.mainBtn{
+  width:100%;
+  padding:15px;
+  border:0;
+  border-radius:12px;
+  background:linear-gradient(90deg,#00cfff,#007bff);
+  color:white;
+  font-weight:900;
+  letter-spacing:1px;
+  cursor:pointer;
+}
+
+.secondaryBtn{
+  width:100%;
+  padding:14px;
+  border:1px solid rgba(0,234,255,.4);
+  border-radius:12px;
+  background:#07111f;
+  color:#00eaff;
+  font-weight:bold;
+  cursor:pointer;
+  margin-top:10px;
+}
+
+.features{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.feature{
+  padding:15px 10px;
+  border-radius:12px;
+  background:#07111f;
+  border:1px solid rgba(255,255,255,.06);
+  text-align:center;
+}
+
+.featureIcon{
+  font-size:25px;
+  margin-bottom:7px;
+}
+
+.feature b{
+  display:block;
+  font-size:11px;
+}
+
+.feature span{
+  display:block;
+  color:#6f7e96;
+  font-size:9px;
+  margin-top:4px;
+}
+
+/* ================= OVERLAYS ================= */
+
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(2,5,12,.94);
+  backdrop-filter:blur(10px);
+  z-index:50;
+  display:none;
+  overflow-y:auto;
+}
+
+.overlay.show{
+  display:block;
+}
+
+.panel{
+  width:100%;
+  max-width:480px;
+  min-height:100vh;
+  margin:auto;
+  padding:22px 18px;
+}
+
+.panelHeader{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.panelHeader h2{
+  color:#00eaff;
+  letter-spacing:2px;
+  font-size:20px;
+}
+
+.panelHeader p{
+  color:#718098;
+  font-size:11px;
+  margin-top:7px;
+}
+
+.uploadBox{
+  border:1px dashed #00eaff;
+  border-radius:17px;
+  min-height:190px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  background:#06101c;
+  padding:20px;
+}
+
+.uploadIcon{
+  font-size:48px;
   margin-bottom:10px;
 }
 
-.setting{
-  text-align:left;
-  margin-top:18px;
+.uploadBox h3{
+  font-size:15px;
 }
 
-.setting label{
-  display:block;
-  margin-bottom:7px;
-  color:#cbd5e1;
+.uploadBox p{
+  color:#73839b;
+  font-size:10px;
+  line-height:1.5;
+  margin-top:7px;
 }
 
-input[type=range]{
+.uploadBtn{
+  display:inline-block;
+  margin-top:16px;
+  padding:12px 18px;
+  border-radius:10px;
+  background:#00bfe9;
+  color:#001019;
+  font-weight:900;
+  font-size:11px;
+  cursor:pointer;
+}
+
+#screenFile,#profileFile{
+  display:none;
+}
+
+.preview{
+  display:none;
   width:100%;
+  max-height:330px;
+  object-fit:contain;
+  border-radius:12px;
+  margin-top:15px;
+  border:1px solid rgba(0,234,255,.25);
+}
+
+.fileName{
+  color:#00eaff;
+  font-size:11px;
+  text-align:center;
+  margin-top:9px;
+  word-break:break-all;
+}
+
+.analyzeBtn{
+  display:none;
+  margin-top:15px;
+}
+
+.scanScreen,.invalidScreen,.resultScreen{
+  display:none;
+}
+
+.scanScreen{
+  text-align:center;
+  padding-top:45px;
+}
+
+.spinner{
+  width:65px;
+  height:65px;
+  border-radius:50%;
+  border:4px solid #16273c;
+  border-top-color:#00eaff;
+  animation:spin 1s linear infinite;
+  margin:0 auto 22px;
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+
+.scanScreen h3{
+  color:#00eaff;
+  letter-spacing:2px;
+}
+
+.progressOuter{
+  width:100%;
+  height:8px;
+  background:#101c2c;
+  border-radius:10px;
+  margin-top:20px;
+  overflow:hidden;
+}
+
+.progressBar{
+  width:0%;
+  height:100%;
+  background:linear-gradient(90deg,#00eaff,#007bff);
+  transition:.25s;
+}
+
+.progressText{
+  margin-top:9px;
+  color:#8190a8;
+  font-size:11px;
+}
+
+.invalidScreen{
+  text-align:center;
+  padding-top:45px;
+}
+
+.invalidIcon{
+  font-size:55px;
+  margin-bottom:15px;
+}
+
+.invalidScreen h3{
+  color:#ff5b72;
+}
+
+.invalidScreen p{
+  color:#8491a6;
+  font-size:11px;
+  line-height:1.6;
+  margin-top:9px;
+}
+
+.resultTitle{
+  text-align:center;
+  color:#00ffb3;
+  font-size:22px;
+  font-weight:900;
+  letter-spacing:2px;
+  margin-bottom:18px;
+}
+
+.resultInfo{
+  background:#07111f;
+  border:1px solid rgba(0,234,255,.16);
+  border-radius:12px;
+  padding:13px;
+  margin-bottom:9px;
+}
+
+.resultInfo>span{
+  display:block;
+  color:#687991;
+  font-size:9px;
+  letter-spacing:1.5px;
+  margin-bottom:6px;
+}
+
+.resultInfo>b{
+  display:block;
+  color:#fff;
+  font-size:13px;
+  word-break:break-word;
+}
+
+.autoDpi{
+  color:#00eaff;
+  font-size:25px;
+  font-weight:900;
+  text-align:center;
+  padding:6px;
+}
+
+.sensiGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+
+.sensiItem{
+  background:#0b1728;
+  border-radius:9px;
+  padding:11px;
+  text-align:center;
+}
+
+.sensiItem span{
+  display:block;
+  color:#687991;
+  font-size:8px;
+  letter-spacing:1px;
+}
+
+.sensiItem strong{
+  display:block;
+  color:#00eaff;
+  font-size:23px;
+  margin-top:5px;
+}
+
+.closeBtn{
+  width:100%;
+  padding:14px;
+  margin-top:10px;
+  border:1px solid #00eaff;
+  border-radius:12px;
+  background:#06121f;
+  color:#00eaff;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.cancelBtn{
+  width:100%;
+  padding:12px;
+  margin-top:9px;
+  background:#101c2b;
+  color:#9aa8bb;
+  border:0;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.deviceInfoRow{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  padding:12px 0;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.deviceInfoRow span{
+  color:#708098;
+  font-size:10px;
+}
+
+.deviceInfoRow b{
+  text-align:right;
+  font-size:11px;
+  word-break:break-word;
+}
+
+/* PROFILE */
+
+.profileOverlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.65);
+  z-index:80;
+  display:none;
+}
+
+.profileOverlay.show{
+  display:block;
+}
+
+.profileSheet{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  max-width:480px;
+  margin:auto;
+  background:#091321;
+  border:1px solid rgba(0,234,255,.2);
+  border-radius:22px 22px 0 0;
+  padding:22px;
+}
+
+.profileSheet h3{
+  color:#00eaff;
+  text-align:center;
+  margin-bottom:15px;
+}
+
+.profilePhoto{
+  width:105px;
+  height:105px;
+  border-radius:50%;
+  margin:auto;
+  display:block;
+  object-fit:cover;
+  border:2px solid #00eaff;
+  background:#07111f;
+}
+
+.photoBtn{
+  display:block;
+  width:100%;
+  text-align:center;
+  padding:13px;
+  background:#00bfe9;
+  color:#001019;
+  border-radius:11px;
+  font-size:11px;
+  font-weight:900;
+  margin-top:15px;
+  cursor:pointer;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<!-- =========================================================
+     FACE LOCK
+========================================================= -->
 
-  <div class="logo">TURJO X</div>
-  <div class="sub">FACE LOCK SECURITY</div>
+<section id="faceLock">
 
-  <div class="camera">
-    <video id="video" autoplay muted playsinline></video>
-    <div class="scan"></div>
+  <div class="faceContainer">
+
+    <div class="logo">TURJO X</div>
+
+    <div class="sub">
+      FACE LOCK SECURITY
+    </div>
+
+    <div class="camera">
+      <video id="video" autoplay muted playsinline></video>
+      <div class="scan"></div>
+    </div>
+
+    <div id="status" class="status">
+      Loading face system...
+    </div>
+
+    <button id="registerBtn" class="faceBtn">
+      REGISTER OWNER FACE
+    </button>
+
+    <button id="verifyBtn" class="faceBtn" disabled>
+      VERIFY FACE
+    </button>
+
+    <button id="resetBtn" class="faceBtn reset">
+      RESET OWNER FACE
+    </button>
+
   </div>
 
-  <div id="status" class="status">
-    Requesting camera permission...
+</section>
+
+
+<!-- =========================================================
+     MAIN TURJO X APP
+========================================================= -->
+
+<section id="mainApp">
+
+<div class="app">
+
+  <div class="header">
+
+    <div class="logoSmall">
+      TURJO X
+      <small>SENSITIVITY SYSTEM</small>
+    </div>
+
+    <button
+      class="profileBtn"
+      onclick="openProfile()"
+      id="profileBtn"
+    >👤</button>
+
   </div>
 
-  <button id="registerBtn">
-    REGISTER OWNER FACE
-  </button>
 
-  <button id="verifyBtn" disabled>
-    VERIFY FACE
-  </button>
+  <!-- DEVICE -->
 
-  <button id="resetBtn" class="reset">
-    RESET OWNER FACE
-  </button>
+  <div class="card">
 
-  <div id="app" class="hidden">
-
-    <div class="access green">
-      ACCESS GRANTED ✓
+    <div class="cardTitle">
+      ANALYZED DEVICE
     </div>
 
-    <p>TURJO X Sensitivity</p>
+    <div class="deviceTop">
 
-    <div class="setting">
-      <label>General Sensitivity</label>
-      <input type="range" min="0" max="200" value="100">
+      <div class="phoneIcon">📱</div>
+
+      <div>
+
+        <div
+          class="deviceName"
+          id="homeDeviceName"
+        >
+          No screenshot analyzed
+        </div>
+
+        <div class="deviceSub">
+          Screenshot based device information
+        </div>
+
+      </div>
+
     </div>
 
-    <div class="setting">
-      <label>Red Dot</label>
-      <input type="range" min="0" max="200" value="90">
+    <div class="deviceGrid">
+
+      <div class="infoBox">
+        <span>RAM</span>
+        <b id="homeRam">--</b>
+      </div>
+
+      <div class="infoBox">
+        <span>MODEL</span>
+        <b id="homeModel">--</b>
+      </div>
+
+      <div class="infoBox">
+        <span>ANDROID</span>
+        <b id="homeAndroid">--</b>
+      </div>
+
+      <div class="infoBox">
+        <span>BUILD</span>
+        <b id="homeBuild">--</b>
+      </div>
+
     </div>
 
-    <div class="setting">
-      <label>2x Scope</label>
-      <input type="range" min="0" max="200" value="85">
+  </div>
+
+
+  <!-- ANALYZER -->
+
+  <div class="card">
+
+    <div class="cardTitle">
+      SENSITIVITY ANALYZER
     </div>
 
-    <div class="setting">
-      <label>4x Scope</label>
-      <input type="range" min="0" max="200" value="75">
+    <button
+      class="mainBtn"
+      onclick="startAnalysis()"
+    >
+      ANALYZE SENSITIVITY
+    </button>
+
+    <button
+      class="secondaryBtn"
+      onclick="showDeviceInfo()"
+    >
+      DEVICE INFORMATION
+    </button>
+
+  </div>
+
+
+  <!-- FEATURES -->
+
+  <div class="card">
+
+    <div class="cardTitle">
+      FEATURES
+    </div>
+
+    <div class="features">
+
+      <div class="feature">
+        <div class="featureIcon">🎯</div>
+        <b>SMART ANALYSIS</b>
+        <span>Screenshot OCR</span>
+      </div>
+
+      <div class="feature">
+        <div class="featureIcon">⚡</div>
+        <b>AUTO DPI</b>
+        <span>Recommendation</span>
+      </div>
+
+      <div class="feature">
+        <div class="featureIcon">📱</div>
+        <b>DEVICE DATA</b>
+        <span>From screenshot</span>
+      </div>
+
+      <div class="feature">
+        <div class="featureIcon">🎮</div>
+        <b>SENSITIVITY</b>
+        <span>Maximum 200</span>
+      </div>
+
     </div>
 
   </div>
 
 </div>
 
+
+<!-- =========================================================
+     ANALYSIS OVERLAY
+========================================================= -->
+
+<div class="overlay" id="overlay">
+
+  <div class="panel">
+
+    <div class="panelHeader">
+
+      <h2>TURJO X ANALYSIS</h2>
+
+      <p>
+        Settings → About Phone / Device Information
+      </p>
+
+    </div>
+
+
+    <!-- INPUT -->
+
+    <div id="inputScreen">
+
+      <div class="uploadBox">
+
+        <div class="uploadIcon">📸</div>
+
+        <h3>
+          SELECT DEVICE INFO SCREENSHOT
+        </h3>
+
+        <p>
+          Use a screenshot from Settings →
+          About Phone / Device Information.
+        </p>
+
+        <label
+          for="screenFile"
+          class="uploadBtn"
+        >
+          SELECT SCREENSHOT
+        </label>
+
+        <input
+          id="screenFile"
+          type="file"
+          accept="image/*"
+        >
+
+      </div>
+
+      <img
+        id="preview"
+        class="preview"
+      >
+
+      <div
+        id="fileName"
+        class="fileName"
+      ></div>
+
+      <button
+        id="analyzeBtn"
+        class="mainBtn analyzeBtn"
+        onclick="runOCR()"
+      >
+        START ANALYSIS
+      </button>
+
+      <button
+        class="cancelBtn"
+        onclick="closeAnalysis()"
+      >
+        CANCEL
+      </button>
+
+    </div>
+
+
+    <!-- SCAN -->
+
+    <div
+      id="scanScreen"
+      class="scanScreen"
+    >
+
+      <div class="spinner"></div>
+
+      <h3>
+        ANALYZING PHONE
+      </h3>
+
+      <p
+        id="scanStatus"
+        class="progressText"
+      >
+        Reading screenshot...
+      </p>
+
+      <div class="progressOuter">
+
+        <div
+          id="progressBar"
+          class="progressBar"
+        ></div>
+
+      </div>
+
+      <div
+        id="progressText"
+        class="progressText"
+      >
+        0%
+      </div>
+
+    </div>
+
+
+    <!-- INVALID -->
+
+    <div
+      id="invalidScreen"
+      class="invalidScreen"
+    >
+
+      <div class="invalidIcon">❌</div>
+
+      <h3>INVALID SCREENSHOT</h3>
+
+      <p>
+        Device Information শনাক্ত করা যায়নি।
+        Settings → About Phone / Device Information
+        থেকে screenshot নির্বাচন করুন।
+      </p>
+
+      <button
+        class="mainBtn"
+        style="margin-top:20px"
+        onclick="tryAgain()"
+      >
+        SELECT AGAIN
+      </button>
+
+    </div>
+
+
+    <!-- RESULT -->
+
+    <div
+      id="resultScreen"
+      class="resultScreen"
+    >
+
+      <div
+        class="resultTitle"
+        id="resultTitle"
+      >
+        ANALYSIS COMPLETE
+      </div>
+
+      <div class="resultInfo">
+        <span>DEVICE NAME</span>
+        <b id="rDeviceName">Not detected</b>
+      </div>
+
+      <div class="resultInfo">
+        <span>MODEL</span>
+        <b id="rModel">Not detected</b>
+      </div>
+
+      <div class="resultInfo">
+        <span>RAM</span>
+        <b id="rRam">Not detected</b>
+      </div>
+
+      <div class="resultInfo">
+        <span>ANDROID VERSION</span>
+        <b id="rAndroid">Not detected</b>
+      </div>
+
+      <div class="resultInfo">
+        <span>BUILD NUMBER</span>
+        <b id="rBuild">Not detected</b>
+      </div>
+
+      <div class="resultInfo">
+
+        <span>AUTO DPI RECOMMENDATION</span>
+
+        <div
+          id="dpi"
+          class="autoDpi"
+        >--</div>
+
+      </div>
+
+      <div class="resultInfo">
+
+        <span>
+          GENERATED SENSITIVITY — MAX 200
+        </span>
+
+        <div class="sensiGrid">
+
+          <div class="sensiItem">
+            <span>GENERAL</span>
+            <strong id="rGeneral">--</strong>
+          </div>
+
+          <div class="sensiItem">
+            <span>RED DOT</span>
+            <strong id="rRed">--</strong>
+          </div>
+
+          <div class="sensiItem">
+            <span>2X SCOPE</span>
+            <strong id="r2x">--</strong>
+          </div>
+
+          <div class="sensiItem">
+            <span>4X SCOPE</span>
+            <strong id="r4x">--</strong>
+          </div>
+
+          <div class="sensiItem">
+            <span>SNIPER</span>
+            <strong id="rSniper">--</strong>
+          </div>
+
+          <div class="sensiItem">
+            <span>FREE LOOK</span>
+            <strong id="rFree">--</strong>
+          </div>
+
+        </div>
+
+      </div>
+
+      <button
+        class="closeBtn"
+        id="doneBtn"
+        onclick="doneAnalysis()"
+      >
+        DONE
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================================================
+     DEVICE INFO
+========================================================= -->
+
+<div
+  class="overlay"
+  id="deviceInfoOverlay"
+>
+
+  <div class="panel">
+
+    <div class="panelHeader">
+
+      <h2>DEVICE INFORMATION</h2>
+
+      <p>Browser information</p>
+
+    </div>
+
+    <div class="card">
+
+      <div class="deviceInfoRow">
+        <span>SCREEN</span>
+        <b id="diScreen">--</b>
+      </div>
+
+      <div class="deviceInfoRow">
+        <span>PIXEL RATIO</span>
+        <b id="diRatio">--</b>
+      </div>
+
+      <div class="deviceInfoRow">
+        <span>LANGUAGE</span>
+        <b id="diLanguage">--</b>
+      </div>
+
+    </div>
+
+    <button
+      class="closeBtn"
+      onclick="closeDeviceInfo()"
+    >
+      CLOSE
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- =========================================================
+     PROFILE
+========================================================= -->
+
+<div
+  class="profileOverlay"
+  id="profileOverlay"
+  onclick="outsideProfile(event)"
+>
+
+  <div
+    class="profileSheet"
+    onclick="event.stopPropagation()"
+  >
+
+    <h3>TURJO X PROFILE</h3>
+
+    <img
+      id="profilePhoto"
+      class="profilePhoto"
+      alt="Profile Photo"
+    >
+
+    <label
+      for="profileFile"
+      class="photoBtn"
+    >
+      SELECT PROFILE PHOTO
+    </label>
+
+    <input
+      id="profileFile"
+      type="file"
+      accept="image/*"
+    >
+
+    <button
+      class="cancelBtn"
+      onclick="closeProfile()"
+    >
+      CLOSE
+    </button>
+
+  </div>
+
+</div>
+
+</section>
+
+
 <script>
 
-const video = document.getElementById("video");
-const statusBox = document.getElementById("status");
-const registerBtn = document.getElementById("registerBtn");
-const verifyBtn = document.getElementById("verifyBtn");
-const resetBtn = document.getElementById("resetBtn");
-const app = document.getElementById("app");
+/* =========================================================
+   FACE LOCK SYSTEM
+========================================================= */
 
-const STORAGE_KEY = "TURJO_X_OWNER_FACE";
+const video =
+  document.getElementById("video");
+
+const faceStatus =
+  document.getElementById("status");
+
+const registerBtn =
+  document.getElementById("registerBtn");
+
+const verifyBtn =
+  document.getElementById("verifyBtn");
+
+const resetBtn =
+  document.getElementById("resetBtn");
+
+const faceLock =
+  document.getElementById("faceLock");
+
+const mainApp =
+  document.getElementById("mainApp");
+
+const STORAGE_KEY =
+  "TURJO_X_OWNER_FACE";
 
 const MODEL_URL =
-"https://justadudewhohacks.github.io/face-api.js/models";
+  "https://justadudewhohacks.github.io/face-api.js/models";
 
-let modelsLoaded = false;
-let cameraReady = false;
-let busy = false;
+let modelsLoaded=false;
+let cameraReady=false;
+let faceBusy=false;
 
 
-// ============================
-// STATUS
-// ============================
+/* STATUS */
 
-function setStatus(message,type="normal"){
+function setFaceStatus(message,type="normal"){
 
-  statusBox.textContent = message;
+  faceStatus.textContent=message;
 
-  statusBox.classList.remove(
+  faceStatus.classList.remove(
     "green",
     "red"
   );
 
-  if(type === "green"){
-    statusBox.classList.add("green");
+  if(type==="green"){
+    faceStatus.classList.add("green");
   }
 
-  if(type === "red"){
-    statusBox.classList.add("red");
+  if(type==="red"){
+    faceStatus.classList.add("red");
   }
 }
 
 
-// ============================
-// LOAD FACE MODELS
-// ============================
+/* MODELS */
 
-async function loadModels(){
+async function loadFaceModels(){
 
-  setStatus("Loading face recognition...");
+  setFaceStatus(
+    "Loading face recognition..."
+  );
 
   try{
 
@@ -269,32 +1272,36 @@ async function loadModels(){
     await faceapi.nets.faceRecognitionNet
       .loadFromUri(MODEL_URL);
 
-    modelsLoaded = true;
+    modelsLoaded=true;
 
-    setStatus("Face system ready.");
+    setFaceStatus(
+      "Face system ready."
+    );
 
   }catch(error){
 
     console.error(error);
 
-    setStatus(
+    setFaceStatus(
       "Face model loading failed.",
       "red"
     );
+
   }
+
 }
 
 
-// ============================
-// CAMERA
-// ============================
+/* CAMERA */
 
 async function startCamera(){
 
-  if(!navigator.mediaDevices ||
-     !navigator.mediaDevices.getUserMedia){
+  if(
+    !navigator.mediaDevices ||
+    !navigator.mediaDevices.getUserMedia
+  ){
 
-    setStatus(
+    setFaceStatus(
       "Camera is not supported here.",
       "red"
     );
@@ -303,11 +1310,6 @@ async function startCamera(){
   }
 
   try{
-
-    /*
-      Browser will show the Android
-      camera permission dialog.
-    */
 
     const stream =
       await navigator.mediaDevices.getUserMedia({
@@ -322,13 +1324,13 @@ async function startCamera(){
 
       });
 
-    video.srcObject = stream;
+    video.srcObject=stream;
 
-    cameraReady = true;
+    cameraReady=true;
 
-    verifyBtn.disabled = false;
+    verifyBtn.disabled=false;
 
-    setStatus(
+    setFaceStatus(
       "Camera ready — show your face."
     );
 
@@ -336,29 +1338,26 @@ async function startCamera(){
 
     console.error(error);
 
-    setStatus(
+    setFaceStatus(
       "Camera permission was not allowed.",
       "red"
     );
+
   }
+
 }
 
 
-// ============================
-// GET WHOLE FACE DESCRIPTOR
-// ============================
+/* FACE DESCRIPTOR */
 
 async function getFaceDescriptor(){
 
-  if(!modelsLoaded || !cameraReady){
+  if(
+    !modelsLoaded ||
+    !cameraReady
+  ){
     return null;
   }
-
-  /*
-    Access decision is based on the
-    complete face descriptor.
-    No eye-only / finger / voice check.
-  */
 
   const result =
     await faceapi
@@ -366,7 +1365,7 @@ async function getFaceDescriptor(){
         video,
         new faceapi.TinyFaceDetectorOptions({
           inputSize:320,
-          scoreThreshold:0.5
+          scoreThreshold:.5
         })
       )
       .withFaceLandmarks()
@@ -380,39 +1379,37 @@ async function getFaceDescriptor(){
 }
 
 
-// ============================
-// FACE DISTANCE
-// ============================
+/* DISTANCE */
 
 function faceDistance(a,b){
 
-  let total = 0;
+  let total=0;
 
-  for(let i=0;i<a.length;i++){
+  for(
+    let i=0;
+    i<a.length;
+    i++
+  ){
 
-    const difference =
-      a[i] - b[i];
+    const d=a[i]-b[i];
 
-    total +=
-      difference * difference;
+    total+=d*d;
   }
 
   return Math.sqrt(total);
 }
 
 
-// ============================
-// REGISTER OWNER
-// ============================
+/* REGISTER */
 
 registerBtn.addEventListener(
   "click",
   async function(){
 
-    if(busy) return;
+    if(faceBusy)return;
 
-    busy = true;
-    registerBtn.disabled = true;
+    faceBusy=true;
+    registerBtn.disabled=true;
 
     try{
 
@@ -421,7 +1418,7 @@ registerBtn.addEventListener(
 
       if(existing){
 
-        setStatus(
+        setFaceStatus(
           "Owner already registered. Reset first.",
           "red"
         );
@@ -429,7 +1426,7 @@ registerBtn.addEventListener(
         return;
       }
 
-      setStatus(
+      setFaceStatus(
         "Detecting your face..."
       );
 
@@ -438,7 +1435,7 @@ registerBtn.addEventListener(
 
       if(!descriptor){
 
-        setStatus(
+        setFaceStatus(
           "No face detected. Look at the camera.",
           "red"
         );
@@ -453,7 +1450,7 @@ registerBtn.addEventListener(
         )
       );
 
-      setStatus(
+      setFaceStatus(
         "OWNER FACE REGISTERED ✓",
         "green"
       );
@@ -462,35 +1459,32 @@ registerBtn.addEventListener(
 
       console.error(error);
 
-      setStatus(
+      setFaceStatus(
         "Owner registration failed.",
         "red"
       );
 
     }finally{
 
-      busy = false;
-      registerBtn.disabled = false;
+      faceBusy=false;
+      registerBtn.disabled=false;
+
     }
 
   }
 );
 
 
-// ============================
-// VERIFY FACE
-// ============================
+/* VERIFY */
 
 verifyBtn.addEventListener(
   "click",
   async function(){
 
-    if(busy) return;
+    if(faceBusy)return;
 
-    busy = true;
-    verifyBtn.disabled = true;
-
-    app.classList.add("hidden");
+    faceBusy=true;
+    verifyBtn.disabled=true;
 
     try{
 
@@ -499,7 +1493,7 @@ verifyBtn.addEventListener(
 
       if(!saved){
 
-        setStatus(
+        setFaceStatus(
           "No owner face registered.",
           "red"
         );
@@ -507,7 +1501,7 @@ verifyBtn.addEventListener(
         return;
       }
 
-      setStatus(
+      setFaceStatus(
         "Matching owner face..."
       );
 
@@ -521,7 +1515,7 @@ verifyBtn.addEventListener(
 
       if(!currentDescriptor){
 
-        setStatus(
+        setFaceStatus(
           "No face detected.",
           "red"
         );
@@ -536,99 +1530,1298 @@ verifyBtn.addEventListener(
         );
 
       console.log(
-        "Face match distance:",
+        "Face distance:",
         distance
       );
 
-      /*
-        Smaller distance means
-        the faces are more similar.
-      */
+      const MATCH_THRESHOLD=.50;
 
-      const MATCH_THRESHOLD = 0.50;
+      if(distance<MATCH_THRESHOLD){
 
-      if(distance < MATCH_THRESHOLD){
-
-        setStatus(
+        setFaceStatus(
           "ACCESS GRANTED ✓",
           "green"
         );
 
-        app.classList.remove("hidden");
+        /* FACE LOCK থেকে APP */
+
+        setTimeout(function(){
+
+          faceLock.style.display="none";
+          mainApp.style.display="block";
+
+        },500);
 
       }else{
 
-        setStatus(
+        setFaceStatus(
           "ACCESS DENIED ✕",
           "red"
         );
 
-        app.classList.add("hidden");
       }
 
     }catch(error){
 
       console.error(error);
 
-      setStatus(
+      setFaceStatus(
         "Face verification error.",
         "red"
       );
 
     }finally{
 
-      busy = false;
-      verifyBtn.disabled = false;
+      faceBusy=false;
+      verifyBtn.disabled=false;
+
     }
 
   }
 );
 
 
-// ============================
-// RESET OWNER
-// ============================
+/* RESET */
 
 resetBtn.addEventListener(
   "click",
   function(){
 
-    const confirmReset =
+    const ok =
       confirm(
         "Reset the registered owner face?"
       );
 
-    if(!confirmReset) return;
+    if(!ok)return;
 
     localStorage.removeItem(
       STORAGE_KEY
     );
 
-    app.classList.add("hidden");
+    mainApp.style.display="none";
+    faceLock.style.display="flex";
 
-    setStatus(
+    setFaceStatus(
       "Owner face reset. Register again."
     );
+
   }
 );
 
 
-// ============================
-// AUTO START
-// ============================
+/* START FACE SYSTEM */
 
 (async function(){
 
-  await loadModels();
+  await loadFaceModels();
 
   if(modelsLoaded){
-
-    /*
-      Camera permission is requested
-      automatically when the page loads.
-    */
-
     await startCamera();
+  }
+
+})();
+
+
+/* =========================================================
+   SENSITIVITY ANALYZER
+========================================================= */
+
+let selectedImage=null;
+let analysisRound=0;
+let analysisRunning=false;
+
+const overlay =
+  document.getElementById("overlay");
+
+const inputScreen =
+  document.getElementById("inputScreen");
+
+const scanScreen =
+  document.getElementById("scanScreen");
+
+const invalidScreen =
+  document.getElementById("invalidScreen");
+
+const resultScreen =
+  document.getElementById("resultScreen");
+
+const screenFile =
+  document.getElementById("screenFile");
+
+const preview =
+  document.getElementById("preview");
+
+const fileName =
+  document.getElementById("fileName");
+
+const analyzeBtn =
+  document.getElementById("analyzeBtn");
+
+const progressBar =
+  document.getElementById("progressBar");
+
+const progressText =
+  document.getElementById("progressText");
+
+const scanStatus =
+  document.getElementById("scanStatus");
+
+const doneBtn =
+  document.getElementById("doneBtn");
+
+const resultTitle =
+  document.getElementById("resultTitle");
+
+
+function startAnalysis(){
+
+  analysisRound=0;
+  analysisRunning=false;
+
+  overlay.classList.add("show");
+
+  inputScreen.style.display="block";
+  scanScreen.style.display="none";
+  invalidScreen.style.display="none";
+  resultScreen.style.display="none";
+
+}
+
+
+screenFile.addEventListener(
+  "change",
+  function(){
+
+    const file=
+      this.files&&this.files[0];
+
+    if(!file)return;
+
+    if(
+      !file.type ||
+      !file.type.startsWith("image/")
+    ){
+
+      alert(
+        "Please select an image screenshot."
+      );
+
+      this.value="";
+
+      return;
+    }
+
+    selectedImage=file;
+
+    const reader=
+      new FileReader();
+
+    reader.onload=function(e){
+
+      preview.src=e.target.result;
+      preview.style.display="block";
+
+    };
+
+    reader.readAsDataURL(file);
+
+    fileName.innerText=
+      "Selected: "+file.name;
+
+    analyzeBtn.style.display="block";
+
+  }
+);
+
+
+/* OCR */
+
+async function runOCR(){
+
+  if(!selectedImage){
+
+    alert(
+      "First select a Device Information screenshot."
+    );
+
+    return;
+  }
+
+  if(analysisRunning)return;
+
+  analysisRunning=true;
+
+  inputScreen.style.display="none";
+  scanScreen.style.display="block";
+  invalidScreen.style.display="none";
+  resultScreen.style.display="none";
+
+  progressBar.style.width="0%";
+  progressText.innerText="0%";
+
+  scanStatus.innerText=
+    analysisRound===0
+      ?"First analysis..."
+      :"Second analysis...";
+
+  try{
+
+    const result=
+      await Tesseract.recognize(
+        selectedImage,
+        "eng",
+        {
+          logger:function(message){
+
+            if(
+              message.status===
+              "recognizing text"
+            ){
+
+              const percent=
+                Math.round(
+                  (message.progress||0)*100
+                );
+
+              progressBar.style.width=
+                percent+"%";
+
+              progressText.innerText=
+                percent+"%";
+            }
+
+          }
+        }
+      );
+
+    const text=
+      result.data.text||"";
+
+    console.log(
+      "OCR RESULT:",
+      text
+    );
+
+    progressBar.style.width="100%";
+    progressText.innerText="100%";
+
+    scanStatus.innerText=
+      "Analysis complete...";
+
+    setTimeout(function(){
+
+      analysisRunning=false;
+
+      if(
+        isDeviceInformationScreenshot(text)
+      ){
+
+        analyzeDeviceText(text);
+
+      }else{
+
+        showInvalid();
+
+      }
+
+    },300);
+
+  }catch(error){
+
+    console.error(error);
+
+    analysisRunning=false;
+
+    showInvalid();
+
+  }
+
+}
+
+
+/* OCR HELPERS */
+
+function normalizeOCR(text){
+
+  return String(text||"")
+    .replace(/\u00a0/g," ")
+    .replace(/[“”]/g,'"')
+    .replace(/[‘’]/g,"'")
+    .replace(/[|]/g," ")
+    .replace(/\r\n/g,"\n")
+    .replace(/\r/g,"\n")
+    .replace(/[ \t]+/g," ")
+    .replace(/\n[ \t]+/g,"\n")
+    .replace(/\n{2,}/g,"\n")
+    .trim();
+
+}
+
+
+function normalizeLabel(text){
+
+  return String(text||"")
+    .toLowerCase()
+    .replace(/[|]/g," ")
+    .replace(/[._]/g," ")
+    .replace(/[^a-z0-9+ -]/g," ")
+    .replace(/\s+/g," ")
+    .trim();
+
+}
+
+
+function isDeviceInformationScreenshot(text){
+
+  const clean=
+    normalizeOCR(text).toLowerCase();
+
+  if(clean.length<15)return false;
+
+  const phoneWords=[
+    "about phone",
+    "about device",
+    "device information",
+    "device info",
+    "phone information",
+    "software information",
+    "my phone",
+    "phone"
+  ];
+
+  const technicalWords=[
+    "android",
+    "build",
+    "ram",
+    "memory",
+    "model",
+    "device",
+    "version",
+    "software",
+    "serial",
+    "security patch"
+  ];
+
+  let phoneFound=false;
+  let technicalFound=0;
+
+  phoneWords.forEach(word=>{
+    if(clean.includes(word)){
+      phoneFound=true;
+    }
+  });
+
+  technicalWords.forEach(word=>{
+    if(clean.includes(word)){
+      technicalFound++;
+    }
+  });
+
+  const modelCode=
+    /\b(?:SM-[A-Z0-9-]+|RMX[A-Z0-9-]+|CPH[A-Z0-9-]+|XT[0-9A-Z-]+|V[0-9A-Z]{2,})\b/i
+    .test(clean);
+
+  return(
+    (phoneFound&&technicalFound>=1)||
+    technicalFound>=3||
+    (phoneFound&&modelCode)
+  );
+
+}
+
+
+function getLines(text){
+
+  return normalizeOCR(text)
+    .split("\n")
+    .map(line=>
+      line.trim().replace(/\s+/g," ")
+    )
+    .filter(Boolean);
+
+}
+
+
+function cleanValue(value){
+
+  return String(value||"")
+    .replace(/^[\s:：\-–—|]+/,"")
+    .replace(/[\s|]+$/,"")
+    .replace(/\s+/g," ")
+    .trim();
+
+}
+
+
+function isGenericLabel(value){
+
+  const n=normalizeLabel(value);
+
+  return[
+    "device",
+    "device name",
+    "phone",
+    "phone name",
+    "model",
+    "model name",
+    "model number",
+    "device model",
+    "phone model",
+    "ram",
+    "memory",
+    "android",
+    "android version",
+    "version",
+    "build",
+    "build number",
+    "build no",
+    "software",
+    "software information",
+    "about phone",
+    "about device",
+    "settings",
+    "system",
+    "name",
+    "number"
+  ].includes(n);
+
+}
+
+
+function nextUsefulLine(lines,index){
+
+  for(
+    let j=index+1;
+    j<Math.min(lines.length,index+3);
+    j++
+  ){
+
+    const candidate=
+      cleanValue(lines[j]);
+
+    if(!candidate)continue;
+
+    if(isGenericLabel(candidate))continue;
+
+    return candidate;
+  }
+
+  return null;
+
+}
+
+
+function valueAfterLabel(
+  lines,
+  index,
+  labelRegex
+){
+
+  const line=lines[index];
+
+  const same=line.match(labelRegex);
+
+  if(same&&same[1]){
+
+    const value=cleanValue(same[1]);
+
+    if(
+      value.length>=2 &&
+      !isGenericLabel(value)
+    ){
+      return value;
+    }
+
+  }
+
+  return nextUsefulLine(
+    lines,
+    index
+  );
+
+}
+
+
+/* DEVICE NAME */
+
+function extractDeviceName(text){
+
+  const lines=getLines(text);
+
+  const patterns=[
+    /^\s*device\s*name\s*[:：\-]?\s*(.*)$/i,
+    /^\s*phone\s*name\s*[:：\-]?\s*(.*)$/i,
+    /^\s*device\s*nickname\s*[:：\-]?\s*(.*)$/i,
+    /^\s*phone\s*nickname\s*[:：\-]?\s*(.*)$/i,
+    /^\s*device\s*name\s+(.+)$/i,
+    /^\s*phone\s*name\s+(.+)$/i
+  ];
+
+  for(let i=0;i<lines.length;i++){
+
+    for(const pattern of patterns){
+
+      const value=
+        valueAfterLabel(
+          lines,
+          i,
+          pattern
+        );
+
+      if(
+        value&&
+        isGoodDeviceName(value)
+      ){
+        return value;
+      }
+
+    }
+  }
+
+  return "Not detected";
+
+}
+
+
+function isGoodDeviceName(value){
+
+  if(!value)return false;
+
+  value=cleanValue(value);
+
+  if(
+    value.length<2||
+    value.length>100
+  ){
+    return false;
+  }
+
+  if(isGenericLabel(value))return false;
+
+  if(
+    /^\d+(?:\.\d+)?\s*(?:gb|mb|tb)$/i.test(value)
+  ){
+    return false;
+  }
+
+  if(/^android\s+\d/i.test(value)){
+    return false;
+  }
+
+  return true;
+
+}
+
+
+/* MODEL */
+
+function extractModel(text){
+
+  const lines=getLines(text);
+
+  const patterns=[
+    /^\s*model\s*name\s*[:：\-]?\s*(.*)$/i,
+    /^\s*model\s*number\s*[:：\-]?\s*(.*)$/i,
+    /^\s*device\s*model\s*[:：\-]?\s*(.*)$/i,
+    /^\s*phone\s*model\s*[:：\-]?\s*(.*)$/i,
+    /^\s*model\s*[:：\-]\s*(.*)$/i,
+    /^\s*model\s+(.+)$/i,
+    /^\s*model\s*no\.?\s*[:：\-]?\s*(.*)$/i
+  ];
+
+  for(let i=0;i<lines.length;i++){
+
+    for(const pattern of patterns){
+
+      const value=
+        valueAfterLabel(
+          lines,
+          i,
+          pattern
+        );
+
+      if(
+        value&&
+        isGoodModel(value)
+      ){
+        return value;
+      }
+
+    }
+
+  }
+
+  const modelPatterns=[
+    /\bSM-[A-Z0-9-]{3,}\b/i,
+    /\bRMX[A-Z0-9-]{3,}\b/i,
+    /\bCPH[A-Z0-9-]{3,}\b/i,
+    /\bXT[0-9A-Z-]{3,}\b/i,
+    /\bV[0-9A-Z]{2,}\b/i
+  ];
+
+  for(const pattern of modelPatterns){
+
+    const match=
+      normalizeOCR(text).match(pattern);
+
+    if(match){
+      return cleanValue(match[0]);
+    }
+
+  }
+
+  return "Not detected";
+
+}
+
+
+function isGoodModel(value){
+
+  if(!value)return false;
+
+  value=cleanValue(value);
+
+  if(
+    value.length<2||
+    value.length>100
+  ){
+    return false;
+  }
+
+  if(isGenericLabel(value))return false;
+
+  if(
+    /^(android|build|ram|memory|version)\b/i.test(value)
+  ){
+    return false;
+  }
+
+  return true;
+
+}
+
+
+/* RAM */
+
+function extractRAM(text){
+
+  const clean=normalizeOCR(text);
+
+  const patterns=[
+
+    /(?:ram|memory)\s*[:：\-]?\s*(\d{1,2}(?:\s*\+\s*\d{1,2})?)\s*(?:gb|g8|g b)\b/i,
+
+    /\b(\d{1,2}(?:\s*\+\s*\d{1,2})?)\s*(?:gb|g8|g b)\s*(?:ram|memory)\b/i,
+
+    /(?:ram|memory)[^\n]{0,40}?(\d{1,2}(?:\s*\+\s*\d{1,2})?)\s*(?:gb|g8|g b)\b/i
+
+  ];
+
+  for(const pattern of patterns){
+
+    const match=clean.match(pattern);
+
+    if(match){
+
+      const value=
+        cleanRamValue(match[1]);
+
+      if(value)return value;
+
+    }
+
+  }
+
+  return "Not detected";
+
+}
+
+
+function cleanRamValue(value){
+
+  if(!value)return null;
+
+  const normalized=
+    String(value)
+      .replace(/\s+/g,"")
+      .replace(/g8/gi,"")
+      .trim();
+
+  const parts=normalized.split("+");
+
+  const first=parseInt(parts[0],10);
+
+  if(
+    !first||
+    first<1||
+    first>64
+  ){
+    return null;
+  }
+
+  if(parts.length>1){
+
+    const second=parseInt(parts[1],10);
+
+    if(
+      second>=1&&
+      second<=64
+    ){
+
+      return first+
+        "+"+
+        second+
+        " GB";
+
+    }
+
+  }
+
+  return first+" GB";
+
+}
+
+
+/* ANDROID */
+
+function extractAndroid(text){
+
+  const clean=normalizeOCR(text);
+
+  const patterns=[
+    /android\s*version\s*[:：\-]?\s*(\d+(?:\.\d+){0,2})/i,
+    /android\s*[:：\-]?\s*(\d+(?:\.\d+){0,2})/i,
+    /android\s+(\d+(?:\.\d+){0,2})/i
+  ];
+
+  for(const pattern of patterns){
+
+    const match=clean.match(pattern);
+
+    if(match){
+      return "Android "+match[1];
+    }
+
+  }
+
+  return "Not detected";
+
+}
+
+
+/* BUILD */
+
+function extractBuild(text){
+
+  const clean=normalizeOCR(text);
+
+  const patterns=[
+    /build\s*number\s*[:：\-]?\s*([A-Za-z0-9._\-\/]+)/i,
+    /build\s*no\.?\s*[:：\-]?\s*([A-Za-z0-9._\-\/]+)/i,
+    /build\s*[:：\-]\s*([A-Za-z0-9._\-\/]+)/i
+  ];
+
+  for(const pattern of patterns){
+
+    const match=clean.match(pattern);
+
+    if(match){
+
+      const value=cleanValue(match[1]);
+
+      if(value)return value;
+
+    }
+
+  }
+
+  return "Not detected";
+
+}
+
+
+/* SENSITIVITY */
+
+function generateSensitivity(
+  model,
+  ram,
+  android,
+  text
+){
+
+  let general=170;
+  let red=160;
+  let twoX=150;
+  let fourX=140;
+  let sniper=120;
+  let freeLook=150;
+
+  let dpi=440;
+
+  const ramNumber=
+    parseInt(ram,10)||4;
+
+  if(ramNumber>=12){
+
+    general+=18;
+    red+=18;
+    twoX+=15;
+    fourX+=12;
+    sniper+=10;
+    freeLook+=12;
+
+  }
+  else if(ramNumber>=8){
+
+    general+=12;
+    red+=12;
+    twoX+=10;
+    fourX+=8;
+    sniper+=7;
+    freeLook+=8;
+
+  }
+  else if(ramNumber>=6){
+
+    general+=7;
+    red+=7;
+    twoX+=6;
+    fourX+=5;
+    sniper+=4;
+    freeLook+=5;
+
+  }
+  else if(ramNumber<=3){
+
+    general-=12;
+    red-=10;
+    twoX-=10;
+    fourX-=8;
+    sniper-=5;
+    freeLook-=8;
+
+  }
+
+  const resolution=
+    String(text).match(
+      /\b(720|1080|1440|2160)\s*[x×]\s*(\d{3,5})\b/i
+    );
+
+  if(resolution){
+
+    const width=
+      parseInt(resolution[1],10);
+
+    if(width>=2160){
+      dpi=560;
+    }
+    else if(width>=1440){
+      dpi=520;
+    }
+    else if(width>=1080){
+      dpi=480;
+    }
+    else{
+      dpi=420;
+    }
+
+  }
+
+  return{
+
+    dpi:dpi,
+
+    general:limit200(general),
+    red:limit200(red),
+    twoX:limit200(twoX),
+    fourX:limit200(fourX),
+    sniper:limit200(sniper),
+    freeLook:limit200(freeLook)
+
+  };
+
+}
+
+
+function limit200(value){
+
+  return Math.max(
+    100,
+    Math.min(
+      200,
+      Math.round(value)
+    )
+  );
+
+}
+
+
+/* ANALYZE */
+
+function analyzeDeviceText(text){
+
+  const data={
+
+    deviceName:
+      extractDeviceName(text),
+
+    model:
+      extractModel(text),
+
+    ram:
+      extractRAM(text),
+
+    android:
+      extractAndroid(text),
+
+    build:
+      extractBuild(text)
+
+  };
+
+  const detectedCount=
+    Object.values(data)
+      .filter(
+        value=>
+          value&&
+          value!=="Not detected"
+      ).length;
+
+  if(detectedCount<2){
+
+    showInvalid();
+    return;
+
+  }
+
+  const sensi=
+    generateSensitivity(
+      data.model,
+      data.ram,
+      data.android,
+      text
+    );
+
+  showResult({
+
+    ...data,
+
+    dpi:sensi.dpi,
+    general:sensi.general,
+    red:sensi.red,
+    twoX:sensi.twoX,
+    fourX:sensi.fourX,
+    sniper:sensi.sniper,
+    freeLook:sensi.freeLook
+
+  });
+
+}
+
+
+/* RESULT */
+
+function showResult(data){
+
+  scanScreen.style.display="none";
+  resultScreen.style.display="block";
+
+  document.getElementById("rDeviceName").innerText=data.deviceName;
+  document.getElementById("rModel").innerText=data.model;
+  document.getElementById("rRam").innerText=data.ram;
+  document.getElementById("rAndroid").innerText=data.android;
+  document.getElementById("rBuild").innerText=data.build;
+
+  document.getElementById("dpi").innerText=data.dpi;
+
+  document.getElementById("rGeneral").innerText=data.general;
+  document.getElementById("rRed").innerText=data.red;
+  document.getElementById("r2x").innerText=data.twoX;
+  document.getElementById("r4x").innerText=data.fourX;
+  document.getElementById("rSniper").innerText=data.sniper;
+  document.getElementById("rFree").innerText=data.freeLook;
+
+  document.getElementById("homeDeviceName").innerText=data.deviceName;
+  document.getElementById("homeRam").innerText=data.ram;
+  document.getElementById("homeModel").innerText=data.model;
+  document.getElementById("homeAndroid").innerText=data.android;
+  document.getElementById("homeBuild").innerText=data.build;
+
+  if(analysisRound===0){
+
+    resultTitle.innerText=
+      "ANALYSIS COMPLETE";
+
+    doneBtn.innerText=
+      "DONE — RUN AGAIN";
+
+  }else{
+
+    resultTitle.innerText=
+      "SECOND ANALYSIS COMPLETE";
+
+    doneBtn.innerText=
+      "DONE";
+
+  }
+
+}
+
+
+/* DONE */
+
+function doneAnalysis(){
+
+  if(analysisRunning)return;
+
+  if(analysisRound===0){
+
+    analysisRound=1;
+
+    resultScreen.style.display="none";
+    scanScreen.style.display="block";
+
+    progressBar.style.width="0%";
+    progressText.innerText="0%";
+
+    scanStatus.innerText=
+      "Starting second analysis...";
+
+    runOCR();
+
+    return;
+  }
+
+  if(analysisRound===1){
+
+    analysisRound=2;
+
+    closeAnalysis();
+
+  }
+
+}
+
+
+/* INVALID */
+
+function showInvalid(){
+
+  analysisRunning=false;
+
+  scanScreen.style.display="none";
+  invalidScreen.style.display="block";
+
+}
+
+
+/* TRY AGAIN */
+
+function tryAgain(){
+
+  analysisRound=0;
+  analysisRunning=false;
+  selectedImage=null;
+
+  screenFile.value="";
+
+  preview.src="";
+  preview.style.display="none";
+
+  fileName.innerText="";
+
+  analyzeBtn.style.display="none";
+
+  invalidScreen.style.display="none";
+  resultScreen.style.display="none";
+
+  inputScreen.style.display="block";
+
+}
+
+
+/* CLOSE */
+
+function closeAnalysis(){
+
+  analysisRound=0;
+  analysisRunning=false;
+
+  overlay.classList.remove("show");
+
+  selectedImage=null;
+
+  screenFile.value="";
+
+  preview.src="";
+  preview.style.display="none";
+
+  fileName.innerText="";
+
+  analyzeBtn.style.display="none";
+
+  inputScreen.style.display="block";
+  scanScreen.style.display="none";
+  invalidScreen.style.display="none";
+  resultScreen.style.display="none";
+
+}
+
+
+/* DEVICE INFO */
+
+function showDeviceInfo(){
+
+  document.getElementById("diScreen").innerText=
+    screen.width+" × "+screen.height;
+
+  document.getElementById("diRatio").innerText=
+    window.devicePixelRatio||1;
+
+  document.getElementById("diLanguage").innerText=
+    navigator.language||"--";
+
+  document
+    .getElementById("deviceInfoOverlay")
+    .classList.add("show");
+
+}
+
+
+function closeDeviceInfo(){
+
+  document
+    .getElementById("deviceInfoOverlay")
+    .classList.remove("show");
+
+}
+
+
+/* PROFILE */
+
+function openProfile(){
+
+  document
+    .getElementById("profileOverlay")
+    .classList.add("show");
+
+}
+
+
+function closeProfile(){
+
+  document
+    .getElementById("profileOverlay")
+    .classList.remove("show");
+
+}
+
+
+function outsideProfile(event){
+
+  if(
+    event.target.id==="profileOverlay"
+  ){
+
+    closeProfile();
+
+  }
+
+}
+
+
+const profileFile=
+  document.getElementById("profileFile");
+
+const profilePhoto=
+  document.getElementById("profilePhoto");
+
+const profileBtn=
+  document.getElementById("profileBtn");
+
+
+profileFile.addEventListener(
+  "change",
+  function(){
+
+    const file=
+      this.files&&this.files[0];
+
+    if(!file)return;
+
+    if(
+      !file.type||
+      !file.type.startsWith("image/")
+    ){
+
+      alert("Please select an image.");
+
+      this.value="";
+
+      return;
+    }
+
+    const reader=
+      new FileReader();
+
+    reader.onload=function(e){
+
+      const image=e.target.result;
+
+      profilePhoto.src=image;
+
+      profileBtn.innerHTML=
+        '<img src="'+
+        image+
+        '" alt="Profile">';
+
+      try{
+
+        localStorage.setItem(
+          "turjo_x_profile_photo",
+          image
+        );
+
+      }catch(error){
+
+        console.error(error);
+
+      }
+
+    };
+
+    reader.readAsDataURL(file);
+
+  }
+);
+
+
+/* LOAD PROFILE */
+
+(function(){
+
+  try{
+
+    const saved=
+      localStorage.getItem(
+        "turjo_x_profile_photo"
+      );
+
+    if(saved){
+
+      profilePhoto.src=saved;
+
+      profileBtn.innerHTML=
+        '<img src="'+
+        saved+
+        '" alt="Profile">';
+
+    }
+
+  }catch(error){
+
+    console.error(error);
+
   }
 
 })();
@@ -636,4 +2829,4 @@ resetBtn.addEventListener(
 </script>
 
 </body>
-</html>
+  </html>
