@@ -10,14 +10,11 @@
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
 <style>
+
 *{
   box-sizing:border-box;
   margin:0;
   padding:0;
-}
-
-html{
-  min-height:100%;
 }
 
 body{
@@ -26,83 +23,7 @@ body{
   background:
     radial-gradient(circle at top,#172b58,#080b16 50%,#02040a);
   color:#fff;
-  position:relative;
-  overflow-x:hidden;
 }
-
-/* =====================================================
-   TURJO X NEON BACKGROUND LOGO
-===================================================== */
-
-body::before{
-  content:"TX";
-
-  position:fixed;
-  left:50%;
-  top:50%;
-
-  transform:
-    translate(-50%,-50%)
-    rotate(-8deg);
-
-  font-family:Arial,sans-serif;
-  font-size:clamp(190px,48vw,430px);
-  font-weight:900;
-  line-height:1;
-
-  letter-spacing:-18px;
-
-  color:rgba(0,234,255,.035);
-
-  -webkit-text-stroke:
-    2px rgba(0,234,255,.065);
-
-  text-shadow:
-    0 0 20px rgba(0,234,255,.08),
-    0 0 45px rgba(0,234,255,.06),
-    0 0 90px rgba(0,234,255,.035);
-
-  pointer-events:none;
-  user-select:none;
-
-  z-index:0;
-}
-
-/* দ্বিতীয় হালকা glow layer */
-
-body::after{
-  content:"TURJO X";
-
-  position:fixed;
-  left:50%;
-  top:58%;
-
-  transform:
-    translate(-50%,-50%);
-
-  font-size:clamp(20px,6vw,42px);
-  font-weight:900;
-  letter-spacing:10px;
-
-  color:rgba(0,234,255,.025);
-
-  text-shadow:
-    0 0 20px rgba(0,234,255,.08);
-
-  pointer-events:none;
-  user-select:none;
-
-  z-index:0;
-}
-
-/* সব মূল UI logo-এর উপরে থাকবে */
-
-#faceLock,
-#mainApp{
-  position:relative;
-  z-index:1;
-}
-
 
 /* ================= FACE LOCK ================= */
 
@@ -538,7 +459,9 @@ body::after{
 }
 
 @keyframes spin{
-  to{transform:rotate(360deg)}
+  to{
+    transform:rotate(360deg);
+  }
 }
 
 .scanScreen h3{
@@ -743,10 +666,165 @@ body::after{
   font-weight:900;
   cursor:pointer;
 }
+
+
+/* ================= CORNER 3 DOT ================= */
+
+.cornerMenu{
+  position:fixed;
+  right:12px;
+  bottom:12px;
+  z-index:120;
+}
+
+.dotBtn{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  border:1px solid rgba(0,234,255,.5);
+  background:#07111f;
+  color:#00eaff;
+  font-size:22px;
+  font-weight:900;
+  box-shadow:0 0 18px rgba(0,234,255,.15);
+  cursor:pointer;
+}
+
+.headshotPanel{
+  position:fixed;
+  inset:0;
+  z-index:110;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(1,5,12,.88);
+  backdrop-filter:blur(10px);
+}
+
+.headshotPanel.show{
+  display:flex;
+}
+
+.headshotBox{
+  width:100%;
+  max-width:360px;
+  padding:22px;
+  border-radius:20px;
+  background:#081322;
+  border:1px solid rgba(0,234,255,.3);
+  box-shadow:0 0 35px rgba(0,234,255,.12);
+  text-align:center;
+}
+
+.headshotBox h2{
+  color:#00eaff;
+  font-size:19px;
+  letter-spacing:2px;
+  margin-bottom:8px;
+}
+
+.headshotBox p{
+  color:#71819a;
+  font-size:10px;
+  line-height:1.6;
+  margin-bottom:18px;
+}
+
+.headshotToggle{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  padding:14px;
+  background:#07111f;
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:13px;
+}
+
+.headshotText{
+  text-align:left;
+}
+
+.headshotText b{
+  display:block;
+  color:#fff;
+  font-size:12px;
+}
+
+.headshotText span{
+  display:block;
+  color:#6e7d94;
+  font-size:8px;
+  margin-top:4px;
+}
+
+.switch{
+  position:relative;
+  width:54px;
+  height:30px;
+  flex-shrink:0;
+}
+
+.switch input{
+  display:none;
+}
+
+.slider{
+  position:absolute;
+  inset:0;
+  background:#263449;
+  border-radius:30px;
+  cursor:pointer;
+  transition:.25s;
+}
+
+.slider:before{
+  content:"";
+  position:absolute;
+  width:22px;
+  height:22px;
+  left:4px;
+  top:4px;
+  background:#fff;
+  border-radius:50%;
+  transition:.25s;
+}
+
+.switch input:checked + .slider{
+  background:#00cfff;
+  box-shadow:0 0 15px rgba(0,207,255,.5);
+}
+
+.switch input:checked + .slider:before{
+  transform:translateX(24px);
+}
+
+.panelClose{
+  width:100%;
+  margin-top:12px;
+  padding:12px;
+  border:1px solid rgba(0,234,255,.3);
+  border-radius:11px;
+  background:#07111f;
+  color:#00eaff;
+  font-weight:900;
+  cursor:pointer;
+}
+
+#headshotStatus{
+  min-height:18px;
+  margin-top:12px;
+  color:#00ffb3;
+  font-size:10px;
+  font-weight:900;
+}
+
 </style>
 </head>
 
 <body>
+
 
 <!-- ================= FACE LOGIN ================= -->
 
@@ -754,7 +832,9 @@ body::after{
 
   <div class="faceBox">
 
-    <div class="faceLogo">TURJO X</div>
+    <div class="faceLogo">
+      TURJO X
+    </div>
 
     <div class="faceSub">
       OWNER FACE SECURITY
@@ -822,7 +902,9 @@ body::after{
         class="profileBtn"
         id="profileBtn"
         onclick="openProfile()"
-      >👤</button>
+      >
+        👤
+      </button>
 
     </div>
 
@@ -855,6 +937,7 @@ body::after{
         </div>
 
       </div>
+
 
       <div class="deviceGrid">
 
@@ -1002,7 +1085,6 @@ body::after{
           id="preview"
           class="preview"
         >
-
 
         <div
           id="fileName"
@@ -1201,8 +1283,6 @@ body::after{
         </div>
 
 
-        <!-- DONE -->
-
         <button
           class="closeBtn"
           id="doneBtn"
@@ -1211,8 +1291,6 @@ body::after{
           DONE — RUN AGAIN
         </button>
 
-
-        <!-- GAME -->
 
         <button
           class="closeBtn"
@@ -1319,7 +1397,6 @@ body::after{
         SELECT PROFILE PHOTO
       </label>
 
-
       <input
         id="profileFile"
         type="file"
@@ -1338,10 +1415,90 @@ body::after{
 
   </div>
 
+
+  <!-- ================= CORNER 3 DOT ================= -->
+
+  <div class="cornerMenu">
+
+    <button
+      class="dotBtn"
+      onclick="openHeadshotPanel()"
+      aria-label="Menu"
+    >
+      ⋮
+    </button>
+
+  </div>
+
+
+  <!-- ================= HEADSHOT PANEL ================= -->
+
+  <div
+    class="headshotPanel"
+    id="headshotPanel"
+  >
+
+    <div class="headshotBox">
+
+      <h2>
+        TURJO X CONTROL
+      </h2>
+
+      <p>
+        Don't ask me icon.<br>
+        Don't touch me icon.
+      </p>
+
+
+      <div class="headshotToggle">
+
+        <div class="headshotText">
+
+          <b>
+            HEADSHOT 100% ON
+          </b>
+
+          <span>
+            Sensitivity control
+          </span>
+
+        </div>
+
+
+        <label class="switch">
+
+          <input
+            type="checkbox"
+            id="headshotToggle"
+            onchange="headshotChanged()"
+          >
+
+          <span class="slider"></span>
+
+        </label>
+
+      </div>
+
+
+      <div id="headshotStatus"></div>
+
+
+      <button
+        class="panelClose"
+        onclick="closeHeadshotPanel()"
+      >
+        CLOSE
+      </button>
+
+    </div>
+
+  </div>
+
 </div>
 
 
 <script>
+
 
 /* =====================================================
    FACE LOCK
@@ -2832,7 +2989,7 @@ function openFreeFire(){
 }
 
 
-/* DEVICE INFO */
+/* ================= DEVICE INFO ================= */
 
 function showDeviceInfo(){
 
@@ -2864,7 +3021,7 @@ function closeDeviceInfo(){
 }
 
 
-/* PROFILE */
+/* ================= PROFILE ================= */
 
 function openProfile(){
 
@@ -2987,7 +3144,84 @@ profileFile.onchange=function(){
 
 })();
 
+
+/* =====================================================
+   CORNER MENU
+===================================================== */
+
+let iconClickCount=0;
+
+
+function openHeadshotPanel(){
+
+  iconClickCount++;
+
+  if(iconClickCount%2===1){
+
+    alert("Don't ask me icon");
+
+  }else{
+
+    alert("Don't touch me icon");
+
+  }
+
+  document
+    .getElementById("headshotPanel")
+    .classList.add("show");
+
+}
+
+
+/* CLOSE HEADSHOT */
+
+function closeHeadshotPanel(){
+
+  document
+    .getElementById("headshotPanel")
+    .classList.remove("show");
+
+}
+
+
+/* =====================================================
+   HEADSHOT TOGGLE
+===================================================== */
+
+function headshotChanged(){
+
+  const toggle=
+    document.getElementById("headshotToggle");
+
+  const status=
+    document.getElementById("headshotStatus");
+
+  if(toggle.checked){
+
+    status.innerText=
+      "HEADSHOT 100% ON ✓ — Opening Free Fire...";
+
+    /*
+      এটি শুধু UI control।
+      এটি গেমে headshot 100% guarantee করে না।
+    */
+
+    setTimeout(function(){
+
+      openFreeFire();
+
+    },700);
+
+  }else{
+
+    status.innerText=
+      "HEADSHOT CONTROL OFF";
+
+  }
+
+}
+
 </script>
 
 </body>
-        </html>
+          </html>
