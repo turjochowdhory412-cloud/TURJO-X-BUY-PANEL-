@@ -3,13 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#050913">
 
-<title>TURJO X — Face Lock + Sensitivity</title>
+<title>TURJO X — Premium Intelligence</title>
 
 <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
 <style>
+
+/* =========================================================
+   TURJO X — PREMIUM FUTURE UI
+========================================================= */
+
+:root{
+  --cyan:#00eaff;
+  --blue:#1677ff;
+  --green:#00ffb3;
+  --red:#ff4968;
+  --bg:#030711;
+  --panel:rgba(8,16,30,.86);
+  --line:rgba(0,234,255,.16);
+  --muted:#71819b;
+  --text:#f4f8ff;
+}
 
 *{
   box-sizing:border-box;
@@ -17,22 +34,104 @@
   padding:0;
 }
 
-body{
-  font-family:Arial,sans-serif;
-  min-height:100vh;
-  background:
-    radial-gradient(circle at top,#172b58,#080b16 50%,#02040a);
-  color:#fff;
+html{
+  scroll-behavior:smooth;
 }
 
-/* ================= FACE LOCK ================= */
+body{
+  min-height:100vh;
+  font-family:
+    Inter,
+    Arial,
+    sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(
+      circle at 50% -10%,
+      rgba(0,234,255,.18),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 100% 40%,
+      rgba(23,119,255,.12),
+      transparent 28%
+    ),
+    linear-gradient(
+      145deg,
+      #02040a,
+      #06101d 45%,
+      #02040a
+    );
+  overflow-x:hidden;
+}
+
+button,
+input{
+  font:inherit;
+}
+
+
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.12;
+  background-image:
+    linear-gradient(
+      rgba(255,255,255,.025) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.025) 1px,
+      transparent 1px
+    );
+  background-size:40px 40px;
+  mask-image:linear-gradient(
+    to bottom,
+    black,
+    transparent 80%
+  );
+}
+
+.orb{
+  position:fixed;
+  width:220px;
+  height:220px;
+  border-radius:50%;
+  filter:blur(70px);
+  opacity:.12;
+  pointer-events:none;
+}
+
+.orb.one{
+  top:15%;
+  left:-100px;
+  background:var(--cyan);
+}
+
+.orb.two{
+  right:-100px;
+  bottom:20%;
+  background:var(--blue);
+}
+
+
+/* =========================================================
+   FACE LOCK
+========================================================= */
 
 #faceLock{
   min-height:100vh;
   display:flex;
-  align-items:center;
   justify-content:center;
-  padding:18px;
+  align-items:center;
+  padding:20px;
 }
 
 .faceBox{
@@ -41,30 +140,60 @@ body{
   text-align:center;
 }
 
-.faceLogo{
-  font-size:31px;
-  font-weight:900;
-  letter-spacing:4px;
-  color:#00eaff;
-  text-shadow:0 0 18px #00eaff;
+.brandMark{
+  margin-bottom:18px;
 }
 
-.faceSub{
-  margin:7px 0 18px;
-  font-size:10px;
-  letter-spacing:3px;
-  color:#8190a9;
+.brandMark h1{
+  color:var(--cyan);
+  font-size:34px;
+  font-weight:1000;
+  letter-spacing:6px;
+  text-shadow:
+    0 0 8px rgba(0,234,255,.8),
+    0 0 28px rgba(0,234,255,.35);
+}
+
+.brandMark p{
+  margin-top:6px;
+  color:#71829b;
+  font-size:9px;
+  letter-spacing:4px;
+}
+
+.securityBadge{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  margin-bottom:15px;
+  padding:7px 12px;
+  border-radius:30px;
+  border:1px solid rgba(0,234,255,.18);
+  background:rgba(0,234,255,.04);
+  color:#91a4be;
+  font-size:8px;
+  letter-spacing:2px;
+}
+
+.liveDot{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 10px var(--green);
 }
 
 .cameraBox{
   position:relative;
   width:100%;
   aspect-ratio:3/4;
-  background:#000;
-  border-radius:25px;
   overflow:hidden;
-  border:2px solid #203654;
-  box-shadow:0 0 35px rgba(0,234,255,.18);
+  border-radius:28px;
+  border:1px solid rgba(0,234,255,.3);
+  background:#000;
+  box-shadow:
+    0 25px 70px rgba(0,0,0,.5),
+    0 0 40px rgba(0,234,255,.08);
 }
 
 #video{
@@ -74,111 +203,179 @@ body{
   transform:scaleX(-1);
 }
 
+.cameraShade{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,.2),
+      transparent 35%,
+      rgba(0,0,0,.5)
+    );
+}
+
 .faceCircle{
   position:absolute;
   left:18%;
   right:18%;
-  top:17%;
-  bottom:17%;
-  border:2px solid rgba(0,234,255,.7);
+  top:15%;
+  bottom:15%;
+  border:1px solid rgba(0,234,255,.65);
   border-radius:50%;
-  box-shadow:0 0 25px rgba(0,234,255,.25);
-  pointer-events:none;
+  box-shadow:
+    0 0 20px rgba(0,234,255,.12),
+    inset 0 0 25px rgba(0,234,255,.05);
+}
+
+.scanLine{
+  position:absolute;
+  left:16%;
+  right:16%;
+  height:2px;
+  top:20%;
+  background:var(--cyan);
+  box-shadow:0 0 15px var(--cyan);
+  opacity:.7;
+  animation:scan 2.5s infinite ease-in-out;
+}
+
+@keyframes scan{
+  0%,100%{top:20%}
+  50%{top:80%}
 }
 
 #faceStatus{
-  min-height:52px;
-  margin:15px 0;
-  padding:14px;
-  border-radius:13px;
-  background:#0d1728;
-  color:#d5deed;
+  min-height:48px;
   display:flex;
-  align-items:center;
   justify-content:center;
-  font-size:12px;
-  font-weight:bold;
+  align-items:center;
+  margin:14px 0 8px;
+  padding:12px;
+  border-radius:13px;
+  background:rgba(8,18,32,.85);
+  border:1px solid rgba(255,255,255,.05);
+  color:#a9b7ca;
+  font-size:11px;
+  font-weight:700;
 }
 
 .success{
-  color:#22c55e !important;
+  color:var(--green)!important;
 }
 
 .error{
-  color:#ff526b !important;
+  color:#ff657e!important;
 }
 
 .faceBtn{
   width:100%;
+  margin-top:8px;
+  padding:14px;
   border:0;
   border-radius:12px;
-  padding:14px;
-  margin-top:9px;
-  color:white;
-  background:linear-gradient(90deg,#00bfe9,#1468ff);
-  font-size:14px;
-  font-weight:900;
   cursor:pointer;
+  color:#001018;
+  background:linear-gradient(
+    100deg,
+    var(--cyan),
+    #1680ff
+  );
+  font-size:11px;
+  font-weight:1000;
+  letter-spacing:1px;
+  box-shadow:0 8px 25px rgba(0,150,255,.14);
 }
 
 .faceBtn:disabled{
-  opacity:.4;
+  opacity:.35;
   cursor:not-allowed;
 }
 
 .resetBtn{
-  background:#202a3b;
+  color:#8998ad;
+  background:#0c1625;
+  box-shadow:none;
 }
 
 
-/* ================= MAIN APP ================= */
+/* =========================================================
+   MAIN APP
+========================================================= */
 
 #mainApp{
   display:none;
 }
 
 .app{
+  position:relative;
+  z-index:2;
   width:100%;
-  max-width:480px;
+  max-width:520px;
   min-height:100vh;
   margin:auto;
-  padding:18px;
+  padding:17px 15px 80px;
 }
+
+
+/* HEADER */
 
 .header{
   display:flex;
-  align-items:center;
   justify-content:space-between;
+  align-items:center;
   margin-bottom:18px;
 }
 
-.logo{
-  color:#00eaff;
-  font-size:25px;
-  font-weight:900;
-  letter-spacing:2px;
-  text-shadow:0 0 13px #00eaff;
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
 }
 
-.logo small{
+.brandIcon{
+  width:42px;
+  height:42px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  border-radius:13px;
+  border:1px solid rgba(0,234,255,.3);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(0,234,255,.12),
+      rgba(22,119,255,.08)
+    );
+  color:var(--cyan);
+  font-weight:1000;
+  box-shadow:0 0 20px rgba(0,234,255,.07);
+}
+
+.brandText h1{
+  font-size:21px;
+  letter-spacing:2px;
+  font-weight:1000;
+}
+
+.brandText span{
   display:block;
-  color:#71819b;
-  font-size:8px;
-  letter-spacing:4px;
-  margin-top:4px;
+  margin-top:3px;
+  color:#667790;
+  font-size:7px;
+  letter-spacing:3px;
 }
 
 .profileBtn{
-  width:46px;
-  height:46px;
-  padding:0;
+  width:44px;
+  height:44px;
   border-radius:50%;
-  border:1px solid #00eaff;
-  background:#07121f;
-  color:#00eaff;
-  cursor:pointer;
+  border:1px solid rgba(0,234,255,.4);
+  background:#07111e;
+  color:var(--cyan);
   overflow:hidden;
-  font-size:20px;
+  cursor:pointer;
 }
 
 .profileBtn img{
@@ -187,137 +384,377 @@ body{
   object-fit:cover;
 }
 
-.card{
-  background:rgba(8,17,32,.92);
-  border:1px solid rgba(0,234,255,.22);
-  border-radius:18px;
-  padding:18px;
-  margin-bottom:14px;
+
+/* STATUS STRIP */
+
+.statusStrip{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:13px;
+  padding:10px 12px;
+  border:1px solid var(--line);
+  border-radius:11px;
+  background:rgba(5,13,25,.65);
+}
+
+.statusLeft{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:#8190a7;
+  font-size:8px;
+  letter-spacing:1.5px;
+}
+
+.statusRight{
+  color:var(--green);
+  font-size:8px;
+  font-weight:900;
+}
+
+
+/* HERO */
+
+.hero{
+  position:relative;
+  overflow:hidden;
+  padding:20px;
+  margin-bottom:13px;
+  border:1px solid rgba(0,234,255,.2);
+  border-radius:21px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(11,29,49,.95),
+      rgba(5,12,24,.94)
+    );
   box-shadow:
-    0 0 25px rgba(0,234,255,.06),
-    inset 0 0 20px rgba(255,255,255,.01);
+    0 20px 50px rgba(0,0,0,.25),
+    inset 0 0 40px rgba(0,234,255,.025);
+}
+
+.hero:after{
+  content:"";
+  position:absolute;
+  width:170px;
+  height:170px;
+  right:-80px;
+  top:-80px;
+  border-radius:50%;
+  border:1px solid rgba(0,234,255,.18);
+  box-shadow:
+    0 0 0 18px rgba(0,234,255,.025),
+    0 0 0 36px rgba(0,234,255,.015);
+}
+
+.heroTag{
+  color:var(--cyan);
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:3px;
+}
+
+.hero h2{
+  margin-top:8px;
+  max-width:300px;
+  font-size:25px;
+  line-height:1.15;
+  letter-spacing:-.5px;
+}
+
+.hero p{
+  margin-top:9px;
+  max-width:330px;
+  color:#74849b;
+  font-size:9px;
+  line-height:1.6;
+}
+
+.heroStats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:7px;
+  margin-top:17px;
+}
+
+.heroStat{
+  padding:10px;
+  border-radius:10px;
+  background:rgba(0,0,0,.16);
+  border:1px solid rgba(255,255,255,.04);
+}
+
+.heroStat span{
+  display:block;
+  color:#60718a;
+  font-size:7px;
+}
+
+.heroStat b{
+  display:block;
+  margin-top:5px;
+  color:#eaf4ff;
+  font-size:12px;
+}
+
+
+/* COMMON CARD */
+
+.card{
+  margin-bottom:13px;
+  padding:16px;
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:18px;
+  background:var(--panel);
+  box-shadow:0 14px 40px rgba(0,0,0,.16);
+  backdrop-filter:blur(12px);
 }
 
 .cardTitle{
-  color:#00eaff;
-  font-size:11px;
-  font-weight:900;
-  letter-spacing:2px;
-  margin-bottom:15px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:13px;
 }
+
+.cardTitle b{
+  color:#dceaff;
+  font-size:10px;
+  letter-spacing:2px;
+}
+
+.cardTitle span{
+  color:#56667d;
+  font-size:7px;
+  letter-spacing:1px;
+}
+
+
+/* DEVICE */
 
 .deviceTop{
   display:flex;
   align-items:center;
-  gap:13px;
+  gap:12px;
 }
 
 .phoneIcon{
-  width:52px;
-  height:68px;
+  width:50px;
+  height:63px;
   display:flex;
-  align-items:center;
   justify-content:center;
-  border:2px solid #00eaff;
-  border-radius:9px;
-  font-size:24px;
+  align-items:center;
+  flex-shrink:0;
+  border-radius:11px;
+  border:1px solid rgba(0,234,255,.3);
+  background:#061321;
+  color:var(--cyan);
+  font-size:23px;
 }
 
 .deviceName{
-  font-size:18px;
+  font-size:16px;
   font-weight:900;
   word-break:break-word;
 }
 
 .deviceSub{
-  color:#71819a;
-  font-size:10px;
   margin-top:5px;
+  color:#64758e;
+  font-size:8px;
 }
 
 .deviceGrid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:9px;
-  margin-top:16px;
+  gap:7px;
+  margin-top:13px;
 }
 
 .infoBox{
-  background:#07111f;
+  padding:10px;
   border-radius:10px;
-  padding:11px;
-  border:1px solid rgba(255,255,255,.05);
+  background:#06101d;
+  border:1px solid rgba(255,255,255,.035);
 }
 
 .infoBox span{
   display:block;
-  color:#6e7d94;
-  font-size:8px;
-  margin-bottom:5px;
+  color:#5f7088;
+  font-size:7px;
   letter-spacing:1px;
 }
 
 .infoBox b{
-  font-size:11px;
+  display:block;
+  margin-top:5px;
+  color:#dce8f8;
+  font-size:10px;
   word-break:break-word;
 }
 
+
+/* BUTTONS */
+
 .mainBtn{
   width:100%;
+  padding:14px;
   border:0;
-  border-radius:12px;
-  padding:15px;
-  background:linear-gradient(90deg,#00cfff,#006dff);
-  color:white;
-  font-weight:900;
+  border-radius:11px;
+  color:#001018;
+  background:linear-gradient(
+    100deg,
+    #00eaff,
+    #1375ff
+  );
+  font-size:10px;
+  font-weight:1000;
   letter-spacing:1px;
   cursor:pointer;
+  box-shadow:0 8px 25px rgba(0,170,255,.12);
 }
 
 .secondaryBtn{
   width:100%;
-  border:1px solid rgba(0,234,255,.35);
-  border-radius:12px;
-  padding:14px;
-  margin-top:10px;
-  background:#07111f;
-  color:#00eaff;
+  margin-top:8px;
+  padding:13px;
+  border-radius:11px;
+  border:1px solid rgba(0,234,255,.18);
+  color:var(--cyan);
+  background:#07111e;
+  font-size:9px;
   font-weight:900;
   cursor:pointer;
 }
 
+
+/* QUICK GRID */
+
+.quickGrid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+}
+
+.quick{
+  min-height:76px;
+  padding:13px;
+  border-radius:13px;
+  border:1px solid rgba(255,255,255,.045);
+  background:#07111e;
+}
+
+.quickIcon{
+  font-size:19px;
+}
+
+.quick b{
+  display:block;
+  margin-top:7px;
+  font-size:9px;
+}
+
+.quick span{
+  display:block;
+  margin-top:3px;
+  color:#62738c;
+  font-size:7px;
+}
+
+
+/* PERFORMANCE */
+
+.performanceRow{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:12px;
+}
+
+.performanceRow:last-child{
+  margin-bottom:0;
+}
+
+.performanceName{
+  width:70px;
+  color:#8090a6;
+  font-size:8px;
+}
+
+.performanceTrack{
+  flex:1;
+  height:6px;
+  overflow:hidden;
+  border-radius:10px;
+  background:#111d2e;
+}
+
+.performanceFill{
+  height:100%;
+  border-radius:10px;
+  background:linear-gradient(
+    90deg,
+    #00bde8,
+    #176eff
+  );
+}
+
+.performanceValue{
+  width:30px;
+  color:#dbeaff;
+  font-size:8px;
+  text-align:right;
+}
+
+
+/* FEATURE GRID */
+
 .features{
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:9px;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
 }
 
 .feature{
-  background:#07111f;
-  border-radius:11px;
-  padding:14px 8px;
-  text-align:center;
+  padding:14px 10px;
+  border-radius:12px;
+  background:#07111e;
+  border:1px solid rgba(255,255,255,.04);
 }
 
 .featureIcon{
-  font-size:23px;
-  margin-bottom:6px;
+  font-size:20px;
 }
 
 .feature b{
   display:block;
-  font-size:10px;
+  margin-top:7px;
+  font-size:9px;
 }
 
 .feature span{
   display:block;
-  color:#697992;
-  font-size:8px;
-  margin-top:4px;
+  margin-top:3px;
+  color:#62738c;
+  font-size:7px;
 }
 
 
-/* ================= OVERLAY ================= */
+/* FOOTER */
+
+.footer{
+  padding:15px 5px;
+  text-align:center;
+  color:#3f5068;
+  font-size:7px;
+  letter-spacing:2px;
+}
+
+
+/* =========================================================
+   OVERLAY
+========================================================= */
 
 .overlay{
   position:fixed;
@@ -325,8 +762,9 @@ body{
   z-index:50;
   display:none;
   overflow-y:auto;
-  background:rgba(2,5,12,.96);
-  backdrop-filter:blur(9px);
+  padding:18px;
+  background:rgba(1,4,10,.94);
+  backdrop-filter:blur(14px);
 }
 
 .overlay.show{
@@ -335,67 +773,68 @@ body{
 
 .panel{
   width:100%;
-  max-width:480px;
-  min-height:100vh;
+  max-width:500px;
+  min-height:100%;
   margin:auto;
-  padding:22px 18px;
 }
 
-.panelHeader{
-  text-align:center;
-  margin-bottom:20px;
+.panelTop{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:18px;
 }
 
-.panelHeader h2{
-  color:#00eaff;
-  font-size:19px;
+.panelTop h2{
+  color:var(--cyan);
+  font-size:17px;
   letter-spacing:2px;
 }
 
-.panelHeader p{
-  color:#71819a;
-  font-size:10px;
-  margin-top:7px;
+.panelTop span{
+  color:#5d6e87;
+  font-size:8px;
 }
 
 .uploadBox{
   min-height:190px;
-  padding:20px;
   display:flex;
   flex-direction:column;
-  justify-content:center;
   align-items:center;
+  justify-content:center;
+  padding:20px;
   text-align:center;
-  border:1px dashed #00eaff;
-  border-radius:17px;
-  background:#06101c;
+  border:1px dashed rgba(0,234,255,.5);
+  border-radius:18px;
+  background:#06101d;
 }
 
 .uploadIcon{
-  font-size:46px;
-  margin-bottom:10px;
+  font-size:42px;
 }
 
 .uploadBox h3{
-  font-size:14px;
+  margin-top:10px;
+  font-size:12px;
 }
 
 .uploadBox p{
-  color:#71819a;
-  font-size:10px;
-  line-height:1.5;
+  max-width:290px;
   margin-top:7px;
+  color:#687990;
+  font-size:8px;
+  line-height:1.6;
 }
 
 .uploadBtn{
   display:inline-block;
-  padding:12px 17px;
-  margin-top:15px;
+  margin-top:14px;
+  padding:11px 16px;
   border-radius:10px;
-  background:#00c5eb;
+  background:var(--cyan);
   color:#001018;
-  font-size:10px;
-  font-weight:900;
+  font-size:8px;
+  font-weight:1000;
   cursor:pointer;
 }
 
@@ -408,34 +847,40 @@ body{
   display:none;
   width:100%;
   max-height:330px;
+  margin-top:12px;
   object-fit:contain;
-  margin-top:14px;
-  border-radius:12px;
+  border-radius:13px;
+  border:1px solid rgba(0,234,255,.15);
 }
 
 .fileName{
+  margin-top:7px;
+  color:var(--cyan);
+  font-size:8px;
   text-align:center;
-  color:#00eaff;
-  font-size:10px;
-  margin-top:8px;
   word-break:break-all;
 }
 
 .analyzeBtn{
   display:none;
-  margin-top:14px;
+  margin-top:12px;
 }
 
 .cancelBtn{
   width:100%;
+  margin-top:8px;
+  padding:12px;
   border:0;
   border-radius:10px;
-  padding:12px;
-  margin-top:9px;
-  background:#111c2b;
-  color:#8795aa;
+  background:#0b1726;
+  color:#72839b;
+  font-size:9px;
+  font-weight:900;
   cursor:pointer;
 }
+
+
+/* SCAN */
 
 #scanScreen,
 #invalidScreen,
@@ -444,16 +889,16 @@ body{
 }
 
 .scanScreen{
+  padding-top:60px;
   text-align:center;
-  padding-top:50px;
 }
 
 .spinner{
-  width:65px;
-  height:65px;
+  width:66px;
+  height:66px;
   margin:0 auto 20px;
-  border:4px solid #16273c;
-  border-top-color:#00eaff;
+  border:4px solid #142238;
+  border-top-color:var(--cyan);
   border-radius:50%;
   animation:spin 1s linear infinite;
 }
@@ -465,152 +910,153 @@ body{
 }
 
 .scanScreen h3{
-  color:#00eaff;
+  color:var(--cyan);
+  font-size:15px;
   letter-spacing:2px;
 }
 
 .progressOuter{
   width:100%;
-  height:8px;
+  height:7px;
   margin-top:20px;
-  background:#111c2c;
-  border-radius:10px;
   overflow:hidden;
+  border-radius:10px;
+  background:#101b2b;
 }
 
 .progressBar{
   width:0%;
   height:100%;
-  background:#00eaff;
+  background:linear-gradient(
+    90deg,
+    var(--cyan),
+    var(--blue)
+  );
   transition:.2s;
 }
 
 .progressText{
   margin-top:8px;
-  color:#7889a1;
-  font-size:10px;
+  color:#667790;
+  font-size:8px;
 }
 
+
+/* INVALID */
+
 .invalidScreen{
+  padding-top:60px;
   text-align:center;
-  padding-top:50px;
 }
 
 .invalidIcon{
-  font-size:52px;
-  margin-bottom:12px;
+  font-size:48px;
 }
 
 .invalidScreen h3{
-  color:#ff536d;
+  margin-top:10px;
+  color:var(--red);
 }
 
 .invalidScreen p{
-  color:#7b899f;
-  font-size:10px;
-  line-height:1.6;
   margin-top:8px;
+  color:#718198;
+  font-size:9px;
+  line-height:1.6;
 }
 
+
+/* RESULTS */
+
 .resultTitle{
-  color:#00ffb3;
+  margin-bottom:15px;
+  color:var(--green);
   text-align:center;
-  font-size:21px;
-  font-weight:900;
+  font-size:19px;
+  font-weight:1000;
   letter-spacing:2px;
-  margin-bottom:17px;
 }
 
 .resultInfo{
-  background:#07111f;
-  border:1px solid rgba(0,234,255,.14);
-  border-radius:11px;
-  padding:12px;
   margin-bottom:8px;
+  padding:12px;
+  border-radius:11px;
+  background:#06111f;
+  border:1px solid rgba(255,255,255,.04);
 }
 
 .resultInfo>span{
   display:block;
-  color:#6d7d94;
-  font-size:8px;
-  letter-spacing:1.2px;
-  margin-bottom:6px;
+  color:#61728b;
+  font-size:7px;
+  letter-spacing:1px;
 }
 
 .resultInfo>b{
-  font-size:12px;
+  display:block;
+  margin-top:5px;
+  font-size:10px;
   word-break:break-word;
 }
 
 .autoDpi{
-  color:#00eaff;
+  margin-top:4px;
+  color:var(--cyan);
   font-size:25px;
-  font-weight:900;
-  text-align:center;
+  font-weight:1000;
 }
 
 .sensiGrid{
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
+  grid-template-columns:repeat(2,1fr);
+  gap:7px;
+  margin-top:8px;
 }
 
 .sensiItem{
-  background:#0b1728;
   padding:11px;
-  border-radius:9px;
   text-align:center;
+  border-radius:10px;
+  background:#091729;
 }
 
 .sensiItem span{
-  display:block;
-  color:#6b7b93;
-  font-size:8px;
+  color:#60718a;
+  font-size:7px;
 }
 
 .sensiItem strong{
   display:block;
-  color:#00eaff;
-  font-size:22px;
   margin-top:4px;
-}
-
-.closeBtn{
-  width:100%;
-  padding:14px;
-  margin-top:10px;
-  border:1px solid #00eaff;
-  border-radius:12px;
-  background:#06121f;
-  color:#00eaff;
-  font-weight:900;
-  cursor:pointer;
+  color:var(--cyan);
+  font-size:21px;
 }
 
 
-/* ================= DEVICE INFO ================= */
+/* DEVICE INFO */
 
 .deviceInfoRow{
   display:flex;
   justify-content:space-between;
-  gap:15px;
+  gap:12px;
   padding:13px 0;
-  border-bottom:1px solid rgba(255,255,255,.06);
+  border-bottom:1px solid rgba(255,255,255,.05);
 }
 
 .deviceInfoRow span{
-  color:#708099;
-  font-size:10px;
+  color:#65758d;
+  font-size:8px;
 }
 
 .deviceInfoRow b{
-  font-size:10px;
+  color:#d9e8fa;
+  font-size:9px;
   text-align:right;
   word-break:break-word;
 }
 
 
-/* ================= PROFILE ================= */
+/* PROFILE */
 
 .profileOverlay{
   position:fixed;
@@ -618,6 +1064,7 @@ body{
   z-index:80;
   display:none;
   background:rgba(0,0,0,.7);
+  backdrop-filter:blur(8px);
 }
 
 .profileOverlay.show{
@@ -629,65 +1076,68 @@ body{
   left:0;
   right:0;
   bottom:0;
-  max-width:480px;
+  max-width:500px;
   margin:auto;
   padding:22px;
-  background:#091321;
-  border-radius:22px 22px 0 0;
+  border-radius:23px 23px 0 0;
+  background:#081322;
+  border:1px solid rgba(0,234,255,.16);
 }
 
 .profileSheet h3{
-  color:#00eaff;
+  color:var(--cyan);
   text-align:center;
-  margin-bottom:15px;
+  font-size:14px;
+  letter-spacing:2px;
 }
 
 .profilePhoto{
   display:block;
   width:105px;
   height:105px;
-  margin:auto;
-  border-radius:50%;
+  margin:17px auto;
   object-fit:cover;
-  border:2px solid #00eaff;
-  background:#07111f;
+  border-radius:50%;
+  border:2px solid var(--cyan);
+  background:#06101d;
 }
 
 .photoBtn{
   display:block;
-  width:100%;
   padding:13px;
-  margin-top:15px;
   border-radius:11px;
-  background:#00bfe9;
-  color:#001018;
   text-align:center;
-  font-size:10px;
-  font-weight:900;
+  background:var(--cyan);
+  color:#001018;
+  font-size:9px;
+  font-weight:1000;
   cursor:pointer;
 }
 
 
-/* ================= CORNER 3 DOT ================= */
+/* =========================================================
+   CORNER MENU
+========================================================= */
 
 .cornerMenu{
   position:fixed;
-  right:12px;
-  bottom:12px;
+  right:14px;
+  bottom:15px;
   z-index:120;
 }
 
 .dotBtn{
-  width:42px;
-  height:42px;
+  width:44px;
+  height:44px;
   border-radius:50%;
-  border:1px solid rgba(0,234,255,.5);
-  background:#07111f;
-  color:#00eaff;
+  border:1px solid rgba(0,234,255,.45);
+  background:rgba(5,14,26,.94);
+  color:var(--cyan);
   font-size:22px;
-  font-weight:900;
-  box-shadow:0 0 18px rgba(0,234,255,.15);
+  font-weight:1000;
   cursor:pointer;
+  box-shadow:
+    0 0 22px rgba(0,234,255,.13);
 }
 
 .headshotPanel{
@@ -695,11 +1145,11 @@ body{
   inset:0;
   z-index:110;
   display:none;
-  align-items:center;
   justify-content:center;
+  align-items:center;
   padding:20px;
-  background:rgba(1,5,12,.88);
-  backdrop-filter:blur(10px);
+  background:rgba(1,4,10,.88);
+  backdrop-filter:blur(12px);
 }
 
 .headshotPanel.show{
@@ -708,27 +1158,27 @@ body{
 
 .headshotBox{
   width:100%;
-  max-width:360px;
-  padding:22px;
-  border-radius:20px;
+  max-width:370px;
+  padding:23px;
+  border-radius:21px;
   background:#081322;
-  border:1px solid rgba(0,234,255,.3);
-  box-shadow:0 0 35px rgba(0,234,255,.12);
-  text-align:center;
+  border:1px solid rgba(0,234,255,.25);
+  box-shadow:0 20px 70px rgba(0,0,0,.5);
 }
 
 .headshotBox h2{
-  color:#00eaff;
-  font-size:19px;
+  color:var(--cyan);
+  font-size:18px;
   letter-spacing:2px;
-  margin-bottom:8px;
+  text-align:center;
 }
 
 .headshotBox p{
-  color:#71819a;
-  font-size:10px;
-  line-height:1.6;
-  margin-bottom:18px;
+  margin:8px 0 18px;
+  color:#6e7f97;
+  font-size:9px;
+  line-height:1.7;
+  text-align:center;
 }
 
 .headshotToggle{
@@ -737,32 +1187,27 @@ body{
   justify-content:space-between;
   gap:15px;
   padding:14px;
-  background:#07111f;
-  border:1px solid rgba(255,255,255,.06);
   border-radius:13px;
-}
-
-.headshotText{
-  text-align:left;
+  background:#06101d;
+  border:1px solid rgba(255,255,255,.05);
 }
 
 .headshotText b{
   display:block;
-  color:#fff;
-  font-size:12px;
+  font-size:10px;
 }
 
 .headshotText span{
   display:block;
-  color:#6e7d94;
-  font-size:8px;
   margin-top:4px;
+  color:#62738b;
+  font-size:7px;
 }
 
 .switch{
   position:relative;
-  width:54px;
-  height:30px;
+  width:53px;
+  height:29px;
   flex-shrink:0;
 }
 
@@ -773,8 +1218,8 @@ body{
 .slider{
   position:absolute;
   inset:0;
-  background:#263449;
   border-radius:30px;
+  background:#253349;
   cursor:pointer;
   transition:.25s;
 }
@@ -782,42 +1227,64 @@ body{
 .slider:before{
   content:"";
   position:absolute;
-  width:22px;
-  height:22px;
   left:4px;
   top:4px;
-  background:#fff;
+  width:21px;
+  height:21px;
   border-radius:50%;
+  background:#fff;
   transition:.25s;
 }
 
 .switch input:checked + .slider{
   background:#00cfff;
-  box-shadow:0 0 15px rgba(0,207,255,.5);
+  box-shadow:0 0 17px rgba(0,207,255,.4);
 }
 
 .switch input:checked + .slider:before{
   transform:translateX(24px);
 }
 
+#headshotStatus{
+  min-height:18px;
+  margin-top:11px;
+  color:var(--green);
+  font-size:8px;
+  font-weight:900;
+  text-align:center;
+}
+
 .panelClose{
   width:100%;
-  margin-top:12px;
+  margin-top:11px;
   padding:12px;
-  border:1px solid rgba(0,234,255,.3);
-  border-radius:11px;
-  background:#07111f;
-  color:#00eaff;
+  border:1px solid rgba(0,234,255,.2);
+  border-radius:10px;
+  background:#07111e;
+  color:var(--cyan);
+  font-size:9px;
   font-weight:900;
   cursor:pointer;
 }
 
-#headshotStatus{
-  min-height:18px;
-  margin-top:12px;
-  color:#00ffb3;
-  font-size:10px;
-  font-weight:900;
+
+/* MOBILE */
+
+@media(max-width:360px){
+
+  .hero h2{
+    font-size:21px;
+  }
+
+  .heroStats{
+    grid-template-columns:1fr;
+  }
+
+  .features,
+  .quickGrid{
+    grid-template-columns:1fr;
+  }
+
 }
 
 </style>
@@ -825,20 +1292,33 @@ body{
 
 <body>
 
+<div class="orb one"></div>
+<div class="orb two"></div>
 
-<!-- ================= FACE LOGIN ================= -->
+
+<!-- ========================================================
+     FACE SECURITY
+======================================================== -->
 
 <div id="faceLock">
 
   <div class="faceBox">
 
-    <div class="faceLogo">
-      TURJO X
+    <div class="securityBadge">
+      <span class="liveDot"></span>
+      BIOMETRIC SECURITY ACTIVE
     </div>
 
-    <div class="faceSub">
-      OWNER FACE SECURITY
+    <div class="brandMark">
+
+      <h1>TURJO X</h1>
+
+      <p>
+        PREMIUM INTELLIGENCE SYSTEM
+      </p>
+
     </div>
+
 
     <div class="cameraBox">
 
@@ -849,13 +1329,19 @@ body{
         playsinline
       ></video>
 
+      <div class="cameraShade"></div>
+
       <div class="faceCircle"></div>
 
+      <div class="scanLine"></div>
+
     </div>
 
+
     <div id="faceStatus">
-      Loading face recognition...
+      Initializing security system...
     </div>
+
 
     <button
       id="registerBtn"
@@ -865,13 +1351,15 @@ body{
       REGISTER OWNER FACE
     </button>
 
+
     <button
       id="verifyBtn"
       class="faceBtn"
       disabled
     >
-      VERIFY FACE
+      VERIFY OWNER FACE
     </button>
+
 
     <button
       id="resetBtn"
@@ -885,23 +1373,42 @@ body{
 </div>
 
 
-<!-- ================= MAIN APP ================= -->
+<!-- ========================================================
+     MAIN APP
+======================================================== -->
 
 <div id="mainApp">
 
   <div class="app">
 
+
+    <!-- HEADER -->
+
     <div class="header">
 
-      <div class="logo">
-        TURJO X
-        <small>SENSITIVITY SYSTEM</small>
+      <div class="brand">
+
+        <div class="brandIcon">
+          TX
+        </div>
+
+        <div class="brandText">
+
+          <h1>TURJO X</h1>
+
+          <span>
+            SENSITIVITY INTELLIGENCE
+          </span>
+
+        </div>
+
       </div>
+
 
       <button
         class="profileBtn"
-        id="profileBtn"
         onclick="openProfile()"
+        id="profileBtn"
       >
         👤
       </button>
@@ -909,11 +1416,79 @@ body{
     </div>
 
 
+    <!-- STATUS -->
+
+    <div class="statusStrip">
+
+      <div class="statusLeft">
+
+        <span class="liveDot"></span>
+
+        SYSTEM ONLINE
+
+      </div>
+
+      <div class="statusRight">
+        SECURE ✓
+      </div>
+
+    </div>
+
+
+    <!-- HERO -->
+
+    <div class="hero">
+
+      <div class="heroTag">
+        NEXT-GEN DEVICE ENGINE
+      </div>
+
+      <h2>
+        Your device.
+        Your profile.
+        Your control.
+      </h2>
+
+      <p>
+        Analyze your device information and generate
+        a clean sensitivity profile from your screenshot.
+      </p>
+
+
+      <div class="heroStats">
+
+        <div class="heroStat">
+          <span>ENGINE</span>
+          <b>TX-CORE</b>
+        </div>
+
+        <div class="heroStat">
+          <span>LIMIT</span>
+          <b>200 MAX</b>
+        </div>
+
+        <div class="heroStat">
+          <span>STATUS</span>
+          <b>READY</b>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- DEVICE CARD -->
+
     <div class="card">
 
       <div class="cardTitle">
-        ANALYZED DEVICE
+
+        <b>DEVICE INTELLIGENCE</b>
+
+        <span>LIVE PROFILE</span>
+
       </div>
+
 
       <div class="deviceTop">
 
@@ -927,11 +1502,11 @@ body{
             class="deviceName"
             id="homeDeviceName"
           >
-            No screenshot analyzed
+            No device analyzed
           </div>
 
           <div class="deviceSub">
-            Screenshot based device information
+            Device data will appear here
           </div>
 
         </div>
@@ -966,69 +1541,292 @@ body{
     </div>
 
 
+    <!-- ANALYZER -->
+
     <div class="card">
 
       <div class="cardTitle">
-        SENSITIVITY ANALYZER
+
+        <b>SENSITIVITY LAB</b>
+
+        <span>OCR ENGINE</span>
+
       </div>
+
 
       <button
         class="mainBtn"
         onclick="startAnalysis()"
       >
-        ANALYZE SENSITIVITY
+        ⚡ ANALYZE SENSITIVITY
       </button>
+
 
       <button
         class="secondaryBtn"
         onclick="showDeviceInfo()"
       >
-        DEVICE INFORMATION
+        ◈ DEVICE INFORMATION
       </button>
 
     </div>
 
 
+    <!-- QUICK ACCESS -->
+
     <div class="card">
 
       <div class="cardTitle">
-        FEATURES
+
+        <b>QUICK ACCESS</b>
+
+        <span>CONTROL CENTER</span>
+
       </div>
 
-      <div class="features">
 
-        <div class="feature">
-          <div class="featureIcon">🎯</div>
-          <b>SMART ANALYSIS</b>
-          <span>Screenshot OCR</span>
+      <div class="quickGrid">
+
+        <div
+          class="quick"
+          onclick="startAnalysis()"
+        >
+
+          <div class="quickIcon">
+            🎯
+          </div>
+
+          <b>SMART AIM</b>
+
+          <span>
+            Sensitivity analysis
+          </span>
+
         </div>
 
-        <div class="feature">
-          <div class="featureIcon">⚡</div>
-          <b>AUTO DPI</b>
-          <span>Recommendation</span>
-        </div>
 
-        <div class="feature">
-          <div class="featureIcon">📱</div>
+        <div
+          class="quick"
+          onclick="showDeviceInfo()"
+        >
+
+          <div class="quickIcon">
+            📱
+          </div>
+
           <b>DEVICE DATA</b>
-          <span>From screenshot</span>
+
+          <span>
+            System information
+          </span>
+
         </div>
 
-        <div class="feature">
-          <div class="featureIcon">🎮</div>
-          <b>SENSITIVITY</b>
-          <span>Maximum 200</span>
+
+        <div
+          class="quick"
+          onclick="openProfile()"
+        >
+
+          <div class="quickIcon">
+            👤
+          </div>
+
+          <b>PROFILE</b>
+
+          <span>
+            Personal profile
+          </span>
+
+        </div>
+
+
+        <div
+          class="quick"
+          onclick="openHeadshotPanel()"
+        >
+
+          <div class="quickIcon">
+            ⚙️
+          </div>
+
+          <b>CONTROL</b>
+
+          <span>
+            Quick controls
+          </span>
+
         </div>
 
       </div>
 
     </div>
 
+
+    <!-- PERFORMANCE -->
+
+    <div class="card">
+
+      <div class="cardTitle">
+
+        <b>ENGINE STATUS</b>
+
+        <span>TX MONITOR</span>
+
+      </div>
+
+
+      <div class="performanceRow">
+
+        <div class="performanceName">
+          ANALYZER
+        </div>
+
+        <div class="performanceTrack">
+          <div
+            class="performanceFill"
+            style="width:94%"
+          ></div>
+        </div>
+
+        <div class="performanceValue">
+          94%
+        </div>
+
+      </div>
+
+
+      <div class="performanceRow">
+
+        <div class="performanceName">
+          SECURITY
+        </div>
+
+        <div class="performanceTrack">
+          <div
+            class="performanceFill"
+            style="width:98%"
+          ></div>
+        </div>
+
+        <div class="performanceValue">
+          98%
+        </div>
+
+      </div>
+
+
+      <div class="performanceRow">
+
+        <div class="performanceName">
+          SYSTEM
+        </div>
+
+        <div class="performanceTrack">
+          <div
+            class="performanceFill"
+            style="width:91%"
+          ></div>
+        </div>
+
+        <div class="performanceValue">
+          91%
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- FEATURES -->
+
+    <div class="card">
+
+      <div class="cardTitle">
+
+        <b>CORE FEATURES</b>
+
+        <span>PREMIUM</span>
+
+      </div>
+
+
+      <div class="features">
+
+        <div class="feature">
+
+          <div class="featureIcon">
+            🔐
+          </div>
+
+          <b>FACE SECURITY</b>
+
+          <span>
+            Owner face verification
+          </span>
+
+        </div>
+
+
+        <div class="feature">
+
+          <div class="featureIcon">
+            🧠
+          </div>
+
+          <b>SMART OCR</b>
+
+          <span>
+            Screenshot intelligence
+          </span>
+
+        </div>
+
+
+        <div class="feature">
+
+          <div class="featureIcon">
+            ⚡
+          </div>
+
+          <b>AUTO DPI</b>
+
+          <span>
+            Display-based recommendation
+          </span>
+
+        </div>
+
+
+        <div class="feature">
+
+          <div class="featureIcon">
+            📊
+          </div>
+
+          <b>PROFILE ENGINE</b>
+
+          <span>
+            Generated sensitivity profile
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="footer">
+      TURJO X • PREMIUM INTELLIGENCE • SECURE LOCAL UI
+    </div>
+
   </div>
 
 
-  <!-- ================= ANALYSIS ================= -->
+  <!-- ======================================================
+       ANALYSIS OVERLAY
+  ====================================================== -->
 
   <div
     class="overlay"
@@ -1037,16 +1835,20 @@ body{
 
     <div class="panel">
 
-      <div class="panelHeader">
+      <div class="panelTop">
 
-        <h2>TURJO X ANALYSIS</h2>
+        <h2>
+          SENSITIVITY LAB
+        </h2>
 
-        <p>
-          Settings → About Phone / Device Information
-        </p>
+        <span>
+          TX-CORE
+        </span>
 
       </div>
 
+
+      <!-- INPUT -->
 
       <div id="inputScreen">
 
@@ -1057,13 +1859,14 @@ body{
           </div>
 
           <h3>
-            SELECT DEVICE INFO SCREENSHOT
+            DEVICE INFORMATION SCREENSHOT
           </h3>
 
           <p>
-            Select a screenshot from
-            About Phone / Device Information.
+            Select an About Phone / Device Information
+            screenshot for OCR analysis.
           </p>
+
 
           <label
             class="uploadBtn"
@@ -1086,6 +1889,7 @@ body{
           class="preview"
         >
 
+
         <div
           id="fileName"
           class="fileName"
@@ -1097,7 +1901,7 @@ body{
           class="mainBtn analyzeBtn"
           onclick="runOCR()"
         >
-          START ANALYSIS
+          START AI ANALYSIS
         </button>
 
 
@@ -1121,15 +1925,16 @@ body{
         <div class="spinner"></div>
 
         <h3>
-          ANALYZING PHONE
+          ANALYZING DEVICE
         </h3>
 
-        <p
+        <div
           id="scanStatus"
           class="progressText"
         >
-          Reading screenshot...
-        </p>
+          Initializing OCR...
+        </div>
+
 
         <div class="progressOuter">
 
@@ -1139,6 +1944,7 @@ body{
           ></div>
 
         </div>
+
 
         <div
           id="progressText"
@@ -1158,7 +1964,7 @@ body{
       >
 
         <div class="invalidIcon">
-          ❌
+          ⚠️
         </div>
 
         <h3>
@@ -1166,10 +1972,11 @@ body{
         </h3>
 
         <p>
-          Device Information শনাক্ত করা যায়নি।
-          About Phone / Device Information
-          থেকে সঠিক screenshot নির্বাচন করুন।
+          Device Information could not be identified.
+          Select a valid About Phone / Device Information
+          screenshot.
         </p>
+
 
         <button
           class="mainBtn"
@@ -1196,31 +2003,31 @@ body{
 
         <div class="resultInfo">
           <span>DEVICE NAME</span>
-          <b id="rDeviceName">Not detected</b>
+          <b id="rDeviceName">--</b>
         </div>
 
 
         <div class="resultInfo">
           <span>MODEL</span>
-          <b id="rModel">Not detected</b>
+          <b id="rModel">--</b>
         </div>
 
 
         <div class="resultInfo">
           <span>RAM</span>
-          <b id="rRam">Not detected</b>
+          <b id="rRam">--</b>
         </div>
 
 
         <div class="resultInfo">
           <span>ANDROID VERSION</span>
-          <b id="rAndroid">Not detected</b>
+          <b id="rAndroid">--</b>
         </div>
 
 
         <div class="resultInfo">
           <span>BUILD NUMBER</span>
-          <b id="rBuild">Not detected</b>
+          <b id="rBuild">--</b>
         </div>
 
 
@@ -1231,8 +2038,8 @@ body{
           </span>
 
           <div
-            class="autoDpi"
             id="dpi"
+            class="autoDpi"
           >
             --
           </div>
@@ -1243,8 +2050,9 @@ body{
         <div class="resultInfo">
 
           <span>
-            GENERATED SENSITIVITY — MAX 200
+            SENSITIVITY PROFILE
           </span>
+
 
           <div class="sensiGrid">
 
@@ -1284,7 +2092,7 @@ body{
 
 
         <button
-          class="closeBtn"
+          class="mainBtn"
           id="doneBtn"
           onclick="doneAnalysis()"
         >
@@ -1293,15 +2101,10 @@ body{
 
 
         <button
-          class="closeBtn"
+          class="secondaryBtn"
           id="gameBtn"
           onclick="openFreeFire()"
-          style="
-            display:none;
-            background:linear-gradient(90deg,#00eaff,#006dff);
-            color:#001018;
-            border:none;
-          "
+          style="display:none"
         >
           🎮 OPEN FREE FIRE
         </button>
@@ -1313,7 +2116,9 @@ body{
   </div>
 
 
-  <!-- ================= DEVICE INFORMATION ================= -->
+  <!-- ======================================================
+       DEVICE INFO
+  ====================================================== -->
 
   <div
     class="overlay"
@@ -1322,13 +2127,15 @@ body{
 
     <div class="panel">
 
-      <div class="panelHeader">
+      <div class="panelTop">
 
-        <h2>DEVICE INFORMATION</h2>
+        <h2>
+          DEVICE INFORMATION
+        </h2>
 
-        <p>
-          Current browser information
-        </p>
+        <span>
+          SYSTEM
+        </span>
 
       </div>
 
@@ -1354,10 +2161,11 @@ body{
 
 
       <button
-        class="closeBtn"
+        class="mainBtn"
         onclick="closeDeviceInfo()"
       >
         CLOSE
+
       </button>
 
     </div>
@@ -1365,7 +2173,9 @@ body{
   </div>
 
 
-  <!-- ================= PROFILE ================= -->
+  <!-- ======================================================
+       PROFILE
+  ====================================================== -->
 
   <div
     class="profileOverlay"
@@ -1416,14 +2226,16 @@ body{
   </div>
 
 
-  <!-- ================= CORNER 3 DOT ================= -->
+  <!-- ======================================================
+       CORNER MENU
+  ====================================================== -->
 
   <div class="cornerMenu">
 
     <button
       class="dotBtn"
       onclick="openHeadshotPanel()"
-      aria-label="Menu"
+      aria-label="Control menu"
     >
       ⋮
     </button>
@@ -1431,7 +2243,9 @@ body{
   </div>
 
 
-  <!-- ================= HEADSHOT PANEL ================= -->
+  <!-- ======================================================
+       CONTROL PANEL
+  ====================================================== -->
 
   <div
     class="headshotPanel"
@@ -1459,7 +2273,7 @@ body{
           </b>
 
           <span>
-            Sensitivity control
+            Sensitivity control UI
           </span>
 
         </div>
@@ -1499,36 +2313,35 @@ body{
 
 <script>
 
+/* =========================================================
+   FACE SECURITY
+========================================================= */
 
-/* =====================================================
-   FACE LOCK
-===================================================== */
-
-const video =
+const video=
   document.getElementById("video");
 
-const faceStatus =
+const faceStatus=
   document.getElementById("faceStatus");
 
-const registerBtn =
+const registerBtn=
   document.getElementById("registerBtn");
 
-const verifyBtn =
+const verifyBtn=
   document.getElementById("verifyBtn");
 
-const resetBtn =
+const resetBtn=
   document.getElementById("resetBtn");
 
-const faceLock =
+const faceLock=
   document.getElementById("faceLock");
 
-const mainApp =
+const mainApp=
   document.getElementById("mainApp");
 
-const FACE_KEY =
+const FACE_KEY=
   "TURJO_X_OWNER_FACE";
 
-const MODEL_URL =
+const MODEL_URL=
   "https://justadudewhohacks.github.io/face-api.js/models";
 
 let modelsLoaded=false;
@@ -1536,11 +2349,9 @@ let cameraReady=false;
 let faceProcessing=false;
 
 
-/* STATUS */
-
 function faceMessage(message,type=""){
 
-  faceStatus.textContent=message;
+  faceStatus.innerText=message;
 
   faceStatus.classList.remove(
     "success",
@@ -1558,12 +2369,10 @@ function faceMessage(message,type=""){
 }
 
 
-/* LOAD MODELS */
-
 async function loadModels(){
 
   faceMessage(
-    "Loading face recognition..."
+    "Loading biometric engine..."
   );
 
   try{
@@ -1580,7 +2389,7 @@ async function loadModels(){
     modelsLoaded=true;
 
     faceMessage(
-      "Face system ready. Starting camera..."
+      "Security engine ready."
     );
 
   }catch(error){
@@ -1588,7 +2397,7 @@ async function loadModels(){
     console.error(error);
 
     faceMessage(
-      "Face model loading failed.",
+      "Face engine could not load.",
       "error"
     );
 
@@ -1597,14 +2406,12 @@ async function loadModels(){
 }
 
 
-/* CAMERA */
-
 async function startCamera(){
 
   if(!navigator.mediaDevices){
 
     faceMessage(
-      "Camera is not supported by this browser.",
+      "Camera is not supported.",
       "error"
     );
 
@@ -1614,7 +2421,7 @@ async function startCamera(){
 
   try{
 
-    const stream =
+    const stream=
       await navigator.mediaDevices.getUserMedia({
 
         video:{
@@ -1639,13 +2446,13 @@ async function startCamera(){
       registerBtn.disabled=true;
 
       faceMessage(
-        "Owner face found. Press VERIFY FACE."
+        "Owner face found. Verify to continue."
       );
 
     }else{
 
       faceMessage(
-        "No owner face found. Register your face."
+        "Register the first owner face."
       );
 
     }
@@ -1654,35 +2461,15 @@ async function startCamera(){
 
     console.error(error);
 
-    if(error.name==="NotAllowedError"){
-
-      faceMessage(
-        "Camera permission denied. Allow camera permission and reload.",
-        "error"
-      );
-
-    }else if(error.name==="NotFoundError"){
-
-      faceMessage(
-        "No camera was found.",
-        "error"
-      );
-
-    }else{
-
-      faceMessage(
-        "Unable to start camera.",
-        "error"
-      );
-
-    }
+    faceMessage(
+      "Camera permission is required.",
+      "error"
+    );
 
   }
 
 }
 
-
-/* GET FACE */
 
 async function getDescriptor(){
 
@@ -1695,7 +2482,7 @@ async function getDescriptor(){
 
   }
 
-  const detection =
+  const detection=
     await faceapi
       .detectSingleFace(
         video,
@@ -1708,9 +2495,7 @@ async function getDescriptor(){
       .withFaceDescriptor();
 
   if(!detection){
-
     return null;
-
   }
 
   return detection.descriptor;
@@ -1718,13 +2503,15 @@ async function getDescriptor(){
 }
 
 
-/* DISTANCE */
-
-function distance(a,b){
+function faceDistance(a,b){
 
   let sum=0;
 
-  for(let i=0;i<a.length;i++){
+  for(
+    let i=0;
+    i<a.length;
+    i++
+  ){
 
     const d=a[i]-b[i];
 
@@ -1743,24 +2530,13 @@ registerBtn.onclick=async function(){
 
   if(faceProcessing)return;
 
-  if(localStorage.getItem(FACE_KEY)){
-
-    faceMessage(
-      "Owner already registered.",
-      "error"
-    );
-
-    return;
-
-  }
-
   faceProcessing=true;
   registerBtn.disabled=true;
 
   try{
 
     faceMessage(
-      "Detecting your face..."
+      "Scanning owner face..."
     );
 
     const descriptor=
@@ -1769,7 +2545,7 @@ registerBtn.onclick=async function(){
     if(!descriptor){
 
       faceMessage(
-        "Face not detected. Keep your face inside the circle.",
+        "No face detected.",
         "error"
       );
 
@@ -1784,10 +2560,8 @@ registerBtn.onclick=async function(){
       )
     );
 
-    registerBtn.disabled=true;
-
     faceMessage(
-      "OWNER FACE REGISTERED ✓ — Now press VERIFY FACE.",
+      "OWNER FACE REGISTERED ✓",
       "success"
     );
 
@@ -1803,6 +2577,12 @@ registerBtn.onclick=async function(){
   }finally{
 
     faceProcessing=false;
+
+    if(localStorage.getItem(FACE_KEY)){
+      registerBtn.disabled=true;
+    }else{
+      registerBtn.disabled=false;
+    }
 
   }
 
@@ -1821,7 +2601,7 @@ verifyBtn.onclick=async function(){
   if(!saved){
 
     faceMessage(
-      "No owner face registered. Register first.",
+      "Register owner face first.",
       "error"
     );
 
@@ -1835,7 +2615,7 @@ verifyBtn.onclick=async function(){
   try{
 
     faceMessage(
-      "Checking owner face..."
+      "Verifying owner identity..."
     );
 
     const current=
@@ -1857,37 +2637,32 @@ verifyBtn.onclick=async function(){
         JSON.parse(saved)
       );
 
-    const matchDistance=
-      distance(
+    const d=
+      faceDistance(
         owner,
         current
       );
 
-    console.log(
-      "Face distance:",
-      matchDistance
-    );
-
-    if(matchDistance < 0.50){
+    if(d<.50){
 
       faceMessage(
         "ACCESS GRANTED ✓",
         "success"
       );
 
-      setTimeout(function(){
+      setTimeout(()=>{
 
         faceLock.style.display="none";
         mainApp.style.display="block";
 
         stopCamera();
 
-      },500);
+      },600);
 
     }else{
 
       faceMessage(
-        "ACCESS DENIED ✕ — Face does not match.",
+        "ACCESS DENIED — FACE MISMATCH.",
         "error"
       );
 
@@ -1916,13 +2691,12 @@ verifyBtn.onclick=async function(){
 
 resetBtn.onclick=async function(){
 
-  const saved=
-    localStorage.getItem(FACE_KEY);
+  if(faceProcessing)return;
 
-  if(!saved){
+  if(!localStorage.getItem(FACE_KEY)){
 
     faceMessage(
-      "No registered owner face.",
+      "No owner face is registered.",
       "error"
     );
 
@@ -1930,15 +2704,13 @@ resetBtn.onclick=async function(){
 
   }
 
-  if(faceProcessing)return;
-
   faceProcessing=true;
   resetBtn.disabled=true;
 
   try{
 
     faceMessage(
-      "Verify your owner face before reset..."
+      "Verify current owner face..."
     );
 
     const current=
@@ -1957,30 +2729,28 @@ resetBtn.onclick=async function(){
 
     const owner=
       new Float32Array(
-        JSON.parse(saved)
+        JSON.parse(
+          localStorage.getItem(FACE_KEY)
+        )
       );
 
-    const d=
-      distance(
-        owner,
-        current
-      );
-
-    if(d < 0.50){
+    if(
+      faceDistance(owner,current)<.50
+    ){
 
       localStorage.removeItem(FACE_KEY);
 
       registerBtn.disabled=false;
 
       faceMessage(
-        "Owner face reset. Register again.",
+        "Owner face reset successfully.",
         "success"
       );
 
     }else{
 
       faceMessage(
-        "Reset denied — owner face does not match.",
+        "Reset denied — face mismatch.",
         "error"
       );
 
@@ -2005,8 +2775,6 @@ resetBtn.onclick=async function(){
 };
 
 
-/* STOP CAMERA */
-
 function stopCamera(){
 
   if(video.srcObject){
@@ -2022,8 +2790,6 @@ function stopCamera(){
 }
 
 
-/* INIT FACE */
-
 (async function(){
 
   await loadModels();
@@ -2037,9 +2803,9 @@ function stopCamera(){
 })();
 
 
-/* =====================================================
-   SENSITIVITY ANALYZER
-===================================================== */
+/* =========================================================
+   ANALYSIS ENGINE
+========================================================= */
 
 let selectedImage=null;
 let analysisRound=0;
@@ -2088,8 +2854,6 @@ const gameBtn=
   document.getElementById("gameBtn");
 
 
-/* OPEN ANALYZER */
-
 function startAnalysis(){
 
   analysisRound=0;
@@ -2107,8 +2871,6 @@ function startAnalysis(){
 }
 
 
-/* SELECT IMAGE */
-
 screenFile.onchange=function(){
 
   const file=
@@ -2118,9 +2880,9 @@ screenFile.onchange=function(){
 
   if(!file.type.startsWith("image/")){
 
-    alert("Please select an image.");
-
-    this.value="";
+    alert(
+      "Please select an image."
+    );
 
     return;
 
@@ -2141,21 +2903,19 @@ screenFile.onchange=function(){
   reader.readAsDataURL(file);
 
   fileName.innerText=
-    "Selected: "+file.name;
+    "SELECTED • "+file.name;
 
   analyzeBtn.style.display="block";
 
 };
 
 
-/* OCR */
-
 async function runOCR(){
 
   if(!selectedImage){
 
     alert(
-      "Select a Device Information screenshot first."
+      "Select a screenshot first."
     );
 
     return;
@@ -2178,8 +2938,8 @@ async function runOCR(){
 
   scanStatus.innerText=
     analysisRound===0
-      ?"First analysis..."
-      :"Second analysis...";
+      ?"FIRST ANALYSIS..."
+      :"SECOND ANALYSIS...";
 
   try{
 
@@ -2188,16 +2948,16 @@ async function runOCR(){
         selectedImage,
         "eng",
         {
-          logger:function(message){
+          logger:function(m){
 
             if(
-              message.status===
+              m.status===
               "recognizing text"
             ){
 
               const p=
                 Math.round(
-                  (message.progress||0)*100
+                  (m.progress||0)*100
                 );
 
               progressBar.style.width=
@@ -2216,18 +2976,13 @@ async function runOCR(){
     const text=
       result.data.text||"";
 
-    console.log(
-      "OCR:",
-      text
-    );
-
     progressBar.style.width="100%";
     progressText.innerText="100%";
 
     scanStatus.innerText=
-      "Analysis complete.";
+      "ANALYSIS COMPLETE";
 
-    setTimeout(function(){
+    setTimeout(()=>{
 
       analysisRunning=false;
 
@@ -2243,7 +2998,7 @@ async function runOCR(){
 
       }
 
-    },300);
+    },350);
 
   }catch(error){
 
@@ -2257,8 +3012,6 @@ async function runOCR(){
 
 }
 
-
-/* NORMALIZE */
 
 function normalizeOCR(text){
 
@@ -2285,8 +3038,6 @@ function normalizeLabel(text){
 }
 
 
-/* SCREENSHOT CHECK */
-
 function isDeviceInformationScreenshot(text){
 
   const clean=
@@ -2294,45 +3045,40 @@ function isDeviceInformationScreenshot(text){
 
   if(clean.length<15)return false;
 
-  const words=[
+  const keywords=[
     "about phone",
     "about device",
     "device information",
     "device info",
-    "phone information",
     "android",
     "build",
     "ram",
     "memory",
     "model",
-    "version",
-    "software"
+    "software",
+    "version"
   ];
 
-  let count=0;
+  let found=0;
 
-  words.forEach(word=>{
+  keywords.forEach(k=>{
 
-    if(clean.includes(word)){
-      count++;
+    if(clean.includes(k)){
+      found++;
     }
 
   });
 
-  return count>=2;
+  return found>=2;
 
 }
 
-
-/* LINES */
 
 function getLines(text){
 
   return normalizeOCR(text)
     .split("\n")
-    .map(x=>
-      x.trim().replace(/\s+/g," ")
-    )
+    .map(x=>x.trim())
     .filter(Boolean);
 
 }
@@ -2349,38 +3095,11 @@ function cleanValue(value){
 }
 
 
-function isGenericLabel(value){
-
-  const n=
-    normalizeLabel(value);
-
-  return[
-    "device",
-    "device name",
-    "phone",
-    "model",
-    "model name",
-    "model number",
-    "ram",
-    "memory",
-    "android",
-    "android version",
-    "version",
-    "build",
-    "build number",
-    "software",
-    "settings",
-    "system"
-  ].includes(n);
-
-}
-
-
 function nextUsefulLine(lines,index){
 
   for(
     let i=index+1;
-    i<Math.min(lines.length,index+3);
+    i<Math.min(index+3,lines.length);
     i++
   ){
 
@@ -2389,7 +3108,7 @@ function nextUsefulLine(lines,index){
 
     if(
       value &&
-      !isGenericLabel(value)
+      value.length>1
     ){
 
       return value;
@@ -2403,42 +3122,6 @@ function nextUsefulLine(lines,index){
 }
 
 
-function valueAfterLabel(
-  lines,
-  index,
-  regex
-){
-
-  const match=
-    lines[index].match(regex);
-
-  if(
-    match &&
-    match[1]
-  ){
-
-    const value=
-      cleanValue(match[1]);
-
-    if(
-      value &&
-      !isGenericLabel(value)
-    ){
-
-      return value;
-
-    }
-
-  }
-
-  return nextUsefulLine(
-    lines,
-    index
-  );
-
-}
-
-
 /* DEVICE NAME */
 
 function extractDeviceName(text){
@@ -2446,31 +3129,25 @@ function extractDeviceName(text){
   const lines=
     getLines(text);
 
-  const patterns=[
-    /^\s*device\s*name\s*[:：\-]?\s*(.*)$/i,
-    /^\s*phone\s*name\s*[:：\-]?\s*(.*)$/i
-  ];
-
   for(let i=0;i<lines.length;i++){
 
-    for(const pattern of patterns){
+    const match=
+      lines[i].match(
+        /^device\s*name\s*[:：\-]?\s*(.*)$/i
+      );
+
+    if(match){
 
       const value=
-        valueAfterLabel(
+        cleanValue(
+          match[1]
+        )||
+        nextUsefulLine(
           lines,
-          i,
-          pattern
+          i
         );
 
-      if(
-        value &&
-        value.length>=2 &&
-        value.length<=100
-      ){
-
-        return value;
-
-      }
+      if(value)return value;
 
     }
 
@@ -2489,32 +3166,41 @@ function extractModel(text){
     getLines(text);
 
   const patterns=[
-    /^\s*model\s*name\s*[:：\-]?\s*(.*)$/i,
-    /^\s*model\s*number\s*[:：\-]?\s*(.*)$/i,
-    /^\s*device\s*model\s*[:：\-]?\s*(.*)$/i,
-    /^\s*phone\s*model\s*[:：\-]?\s*(.*)$/i,
-    /^\s*model\s*[:：\-]\s*(.*)$/i
+
+    /^model\s*name\s*[:：\-]?\s*(.*)$/i,
+
+    /^model\s*number\s*[:：\-]?\s*(.*)$/i,
+
+    /^device\s*model\s*[:：\-]?\s*(.*)$/i,
+
+    /^model\s*[:：\-]\s*(.*)$/i
+
   ];
 
   for(let i=0;i<lines.length;i++){
 
     for(const pattern of patterns){
 
-      const value=
-        valueAfterLabel(
-          lines,
-          i,
-          pattern
-        );
+      const match=
+        lines[i].match(pattern);
 
-      if(
-        value &&
-        value.length>=2 &&
-        value.length<=100 &&
-        !isGenericLabel(value)
-      ){
+      if(match){
 
-        return value;
+        const value=
+          cleanValue(match[1])||
+          nextUsefulLine(
+            lines,
+            i
+          );
+
+        if(
+          value &&
+          value.length>1
+        ){
+
+          return value;
+
+        }
 
       }
 
@@ -2522,13 +3208,13 @@ function extractModel(text){
 
   }
 
-  const match=
+  const fallback=
     normalizeOCR(text).match(
       /\b(?:SM-[A-Z0-9-]+|RMX[A-Z0-9-]+|CPH[A-Z0-9-]+|XT[0-9A-Z-]+)\b/i
     );
 
-  return match
-    ?cleanValue(match[0])
+  return fallback
+    ?fallback[0]
     :"Not detected";
 
 }
@@ -2547,24 +3233,20 @@ function extractRAM(text){
 
     /\b(\d{1,2})\s*(?:gb|g8|g b)\s*(?:ram|memory)\b/i,
 
-    /(?:ram|memory)[^\n]{0,40}?(\d{1,2})\s*(?:gb|g8|g b)\b/i
+    /(?:ram|memory)[^\n]{0,30}?(\d{1,2})\s*(?:gb|g8|g b)\b/i
 
   ];
 
-  for(const pattern of patterns){
+  for(const p of patterns){
 
-    const match=
-      clean.match(pattern);
+    const m=clean.match(p);
 
-    if(match){
+    if(m){
 
       const n=
-        parseInt(match[1],10);
+        parseInt(m[1],10);
 
-      if(
-        n>=1 &&
-        n<=64
-      ){
+      if(n>=1&&n<=64){
 
         return n+" GB";
 
@@ -2587,18 +3269,20 @@ function extractAndroid(text){
     normalizeOCR(text);
 
   const patterns=[
+
     /android\s*version\s*[:：\-]?\s*(\d+(?:\.\d+){0,2})/i,
+
     /android\s*[:：\-]?\s*(\d+(?:\.\d+){0,2})/i
+
   ];
 
-  for(const pattern of patterns){
+  for(const p of patterns){
 
-    const match=
-      clean.match(pattern);
+    const m=clean.match(p);
 
-    if(match){
+    if(m){
 
-      return "Android "+match[1];
+      return "Android "+m[1];
 
     }
 
@@ -2617,19 +3301,22 @@ function extractBuild(text){
     normalizeOCR(text);
 
   const patterns=[
+
     /build\s*number\s*[:：\-]?\s*([A-Za-z0-9._\-\/]+)/i,
+
     /build\s*no\.?\s*[:：\-]?\s*([A-Za-z0-9._\-\/]+)/i,
+
     /build\s*[:：\-]\s*([A-Za-z0-9._\-\/]+)/i
+
   ];
 
-  for(const pattern of patterns){
+  for(const p of patterns){
 
-    const match=
-      clean.match(pattern);
+    const m=clean.match(p);
 
-    if(match){
+    if(m){
 
-      return cleanValue(match[1]);
+      return cleanValue(m[1]);
 
     }
 
@@ -2640,7 +3327,7 @@ function extractBuild(text){
 }
 
 
-/* LIMIT */
+/* SENSITIVITY */
 
 function limit200(value){
 
@@ -2654,8 +3341,6 @@ function limit200(value){
 
 }
 
-
-/* GENERATE SENSITIVITY */
 
 function generateSensitivity(
   model,
@@ -2713,7 +3398,10 @@ function generateSensitivity(
   if(resolution){
 
     const width=
-      parseInt(resolution[1],10);
+      parseInt(
+        resolution[1],
+        10
+      );
 
     if(width>=2160){
       dpi=560;
@@ -2729,21 +3417,24 @@ function generateSensitivity(
 
   return{
 
-    dpi:dpi,
+    dpi,
 
     general:limit200(general),
+
     red:limit200(red),
+
     twoX:limit200(twoX),
+
     fourX:limit200(fourX),
+
     sniper:limit200(sniper),
+
     freeLook:limit200(freeLook)
 
   };
 
 }
 
-
-/* ANALYZE DATA */
 
 function analyzeDeviceText(text){
 
@@ -2777,7 +3468,6 @@ function analyzeDeviceText(text){
   showResult({
 
     ...data,
-
     ...sensitivity
 
   });
@@ -2785,13 +3475,12 @@ function analyzeDeviceText(text){
 }
 
 
-/* SHOW RESULT */
-
 function showResult(data){
 
   scanScreen.style.display="none";
   invalidScreen.style.display="none";
   resultScreen.style.display="block";
+
 
   document.getElementById("rDeviceName")
     .innerText=data.deviceName;
@@ -2829,6 +3518,7 @@ function showResult(data){
   document.getElementById("rFree")
     .innerText=data.freeLook;
 
+
   document.getElementById("homeDeviceName")
     .innerText=data.deviceName;
 
@@ -2848,7 +3538,8 @@ function showResult(data){
   if(analysisRound===0){
 
     document.getElementById("resultTitle")
-      .innerText="ANALYSIS COMPLETE";
+      .innerText=
+        "ANALYSIS COMPLETE";
 
     doneBtn.innerText=
       "DONE — RUN AGAIN";
@@ -2858,7 +3549,8 @@ function showResult(data){
   }else{
 
     document.getElementById("resultTitle")
-      .innerText="SECOND ANALYSIS COMPLETE";
+      .innerText=
+        "SECOND ANALYSIS COMPLETE";
 
     doneBtn.innerText="DONE";
 
@@ -2868,8 +3560,6 @@ function showResult(data){
 
 }
 
-
-/* DONE */
 
 function doneAnalysis(){
 
@@ -2888,7 +3578,7 @@ function doneAnalysis(){
     progressText.innerText="0%";
 
     scanStatus.innerText=
-      "Starting second analysis...";
+      "STARTING SECOND ANALYSIS...";
 
     runOCR();
 
@@ -2900,8 +3590,6 @@ function doneAnalysis(){
 
 }
 
-
-/* INVALID */
 
 function showInvalid(){
 
@@ -2916,16 +3604,14 @@ function showInvalid(){
 }
 
 
-/* TRY AGAIN */
-
 function tryAgain(){
 
   analysisRound=0;
   analysisRunning=false;
 
-  gameBtn.style.display="none";
-
   selectedImage=null;
+
+  gameBtn.style.display="none";
 
   screenFile.value="";
 
@@ -2944,16 +3630,14 @@ function tryAgain(){
 }
 
 
-/* CLOSE ANALYSIS */
-
 function closeAnalysis(){
 
   analysisRound=0;
   analysisRunning=false;
 
-  gameBtn.style.display="none";
-
   selectedImage=null;
+
+  gameBtn.style.display="none";
 
   screenFile.value="";
 
@@ -2974,28 +3658,35 @@ function closeAnalysis(){
 }
 
 
-/* ================= OPEN FREE FIRE ================= */
+/* =========================================================
+   FREE FIRE LAUNCH
+========================================================= */
 
 function openFreeFire(){
 
-  const intentUrl =
-    "intent://#Intent;" +
-    "scheme=freefire;" +
-    "package=com.dts.freefireth;" +
+  const intentUrl=
+    "intent://#Intent;"+
+    "scheme=freefire;"+
+    "package=com.dts.freefireth;"+
     "end";
 
-  window.location.href=intentUrl;
+  window.location.href=
+    intentUrl;
 
 }
 
 
-/* ================= DEVICE INFO ================= */
+/* =========================================================
+   DEVICE INFO
+========================================================= */
 
 function showDeviceInfo(){
 
   document.getElementById("diScreen")
     .innerText=
-      screen.width+" × "+screen.height;
+      screen.width+
+      " × "+
+      screen.height;
 
   document.getElementById("diRatio")
     .innerText=
@@ -3021,7 +3712,9 @@ function closeDeviceInfo(){
 }
 
 
-/* ================= PROFILE ================= */
+/* =========================================================
+   PROFILE
+========================================================= */
 
 function openProfile(){
 
@@ -3044,7 +3737,8 @@ function closeProfile(){
 function outsideProfile(event){
 
   if(
-    event.target.id==="profileOverlay"
+    event.target.id===
+    "profileOverlay"
   ){
 
     closeProfile();
@@ -3053,8 +3747,6 @@ function outsideProfile(event){
 
 }
 
-
-/* PROFILE PHOTO */
 
 const profileFile=
   document.getElementById("profileFile");
@@ -3065,6 +3757,7 @@ const profilePhoto=
 const profileBtn=
   document.getElementById("profileBtn");
 
+
 profileFile.onchange=function(){
 
   const file=
@@ -3072,9 +3765,13 @@ profileFile.onchange=function(){
 
   if(!file)return;
 
-  if(!file.type.startsWith("image/")){
+  if(
+    !file.type.startsWith("image/")
+  ){
 
-    alert("Please select an image.");
+    alert(
+      "Please select an image."
+    );
 
     return;
 
@@ -3085,7 +3782,8 @@ profileFile.onchange=function(){
 
   reader.onload=function(e){
 
-    const image=e.target.result;
+    const image=
+      e.target.result;
 
     profilePhoto.src=image;
 
@@ -3113,8 +3811,6 @@ profileFile.onchange=function(){
 
 };
 
-
-/* LOAD PROFILE */
 
 (function(){
 
@@ -3145,9 +3841,9 @@ profileFile.onchange=function(){
 })();
 
 
-/* =====================================================
-   CORNER MENU
-===================================================== */
+/* =========================================================
+   CORNER CONTROL
+========================================================= */
 
 let iconClickCount=0;
 
@@ -3156,13 +3852,19 @@ function openHeadshotPanel(){
 
   iconClickCount++;
 
-  if(iconClickCount%2===1){
+  if(
+    iconClickCount%2===1
+  ){
 
-    alert("Don't ask me icon");
+    alert(
+      "Don't ask me icon"
+    );
 
   }else{
 
-    alert("Don't touch me icon");
+    alert(
+      "Don't touch me icon"
+    );
 
   }
 
@@ -3173,8 +3875,6 @@ function openHeadshotPanel(){
 }
 
 
-/* CLOSE HEADSHOT */
-
 function closeHeadshotPanel(){
 
   document
@@ -3184,26 +3884,27 @@ function closeHeadshotPanel(){
 }
 
 
-/* =====================================================
-   HEADSHOT TOGGLE
-===================================================== */
-
 function headshotChanged(){
 
   const toggle=
-    document.getElementById("headshotToggle");
+    document.getElementById(
+      "headshotToggle"
+    );
 
   const status=
-    document.getElementById("headshotStatus");
+    document.getElementById(
+      "headshotStatus"
+    );
+
 
   if(toggle.checked){
 
     status.innerText=
-      "HEADSHOT 100% ON ✓ — Opening Free Fire...";
+      "HEADSHOT 100% ON ✓ — OPENING FREE FIRE...";
 
     /*
-      এটি শুধু UI control।
-      এটি গেমে headshot 100% guarantee করে না।
+      Visual/demo control only.
+      Does not modify game behavior.
     */
 
     setTimeout(function(){
